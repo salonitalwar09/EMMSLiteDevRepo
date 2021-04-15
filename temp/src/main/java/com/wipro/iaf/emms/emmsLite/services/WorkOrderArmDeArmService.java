@@ -34,7 +34,7 @@ public class WorkOrderArmDeArmService {
 	public List<WorkOrderArmDearmEntity>getAllWOArmDeArming()
 	{
 		List<WorkOrderArmDearmEntity> sortieList = new ArrayList<>();
-		System.out.println("****Reached inside getAllWOArmDeArming****");
+		System.out.println("****Reached inside getAllWOArmDeArming Service****");
 		if (sortieList != null) {
 			System.out.println("****Reached inside getAllWOArmDeArming****sortieList != null****");
 			sortieList = woArmDearmRepo.getAllWOArmDeArmRecords();
