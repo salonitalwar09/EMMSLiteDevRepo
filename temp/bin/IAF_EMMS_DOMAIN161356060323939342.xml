@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublishIAF_EMMSDOMAIN_OS xmlns="http://www.ibm.com/maximo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creationDateTime="2021-02-17T16:46:42+05:30" transLanguage="EN" baseLanguage="EN" messageID="1613560602402997071" maximoVersion="7 5 20141017-1600 V7507-40" event="0">
+  <IAF_EMMSDOMAIN_OSSet>
+    <IAF_EMMSHALTRANS>
+      <ASSETNUM>SB 088</ASSETNUM>
+      <CMITEM>SU30MKI</CMITEM>
+      <DESCRIPTION />
+      <DETTLOCATION>30SQN/DET-01</DETTLOCATION>
+      <DETTLOCATIONBASE>30SQN/DET-01</DETTLOCATIONBASE>
+      <IAF_EMMSHALTRANSID>128</IAF_EMMSHALTRANSID>
+      <INDUCTIONDATE xsi:nil="true" />
+      <LOCATION>20SQN</LOCATION>
+      <MODEL>SU30MKI</MODEL>
+      <RECORDID>1088</RECORDID>
+      <SERIALNUM>SB 088</SERIALNUM>
+      <SIGNALOUTDATE xsi:nil="true" />
+      <VARIATION>SU30MKI</VARIATION>
+      <MAXDOMAIN>
+        <DESCRIPTION>Component Removal Reason</DESCRIPTION>
+        <DOMAINID>IAF_REMREASON</DOMAINID>
+        <ALNDOMAIN>
+          <DESCRIPTION>Brake Parachute Removal</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>BP REMOVAL</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Brake Parachute Removal</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>BRAKE PARA REMOVAL</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Calibration</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>CALIBRATION</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Cannibalization</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>CANNIBALIZATION</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Confirmed Failure</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>CONFIRMED FAILURE</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Audit and Data correction</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>DATA CORRECTION</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>End of Life</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>END OF LIFE</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Extension of life</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>EXTENSION OF LIFE</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>For Access</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>FOR ACCESS</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>FOR DETACHMENT</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>FOR DETACHMENT</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>FOR SPARE MANAGEMENT</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>FOR SPARE MANAGEMENT</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>LE Checks</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>LE CHECKS</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Overhaul</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>OVERHAUL</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Repair</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>REPAIR</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Return to logistics</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>RETURN TO LOGISTICS</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Schedule Removal</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>SCHEDULE REMOVAL</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Snag Rectification</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>SNAG RECTIFICATION</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Suspected Failure</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>SUSPECTED FAILURE</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Visiting</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>VISITING</VALUE>
+        </ALNDOMAIN>
+      </MAXDOMAIN>
+      <MAXDOMAIN>
+        <DESCRIPTION>Removal Type</DESCRIPTION>
+        <DOMAINID>IAF_REMTYPE</DOMAINID>
+        <ALNDOMAIN>
+          <DESCRIPTION>Scheduled Activity</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>SCHEDULED</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Unscheduled Activity</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>UNSCHEDULED</VALUE>
+        </ALNDOMAIN>
+      </MAXDOMAIN>
+      <MAXDOMAIN>
+        <DESCRIPTION>Domain to select component type</DESCRIPTION>
+        <DOMAINID>IAF_COMPTYPE</DOMAINID>
+        <ALNDOMAIN>
+          <DESCRIPTION>Non-Tracked Assets</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>Non-Tracked Asset</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Non-Tracked Items</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>Non-Tracked Items</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Tracked Assets</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>Tracked Assets</VALUE>
+        </ALNDOMAIN>
+      </MAXDOMAIN>
+      <MAXDOMAIN>
+        <DESCRIPTION>Deficiency List - Job Type</DESCRIPTION>
+        <DOMAINID>IAF_DEFLISTJOBTYPE</DOMAINID>
+        <ALNDOMAIN>
+          <DESCRIPTION>Install</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>Install</VALUE>
+        </ALNDOMAIN>
+        <ALNDOMAIN>
+          <DESCRIPTION>Remove</DESCRIPTION>
+          <ORGID />
+          <SITEID />
+          <VALUE>Remove</VALUE>
+        </ALNDOMAIN>
+      </MAXDOMAIN>
+    </IAF_EMMSHALTRANS>
+  </IAF_EMMSDOMAIN_OSSet>
+</PublishIAF_EMMSDOMAIN_OS>
+
