@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "elite_wo_tlc_tb")
 @NamedQuery(name = "TaskLevelComplianceEntity.findAll", query = "SELECT t FROM TaskLevelComplianceEntity t")
+@Component
 public class TaskLevelComplianceEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

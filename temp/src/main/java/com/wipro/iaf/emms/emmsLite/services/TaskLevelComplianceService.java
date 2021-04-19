@@ -35,8 +35,8 @@ import com.wipro.iaf.emms.emmsLite.Repository.WorkOrderRepository;
 public class TaskLevelComplianceService {
 	@Autowired
 	private TaskLevelComplianceRepository taskLevelComplianceRepository;
-	/*@Autowired
-	private TaskLevelComplianceEntity taskLevelComplianceEntity;*/
+	@Autowired
+	private TaskLevelComplianceEntity taskLevelComplianceEntity;
 	@Autowired
 	private WorkOrderRepository workOrderRepository;
 	@Autowired
@@ -77,7 +77,7 @@ public class TaskLevelComplianceService {
 		//WorkOrderEntity inputWorkOrderEntity = workOrderRepository.findByWorkOrderId(workorderid);
 
 		//System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance: " + "inputWorkOrderEntity: " + inputWorkOrderEntity.getAsset_num() + " " + inputWorkOrderEntity.getWorkorder_id());
-		TaskLevelComplianceEntity taskLevelComplianceEntity= new TaskLevelComplianceEntity();
+		//TaskLevelComplianceEntity taskLevelComplianceEntity= new TaskLevelComplianceEntity();
 		
 		//taskLevelComplianceEntity.setEliteWorkorderTb(inputWorkOrderEntity);
 		taskLevelComplianceEntity.setWorkorderid(workorderid);
@@ -135,5 +135,11 @@ public class TaskLevelComplianceService {
 				+" Compliance Date for " + tlcid + " : " + complianceDte);
 		complianceTlcEntity.setComplianceDte(complianceDte);
 		taskLevelComplianceRepository.save(complianceTlcEntity);
+	}
+
+	//Service to Delete Task Level Compliance Row on Delete button click
+	public void deleteTaskLevelCompliance(String tlcid) {
+		System.out.println("Inside TaskLevelComplianceService deleteTaskLevelCompliance: Request reached Service");
+		taskLevelComplianceRepository.deleteByTlcId(tlcid);
 	}
 }

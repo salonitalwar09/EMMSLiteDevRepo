@@ -5,7 +5,10 @@ package com.wipro.iaf.emms.emmsLite.Repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +27,10 @@ public interface TaskLevelComplianceRepository extends JpaRepository<TaskLevelCo
 
 	@Query(value = "SELECT * FROM emms_lite.elite_wo_tlc_tb WHERE workorder_id=?1 AND technician_servicenum=?2", nativeQuery = true)
 	public List<TaskLevelComplianceEntity> findByLoggedInUser(String workorderid, String servicenum);
+
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM emms_lite.elite_wo_tlc_tb WHERE tlc_id=?1", nativeQuery = true)
+	public void deleteByTlcId(String tlcid);
 	
 }

@@ -109,4 +109,18 @@ public class TaskLevelComplianceController {
 		//System.out.println("Inside TaskLevelComplianceController fetchTaskLevelComplianceDetails: " + "Service No. of Requestor: " + servicenum);
 		return taskLevelComplianceService.fetchAllTaskLevelCompliance(workorderid, loginEntity);
 	}
+	
+	@GetMapping("/deleteTaskLevelCompliance/{tlcid}")
+	public ResponseEntity<String> deleteTaskLevelCompliance(@PathVariable("tlcid") String tlcid)
+	{
+		try {
+			System.out.println("Inside TaskLevelComplianceController deleteTaskLevelCompliance: Request reached /emmsLite/deleteTaskLevelCompliance Controller");
+			taskLevelComplianceService.deleteTaskLevelCompliance(tlcid);
+			System.out.println("Inside TaskLevelComplianceController deleteTaskLevelCompliance: TaskLevelCompliance deleted successfully");
+			return new ResponseEntity<>("TaskLevelCompliance Deleted",HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("Inside TaskLevelComplianceController deleteTaskLevelCompliance: TaskLevelCompliance deletion failed");
+			return  new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
+		}
+	}
 }
