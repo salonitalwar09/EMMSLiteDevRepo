@@ -26,9 +26,6 @@ public class WoMeterService {
 	private WoMeterRepository woMeterRepository;
 	
 	@Autowired
-	private WoMeterEntity woMeterEntity;
-
-	@Autowired
 	private WoMeterLookupResponse woMeterLookupResponse;
 
 	public List<WoMeterLookupResponse> getAssetLookup(){
@@ -88,7 +85,7 @@ public class WoMeterService {
 
 	public WoMeterLookupResponse saveMeterDetails(WoMeterEntity woMeterInput) {
 		woMeterLookupResponse.reset();
-		woMeterEntity=null;
+		WoMeterEntity woMeterEntity=null;
 		woMeterEntity.setAssetId(woMeterInput.getAssetId());
 		woMeterEntity.setAssetNum(woMeterInput.getAssetNum());
 		woMeterEntity.setBuildItem(woMeterInput.getBuildItem());
@@ -101,6 +98,8 @@ public class WoMeterService {
 		woMeterEntity.setPartNum(woMeterInput.getPartNum());
 		woMeterEntity.setUpdatedBy(woMeterInput.getUpdatedBy());
 		woMeterEntity.setUpdatedDate(LocalDateTime.now());
+		
+		System.out.println("Workorder Entity to be saved in DB "+woMeterEntity.toString());
 	//	woMeterRepository.save(woMeterEntity);
 		return null;
 	}
