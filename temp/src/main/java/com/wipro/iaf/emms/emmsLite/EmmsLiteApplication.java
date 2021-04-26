@@ -5,10 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class EmmsLiteApplication {
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(EmmsLiteApplication.class, args);
 	}
 
 }
- 
