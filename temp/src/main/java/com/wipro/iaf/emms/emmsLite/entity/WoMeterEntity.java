@@ -1,5 +1,6 @@
 package com.wipro.iaf.emms.emmsLite.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -11,18 +12,18 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="elite_wo_meter_tb")
-public class WoMeterEntity {
+public class WoMeterEntity implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="wo_meter_id")
 	private Integer woMeterId;
 	@Column(name="asset_id")
 	private Integer assetId;
-	@Column(name="updated_by")
-	private String updatedBy;
-	@Column(name="updated_date")
-	private LocalDateTime updatedDate;
 	@Column(name="description")
 	private String description;
 	@Column(name="part_Num")
@@ -41,6 +42,10 @@ public class WoMeterEntity {
 	private double finalValue;
 	@Column(name="reading_date")
 	private LocalDateTime readingDate;
+	@Column(name="updated_by")
+	private String updatedBy;
+	@Column(name="updated_date")
+	private LocalDateTime updatedDate;
 	public Integer getWoMeterId() {
 		return woMeterId;
 	}
