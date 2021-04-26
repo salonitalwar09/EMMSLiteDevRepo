@@ -21,6 +21,7 @@ public class WorkOrderResponseBean {
 		this.responsestatus = responsestatus;
 	}
 	
+	
 	@Id
 	private String workorderid;
 	@Column
@@ -32,7 +33,14 @@ public class WorkOrderResponseBean {
 	private String worktype;
 	private int code;
 	private String responsestatus;
+	private Long removalRowId;
 	
+	public Long getRemovalRowId() {
+		return removalRowId;
+	}
+	public void setRemovalRowId(Long removalRowId) {
+		this.removalRowId = removalRowId;
+	}
 	public String getWorkorderid() {
 		return workorderid;
 	}
