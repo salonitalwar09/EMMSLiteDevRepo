@@ -10,10 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.iaf.emms.emmsLite.beans.WoMeterLookupResponse;
+import com.wipro.iaf.emms.emmsLite.entity.WoMeterEntity;
 import com.wipro.iaf.emms.emmsLite.services.WoMeterService;
 
 /**
@@ -32,6 +36,16 @@ public class WoMeterController {
 	@GetMapping("/getAssetLookup")
 	public ResponseEntity<List<WoMeterLookupResponse>> getAssetDetails(){
 		return new ResponseEntity<>(woMeterService.getAssetLookup(),HttpStatus.OK);		
+	}
+	
+	@GetMapping("/getAssetLookupById/{assetId}")
+	public ResponseEntity<WoMeterLookupResponse> getAssetLookupById(@PathVariable String assetId){
+		return new ResponseEntity<>(woMeterService.getAssetLookupById(assetId),HttpStatus.OK);		
+	}
+	
+	@PostMapping("/saveMeterDetails")
+	public ResponseEntity<WoMeterLookupResponse> saveMeterDetails(@RequestBody WoMeterEntity woMeterInput){
+		return new ResponseEntity<>(woMeterService.saveMeterDetails(woMeterInput),HttpStatus.OK);
 	}
 	
 }

@@ -12,6 +12,7 @@ public class WoMeterLookupResponse {
 	private String partNumber_meterLookup;
 	private String partDescription_meterLookup;
 	private String assetNum_meterLookup;
+	private boolean UmValue; // For HH:MM:SS value
 	private String  statusString;
 	private int statusCode;
 	
@@ -69,19 +70,35 @@ public class WoMeterLookupResponse {
 	public void setStatusString(String statusString) {
 		this.statusString = statusString;
 	}
-	@Override
-	public String toString() {
-		return "WoMeterLookupResponse [assetId_assetLookup="
-				+ assetId_assetLookup + ", buildItem=" + buildItem
-				+ ", serialNum=" + serialNum
-				+ ", assetDescription_assetLookup="
-				+ assetDescription_assetLookup + ", partNumber_meterLookup="
-				+ partNumber_meterLookup + ", partDescription_meterLookup="
-				+ partDescription_meterLookup + ", assetNum_meterLookup="
-				+ assetNum_meterLookup + "]";
+	public boolean isUmValue() {
+		return UmValue;
 	}
-	public WoMeterLookupResponse() {
+	public void setUmValue(boolean umValue) {
+		UmValue = umValue;
 	}
 
+	@Override
+	public String toString() {
+		return "WoMeterLookupResponse [assetId_assetLookup=" + assetId_assetLookup + ", buildItem=" + buildItem
+				+ ", serialNum=" + serialNum + ", assetDescription_assetLookup=" + assetDescription_assetLookup
+				+ ", partNumber_meterLookup=" + partNumber_meterLookup + ", partDescription_meterLookup="
+				+ partDescription_meterLookup + ", assetNum_meterLookup=" + assetNum_meterLookup + ", UmValue="
+				+ UmValue + ", statusString=" + statusString + ", statusCode=" + statusCode + "]";
+	}
 	
+	public void reset() {	/* function to reset all variable values for every api hit*/
+		assetId_assetLookup=null;
+		buildItem=null;
+		serialNum=null;
+		assetDescription_assetLookup=null;
+		partNumber_meterLookup=null;
+		partDescription_meterLookup=null;
+		assetNum_meterLookup=null;
+		statusCode=0;
+		statusString=null;
+		UmValue=false;
+	}
+	
+	public WoMeterLookupResponse() {
+	}
 }

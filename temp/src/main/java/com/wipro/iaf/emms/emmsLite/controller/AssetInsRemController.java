@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderResponseBean;
+import com.wipro.iaf.emms.emmsLite.entity.AlndomainEntity;
 import com.wipro.iaf.emms.emmsLite.entity.AssetInsRemEntity;
+import com.wipro.iaf.emms.emmsLite.services.AlndomainService;
 import com.wipro.iaf.emms.emmsLite.services.AssetInsRemService;
 
 /**
@@ -34,12 +36,29 @@ public class AssetInsRemController {
 	AssetInsRemEntity assetInsRemEntity;
 	@Autowired
 	AssetInsRemService assetInsRemService;
+	@Autowired
+	AlndomainService alndomainService;
 
 
 	@GetMapping("/viewAssetInsRem/{workorderId}")
 	public List<AssetInsRemEntity>getAssetRemByWoId(@PathVariable("workorderId") Long workorderId){
 		System.out.println("Asset remove List based on WOID:: "+workorderId);
 		return assetInsRemService.assetRemSet(workorderId);
+	}
+	@GetMapping("/viewJobType")
+	public List<AlndomainEntity>getJobType(){
+		System.out.println("JobType List ");
+		return alndomainService.jobTypeSet();
+	}
+	@GetMapping("/viewRemReason")
+	public List<AlndomainEntity>getRemReason(){
+		System.out.println("Removal Reason List ");
+		return alndomainService.RemReasonSet();
+	}
+	@GetMapping("/viewRemType")
+	public List<AlndomainEntity>getRemType(){
+		System.out.println("Removal Type List ");
+		return alndomainService.remTypeSet();
 	}
 	@PostMapping("/createRemRow/{workorderId}")
 	public ResponseEntity<WorkOrderResponseBean> createRemRow(@RequestBody AssetInsRemEntity assetInsRemEntity, @PathVariable("workorderId") Long workorderId ){
