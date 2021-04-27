@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.wipro.iaf.emms.emmsLite.entity.LoginEntity;
+import com.wipro.iaf.emms.emmsLite.entity.WoMeterEntity;
 
 /**
  * @author Rachit
@@ -15,7 +15,7 @@ import com.wipro.iaf.emms.emmsLite.entity.LoginEntity;
  */
 
 @Repository
-public interface WoMeterRepository extends JpaRepository<LoginEntity,Integer>{
+public interface WoMeterRepository extends JpaRepository<WoMeterEntity,Integer>{
 
 	/*@Query(value="SELECT asset.description,asset.serialnum, asset.assetnum from asset where asset.assetid in (SELECT elite_plusasaonoff_tb.assetid from elite_plusasaonoff_tb where elite_plusasaonoff_tb.offtime is null and elite_plusasaonoff_tb.parentassetid is not null)",nativeQuery=true)
 	public List<String> getAssetLookupQuery1();*/
