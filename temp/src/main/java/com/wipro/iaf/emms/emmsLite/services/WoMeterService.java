@@ -24,26 +24,20 @@ public class WoMeterService {
 
 	@Autowired
 	private WoMeterRepository woMeterRepository;
-	
-	@Autowired
-	private WoMeterLookupResponse woMeterLookupResponse;
 
 	public List<WoMeterLookupResponse> getAssetLookup(){
 		ArrayList<String> woMeterQueryList = new ArrayList<>();
 		List<WoMeterLookupResponse> woMeterLookupResponseList =  new ArrayList<>();
-		woMeterLookupResponse.reset();
 
 		woMeterQueryList = (ArrayList<String>) woMeterRepository.getAssetLookupQuery();	
 		System.out.println("Wo_meter list from db- "+woMeterQueryList.toString());
 
 		for(String ListNumber :woMeterQueryList ){
-			System.out.println("inside for loop - "+ListNumber);
-
+			WoMeterLookupResponse woMeterLookupResponse=new WoMeterLookupResponse();
 			int size=woMeterLookupResponseList.size();
 			System.out.println("size of response array - "+size);
 
 			String delimatedArray[]=ListNumber.split(",");
-
 			woMeterLookupResponse.setAssetNum_meterLookup(delimatedArray[0]);
 			woMeterLookupResponse.setBuildItem(delimatedArray[1]);
 			woMeterLookupResponse.setSerialNum(delimatedArray[2]);
@@ -61,8 +55,7 @@ public class WoMeterService {
 	}
 
 	public WoMeterLookupResponse getAssetLookupById(String assetId) {
-		woMeterLookupResponse.reset();
-
+		WoMeterLookupResponse woMeterLookupResponse=new WoMeterLookupResponse();
 		String woMeterQueryResultSet =  woMeterRepository.getAssetLookupQueryById(assetId);	
 		System.out.println("Wo_meter resultSet from db- "+woMeterQueryResultSet);
 
@@ -83,10 +76,12 @@ public class WoMeterService {
 		return woMeterLookupResponse;
 	}
 
-	public WoMeterLookupResponse saveMeterDetails(WoMeterEntity woMeterInput) {
-		woMeterLookupResponse.reset();
-		WoMeterEntity woMeterEntity=null;
+	public WoMeterLookupResponse saveMeterDetails(Long workOrderId,WoMeterEntity woMeterInput) {
+		WoMeterLookupResponse woMeterLookupResponse=new WoMeterLookupResponse();
+		WoMeterEntity woMeterEntity=new WoMeterEntity();
+		
 		woMeterEntity.setAssetId(woMeterInput.getAssetId());
+		woMeterEntity.setWorkOrderId(workOrderId);
 		woMeterEntity.setAssetNum(woMeterInput.getAssetNum());
 		woMeterEntity.setBuildItem(woMeterInput.getBuildItem());
 		woMeterEntity.setDescription(woMeterInput.getDescription());
@@ -98,10 +93,10 @@ public class WoMeterService {
 		woMeterEntity.setPartNum(woMeterInput.getPartNum());
 		woMeterEntity.setUpdatedBy(woMeterInput.getUpdatedBy());
 		woMeterEntity.setUpdatedDate(LocalDateTime.now());
-		
-		System.out.println("Workorder Entity to be saved in DB "+woMeterEntity.toString());
-	//	woMeterRepository.save(woMeterEntity);
-		return null;
+		woMeterRepository.save(woMeterEntity);
+		woMeterLookupResponse.setStatusCode(200);
+		woMeterLookupResponse.setStatusString("Meter data saved");
+		return woMeterLookupResponse;
 	}
 
 }

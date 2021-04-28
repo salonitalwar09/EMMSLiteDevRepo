@@ -43,9 +43,9 @@ public class WoMeterController {
 		return new ResponseEntity<>(woMeterService.getAssetLookupById(assetId),HttpStatus.OK);		
 	}
 	
-	@PostMapping("/saveMeterDetails")
-	public ResponseEntity<WoMeterLookupResponse> saveMeterDetails(@RequestBody WoMeterEntity woMeterInput){
-		return new ResponseEntity<>(woMeterService.saveMeterDetails(woMeterInput),HttpStatus.OK);
+	@PostMapping("/saveMeterDetails/{workOrderId}")
+	public ResponseEntity<WoMeterLookupResponse> saveMeterDetails(@PathVariable Long workOrderId, @RequestBody WoMeterEntity woMeterInput){
+		return new ResponseEntity<>(woMeterService.saveMeterDetails(workOrderId,woMeterInput),HttpStatus.OK);
 	}
 	
 }
