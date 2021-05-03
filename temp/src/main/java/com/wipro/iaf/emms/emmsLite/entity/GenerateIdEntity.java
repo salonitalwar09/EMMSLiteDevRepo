@@ -15,7 +15,8 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "elite_generate_id_tb", schema= "emms_lite")
+//@Table(name = "elite_generate_id_tb", schema= "emms_lite") ::Shivam
+@Table(name = "elite_generate_id_tb", schema= "elite")
 @Component
 	public class GenerateIdEntity {
 	

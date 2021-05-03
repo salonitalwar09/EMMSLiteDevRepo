@@ -1,5 +1,7 @@
 package com.wipro.iaf.emms.emmsLite.services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,18 +41,19 @@ public class AssetInsRemService {
 		}
 	}
 
-	public WorkOrderResponseBean createRemRow(Long workorderID, AssetInsRemEntity assetInsRemEntity){
-		System.out.println("create Removal Row for WOID:: "+workorderID);
+	public WorkOrderResponseBean createInsRemRow(Long workorderID, AssetInsRemEntity assetInsRemEntity){
+		System.out.println("create Install / Removal Row for WOID:: "+workorderID);
 		assetInsRemEntity.setWorkorderId(workorderID);
 		/*
-		 * To be used on remove Button click:: Shivam
-		 * DateTimeFormatter statusDate= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		 * Doubt:: To be used on install/remove Button click or while Record Save:: Shivam
+		 * */
+		DateTimeFormatter statusDate= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		LocalDateTime now = LocalDateTime.now();
-		assetInsRemEntity.setRemovalDate(statusDate.format(now));
-		System.out.println("Removal Date:: "+statusDate.format(now));
-		 */
+		assetInsRemEntity.setRemInsDate(statusDate.format(now));
+		System.out.println("Install/Removal Date:: "+statusDate.format(now));
+		assetInsRemEntity.setRemInsBy("801002");
 		assetInsRemRepository.save(assetInsRemEntity);
-		workorderResponseBean.setRemovalRowId(assetInsRemEntity.getInsRemId());
+		workorderResponseBean.setinsRemRowId(assetInsRemEntity.getInsRemId());
 		return workorderResponseBean;
 	}
 
