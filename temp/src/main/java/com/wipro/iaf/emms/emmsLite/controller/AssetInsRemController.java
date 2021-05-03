@@ -60,11 +60,11 @@ public class AssetInsRemController {
 		System.out.println("Removal Type List ");
 		return alndomainService.remTypeSet();
 	}
-	@PostMapping("/createRemRow/{workorderId}")
-	public ResponseEntity<WorkOrderResponseBean> createRemRow(@RequestBody AssetInsRemEntity assetInsRemEntity, @PathVariable("workorderId") Long workorderId ){
+	@PostMapping("/createInsRemRow/{workorderId}")
+	public ResponseEntity<WorkOrderResponseBean> createInsRemRow(@RequestBody AssetInsRemEntity assetInsRemEntity, @PathVariable("workorderId") Long workorderId ){
 		try {
-			System.out.println("Create Remove Asset row for WoID:: "+workorderId+"Asset Remove Enitity:: "+assetInsRemEntity.toString());
-			assetInsRemService.createRemRow(workorderId, assetInsRemEntity);
+			System.out.println("Create Install / Remove Asset row for WoID:: "+workorderId+"Asset InstallRemove Enitity:: "+assetInsRemEntity.toString());
+			assetInsRemService.createInsRemRow(workorderId, assetInsRemEntity);
 			return new ResponseEntity<>(workorderResponseBean,HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

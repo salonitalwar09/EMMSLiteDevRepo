@@ -36,20 +36,20 @@ public class AssetInsRemEntity {
 	private String lcn;
 	@Column(name="position")
 	private String position;
-	@Column(name="part_no")
+	@Column(name="rem_part_no")
 	private String partNo;
 	@Column(name="item")
 	private String item;
 	@Column(name="removed_part_no")
 	private String removePartNo;
-	@Column(name="serial_no")
+	@Column(name="rem_serial_no")
 	private String serialNo;
-	@Column(name="asset_num")
+	@Column(name="rem_asset_num")
 	private String assetNo;
-	@Column(name="removed_by")
-	private String removedBy;
-	@Column(name="removal_date")
-	private String removalDate;
+	@Column(name="rem_ins_by")
+	private String remInsBy;
+	@Column(name="rem_ins_date")
+	private String remInsDate;
 	@Column(name="removal_reason")
 	private String removalReason;
 	@Column(name="removal_cond")
@@ -58,7 +58,14 @@ public class AssetInsRemEntity {
 	private String removalType;
 	@Column(name="remarks")
 	private String remarks;
-	// MORE COLUMNS RO BE ADDED FOR ASSET INSTALL PART:: Shivam
+	@Column(name="ins_asset_num")
+	private String insAssetNo ;
+	@Column(name="ins_part_no")
+	private String insPartNo;
+	@Column(name="ins_serial_no")
+	private String insSerialNo;
+	@Column(name="install_cond")
+	private String insCond;
 	public Long getInsRemId() {
 		return insRemId;
 	}
@@ -125,17 +132,17 @@ public class AssetInsRemEntity {
 	public void setAssetNo(String assetNo) {
 		this.assetNo = assetNo;
 	}
-	public String getRemovedBy() {
-		return removedBy;
+	public String getRemInsBy() {
+		return remInsBy;
 	}
-	public void setRemovedBy(String removedBy) {
-		this.removedBy = removedBy;
+	public void setRemInsBy(String remInsBy) {
+		this.remInsBy = remInsBy;
 	}
-	public String getRemovalDate() {
-		return removalDate;
+	public String getRemInsDate() {
+		return remInsDate;
 	}
-	public void setRemovalDate(String removalDate) {
-		this.removalDate = removalDate;
+	public void setRemInsDate(String remInsDate) {
+		this.remInsDate = remInsDate;
 	}
 	public String getRemovalReason() {
 		return removalReason;
@@ -161,6 +168,30 @@ public class AssetInsRemEntity {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	public String getInsAssetNo() {
+		return insAssetNo;
+	}
+	public void setInsAssetNo(String insAssetNo) {
+		this.insAssetNo = insAssetNo;
+	}
+	public String getInsPartNo() {
+		return insPartNo;
+	}
+	public void setInsPartNo(String insPartNo) {
+		this.insPartNo = insPartNo;
+	}
+	public String getInsSerialNo() {
+		return insSerialNo;
+	}
+	public void setInsSerialNo(String insSerialNo) {
+		this.insSerialNo = insSerialNo;
+	}
+	public String getInsCond() {
+		return insCond;
+	}
+	public void setInsCond(String insCond) {
+		this.insCond = insCond;
+	}
 	@Override
 	public String toString() {
 		return "AssetInsRemEntity [insRemId=" + insRemId + ", workorderId="
@@ -168,9 +199,17 @@ public class AssetInsRemEntity {
 				+ buildItem + ", lcn=" + lcn + ", position=" + position
 				+ ", partNo=" + partNo + ", item=" + item + ", removePartNo="
 				+ removePartNo + ", serialNo=" + serialNo + ", assetNo="
-				+ assetNo + ", removedBy=" + removedBy + ", removalDate="
-				+ removalDate + ", removalReason=" + removalReason
+				+ assetNo + ", remInsBy=" + remInsBy + ", remInsDate="
+				+ remInsDate + ", removalReason=" + removalReason
 				+ ", removalCond=" + removalCond + ", removalType="
-				+ removalType + ", remarks=" + remarks + "]";
+				+ removalType + ", remarks=" + remarks + ", insAssetNo="
+				+ insAssetNo + ", insPartNo=" + insPartNo + ", insSerialNo="
+				+ insSerialNo + ", insCond=" + insCond + "]";
 	}
+	
+	
+	
+	
+
+
 }
