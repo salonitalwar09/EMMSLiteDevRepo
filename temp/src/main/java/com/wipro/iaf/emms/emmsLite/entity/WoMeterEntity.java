@@ -22,8 +22,10 @@ public class WoMeterEntity implements Serializable{
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="wo_meter_id")
 	private Integer woMeterId;
+	@Column(name="workOrderId")
+	private Long workOrderId;
 	@Column(name="asset_id")
-	private Integer assetId;
+	private Long assetId;
 	@Column(name="description")
 	private String description;
 	@Column(name="part_Num")
@@ -33,7 +35,7 @@ public class WoMeterEntity implements Serializable{
 	@Column(name="build_Item")
 	private String buildItem;
 	@Column(name="asset_num")
-	private Integer assetNum;
+	private String assetNum;
 	@Column(name="meter_name")
 	private String meterName; 
 	@Column(name="initial_value")
@@ -52,10 +54,10 @@ public class WoMeterEntity implements Serializable{
 	public void setWoMeterId(Integer woMeterId) {
 		this.woMeterId = woMeterId;
 	}
-	public Integer getAssetId() {
+	public Long getAssetId() {
 		return assetId;
 	}
-	public void setAssetId(Integer assetId) {
+	public void setAssetId(Long assetId) {
 		this.assetId = assetId;
 	}
 	public String getUpdatedBy() {
@@ -94,10 +96,10 @@ public class WoMeterEntity implements Serializable{
 	public void setBuildItem(String buildItem) {
 		this.buildItem = buildItem;
 	}
-	public Integer getAssetNum() {
+	public String getAssetNum() {
 		return assetNum;
 	}
-	public void setAssetNum(Integer assetNum) {
+	public void setAssetNum(String assetNum) {
 		this.assetNum = assetNum;
 	}
 	public String getMeterName() {
@@ -124,19 +126,20 @@ public class WoMeterEntity implements Serializable{
 	public void setReadingDate(LocalDateTime readingDate) {
 		this.readingDate = readingDate;
 	}
+	public Long getWorkOrderId() {
+		return workOrderId;
+	}
+	public void setWorkOrderId(Long workOrderId) {
+		this.workOrderId = workOrderId;
+	}
 	@Override
 	public String toString() {
-		return "WoMeterEntity [woMeterId=" + woMeterId + ", assetId=" + assetId
-				+ ", updatedBy=" + updatedBy + ", updatedDate=" + updatedDate
-				+ ", description=" + description + ", partNum=" + partNum
-				+ ", serialNum=" + serialNum + ", buildItem=" + buildItem
-				+ ", assetNum=" + assetNum + ", meterName=" + meterName
-				+ ", initialValue=" + initialValue + ", finalValue="
-				+ finalValue + ", readingDate=" + readingDate + "]";
+		return "WoMeterEntity [woMeterId=" + woMeterId + ", workOrderId=" + workOrderId + ", assetId=" + assetId
+				+ ", description=" + description + ", partNum=" + partNum + ", serialNum=" + serialNum + ", buildItem="
+				+ buildItem + ", assetNum=" + assetNum + ", meterName=" + meterName + ", initialValue=" + initialValue
+				+ ", finalValue=" + finalValue + ", readingDate=" + readingDate + ", updatedBy=" + updatedBy
+				+ ", updatedDate=" + updatedDate + "]";
 	}
 	public WoMeterEntity() {
 	}
-	
-	
-
 }
