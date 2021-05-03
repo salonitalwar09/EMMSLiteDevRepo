@@ -64,9 +64,9 @@ public class FlbSortieARController {
 		System.out.println("Record Id provided in path: " + recordId);
 		
 		// Code starts here
-		fLBSortieARService.saveSorties(recordId, sortieList);
+		CommonResponseBean response = fLBSortieARService.saveSorties(recordId, sortieList);
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++end of saveSorties++++++++++++++++++++++++++++++++++++++++");
-		return null;
+		return new ResponseEntity<>(response, response.getStatus());
 	}
 }

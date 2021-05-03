@@ -31,12 +31,14 @@ public class WoMeterService {
 	public List<WoMeterLookupResponse> getAssetLookup(){
 		ArrayList<String> woMeterQueryList = new ArrayList<>();
 		List<WoMeterLookupResponse> woMeterLookupResponseList =  new ArrayList<>();
-		woMeterLookupResponse.reset();
+//		woMeterLookupResponse.reset();
+		
 
 		woMeterQueryList = (ArrayList<String>) woMeterRepository.getAssetLookupQuery();	
 		System.out.println("Wo_meter list from db- "+woMeterQueryList.toString());
 
 		for(String ListNumber :woMeterQueryList ){
+			WoMeterLookupResponse woMeterLookupResponse2 = new WoMeterLookupResponse();
 			System.out.println("inside for loop - "+ListNumber);
 
 			int size=woMeterLookupResponseList.size();
@@ -44,20 +46,21 @@ public class WoMeterService {
 
 			String delimatedArray[]=ListNumber.split(",");
 
-			woMeterLookupResponse.setAssetNum_meterLookup(delimatedArray[0]);
-			woMeterLookupResponse.setBuildItem(delimatedArray[1]);
-			woMeterLookupResponse.setSerialNum(delimatedArray[2]);
-			woMeterLookupResponse.setAssetDescription_assetLookup(delimatedArray[3]);
-			woMeterLookupResponse.setAssetId_assetLookup(delimatedArray[4]);
-			woMeterLookupResponse.setPartNumber_meterLookup(delimatedArray[5]);
-			woMeterLookupResponse.setPartDescription_meterLookup(delimatedArray[6]);
-			woMeterLookupResponse.setStatusCode(200);
-			woMeterLookupResponse.setStatusString("Workorder asset and_meter lookup data rendered");
-			woMeterLookupResponseList.add(woMeterLookupResponse);
+			woMeterLookupResponse2.setAssetNum_meterLookup(delimatedArray[0]);
+			woMeterLookupResponse2.setBuildItem(delimatedArray[1]);
+			woMeterLookupResponse2.setSerialNum(delimatedArray[2]);
+			woMeterLookupResponse2.setAssetDescription_assetLookup(delimatedArray[3]);
+			woMeterLookupResponse2.setAssetId_assetLookup(delimatedArray[4]);
+			woMeterLookupResponse2.setPartNumber_meterLookup(delimatedArray[5]);
+			woMeterLookupResponse2.setPartDescription_meterLookup(delimatedArray[6]);
+			woMeterLookupResponse2.setStatusCode(200);
+			woMeterLookupResponse2.setStatusString("Workorder asset and_meter lookup data rendered");
+			System.out.println("lalit" + woMeterLookupResponse2.toString());
+			woMeterLookupResponseList.add(woMeterLookupResponse2);
 		}
 		System.out.println("Workorder asset and_meter lookup data rendered");
 		System.out.println("Asset description bean ----- "+woMeterLookupResponseList.toString());
-		return woMeterLookupResponseList;		
+		return woMeterLookupResponseList;
 	}
 
 	public WoMeterLookupResponse getAssetLookupById(String assetId) {
