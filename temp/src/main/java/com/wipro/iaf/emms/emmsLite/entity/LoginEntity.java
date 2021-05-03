@@ -1,5 +1,6 @@
 package com.wipro.iaf.emms.emmsLite.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -10,11 +11,15 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="login")
-public class LoginEntity {
+public class LoginEntity implements Serializable{
 
+	/**
+	 *Entity for Login module 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	private String userid;
-	@Column
+	@Column(name="password")
 	private String password;
 	@Column(name="answer_one",nullable=true)
 	String answerOne;
@@ -24,7 +29,7 @@ public class LoginEntity {
 	String answerThree;
 	@Column(name="block_count")
 	int blockCount;
-	@Column
+	@Column(name="change_pass_time")
 	private LocalDateTime changePassTime;
 	@Transient
 	String updatePassword; 
@@ -88,7 +93,5 @@ public class LoginEntity {
 				+ updatePassword + "]";
 	}
 	public LoginEntity() {
-	}
-	
-	
+	}	
 }

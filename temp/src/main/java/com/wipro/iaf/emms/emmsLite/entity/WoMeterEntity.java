@@ -1,5 +1,6 @@
 package com.wipro.iaf.emms.emmsLite.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -11,18 +12,20 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="elite_wo_meter_tb")
-public class WoMeterEntity {
+public class WoMeterEntity implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="wo_meter_id")
 	private Integer woMeterId;
+	@Column(name="workOrderId")
+	private Long workOrderId;
 	@Column(name="asset_id")
-	private Integer assetId;
-	@Column(name="updated_by")
-	private String updatedBy;
-	@Column(name="updated_date")
-	private LocalDateTime updatedDate;
+	private Long assetId;
 	@Column(name="description")
 	private String description;
 	@Column(name="part_Num")
@@ -32,7 +35,7 @@ public class WoMeterEntity {
 	@Column(name="build_Item")
 	private String buildItem;
 	@Column(name="asset_num")
-	private Integer assetNum;
+	private String assetNum;
 	@Column(name="meter_name")
 	private String meterName; 
 	@Column(name="initial_value")
@@ -41,16 +44,20 @@ public class WoMeterEntity {
 	private double finalValue;
 	@Column(name="reading_date")
 	private LocalDateTime readingDate;
+	@Column(name="updated_by")
+	private String updatedBy;
+	@Column(name="updated_date")
+	private LocalDateTime updatedDate;
 	public Integer getWoMeterId() {
 		return woMeterId;
 	}
 	public void setWoMeterId(Integer woMeterId) {
 		this.woMeterId = woMeterId;
 	}
-	public Integer getAssetId() {
+	public Long getAssetId() {
 		return assetId;
 	}
-	public void setAssetId(Integer assetId) {
+	public void setAssetId(Long assetId) {
 		this.assetId = assetId;
 	}
 	public String getUpdatedBy() {
@@ -89,10 +96,10 @@ public class WoMeterEntity {
 	public void setBuildItem(String buildItem) {
 		this.buildItem = buildItem;
 	}
-	public Integer getAssetNum() {
+	public String getAssetNum() {
 		return assetNum;
 	}
-	public void setAssetNum(Integer assetNum) {
+	public void setAssetNum(String assetNum) {
 		this.assetNum = assetNum;
 	}
 	public String getMeterName() {
@@ -119,19 +126,20 @@ public class WoMeterEntity {
 	public void setReadingDate(LocalDateTime readingDate) {
 		this.readingDate = readingDate;
 	}
+	public Long getWorkOrderId() {
+		return workOrderId;
+	}
+	public void setWorkOrderId(Long workOrderId) {
+		this.workOrderId = workOrderId;
+	}
 	@Override
 	public String toString() {
-		return "WoMeterEntity [woMeterId=" + woMeterId + ", assetId=" + assetId
-				+ ", updatedBy=" + updatedBy + ", updatedDate=" + updatedDate
-				+ ", description=" + description + ", partNum=" + partNum
-				+ ", serialNum=" + serialNum + ", buildItem=" + buildItem
-				+ ", assetNum=" + assetNum + ", meterName=" + meterName
-				+ ", initialValue=" + initialValue + ", finalValue="
-				+ finalValue + ", readingDate=" + readingDate + "]";
+		return "WoMeterEntity [woMeterId=" + woMeterId + ", workOrderId=" + workOrderId + ", assetId=" + assetId
+				+ ", description=" + description + ", partNum=" + partNum + ", serialNum=" + serialNum + ", buildItem="
+				+ buildItem + ", assetNum=" + assetNum + ", meterName=" + meterName + ", initialValue=" + initialValue
+				+ ", finalValue=" + finalValue + ", readingDate=" + readingDate + ", updatedBy=" + updatedBy
+				+ ", updatedDate=" + updatedDate + "]";
 	}
 	public WoMeterEntity() {
 	}
-	
-	
-
 }

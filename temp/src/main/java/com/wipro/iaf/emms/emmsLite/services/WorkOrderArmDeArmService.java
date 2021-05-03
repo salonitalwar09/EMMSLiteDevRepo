@@ -38,9 +38,15 @@ public class WorkOrderArmDeArmService {
 		if (sortieList != null) {
 			System.out.println("****Reached inside getAllWOArmDeArming****sortieList != null****");
 			sortieList = woArmDearmRepo.getAllWOArmDeArmRecords();
-			woArmDearmResponseBean.setCode(202);
-			woArmDearmResponseBean.setStatus("Successful");
-			woArmDearmResponseBean.setDescription("All Work Order Arming De-Arming records fetched successfully");
+			if (!sortieList.isEmpty()) {
+				woArmDearmResponseBean.setCode(202);
+				woArmDearmResponseBean.setStatus("Successful");
+				woArmDearmResponseBean.setDescription("All Work Order Arming De-Arming records fetched successfully");
+			}else {
+				woArmDearmResponseBean.setCode(202);
+				woArmDearmResponseBean.setStatus("Successful");
+				woArmDearmResponseBean.setDescription("There are no records present for Work Order Arming De-Arming");
+			}			
 		} 					
 		return sortieList;
 	}
