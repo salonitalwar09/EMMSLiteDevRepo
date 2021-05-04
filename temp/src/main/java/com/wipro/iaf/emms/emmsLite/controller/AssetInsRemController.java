@@ -45,21 +45,24 @@ public class AssetInsRemController {
 		System.out.println("Asset remove List based on WOID:: "+workorderId);
 		return assetInsRemService.assetRemSet(workorderId);
 	}
-	@GetMapping("/viewJobType")
-	public List<AlndomainEntity>getJobType(){
-		System.out.println("JobType List ");
-		return alndomainService.jobTypeSet();
-	}
 	@GetMapping("/viewRemReason")
 	public List<AlndomainEntity>getRemReason(){
 		System.out.println("Removal Reason List ");
 		return alndomainService.RemReasonSet();
 	}
+	/*Not Required to be fetch from DB, We will fetch Hardcoded values:: Shivam
+	 * 
+	 * @GetMapping("/viewJobType")
+	public List<AlndomainEntity>getJobType(){
+		System.out.println("JobType List ");
+		return alndomainService.jobTypeSet();
+	}
+
 	@GetMapping("/viewRemType")
 	public List<AlndomainEntity>getRemType(){
 		System.out.println("Removal Type List ");
 		return alndomainService.remTypeSet();
-	}
+	}*/
 	@PostMapping("/createInsRemRow/{workorderId}")
 	public ResponseEntity<WorkOrderResponseBean> createInsRemRow(@RequestBody AssetInsRemEntity assetInsRemEntity, @PathVariable("workorderId") Long workorderId ){
 		try {
