@@ -12,6 +12,8 @@ public class WoMeterLookupResponse {
 	private String partNumber_meterLookup;
 	private String partDescription_meterLookup;
 	private String assetNum_meterLookup;
+	private String position;
+	private String lcn;
 	private boolean UmValue; // For HH:MM:SS value
 	private String  statusString;
 	private int statusCode;
@@ -57,6 +59,18 @@ public class WoMeterLookupResponse {
 	}
 	public void setAssetNum_meterLookup(String assetNum_meterLookup) {
 		this.assetNum_meterLookup = assetNum_meterLookup;
+	}	
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	public String getLcn() {
+		return lcn;
+	}
+	public void setLcn(String lcn) {
+		this.lcn = lcn;
 	}
 	public int getStatusCode() {
 		return statusCode;
@@ -82,8 +96,9 @@ public class WoMeterLookupResponse {
 		return "WoMeterLookupResponse [assetId_assetLookup=" + assetId_assetLookup + ", buildItem=" + buildItem
 				+ ", serialNum=" + serialNum + ", assetDescription_assetLookup=" + assetDescription_assetLookup
 				+ ", partNumber_meterLookup=" + partNumber_meterLookup + ", partDescription_meterLookup="
-				+ partDescription_meterLookup + ", assetNum_meterLookup=" + assetNum_meterLookup + ", UmValue="
-				+ UmValue + ", statusString=" + statusString + ", statusCode=" + statusCode + "]";
+				+ partDescription_meterLookup + ", assetNum_meterLookup=" + assetNum_meterLookup + ", position="
+				+ position + ", lcn=" + lcn + ", UmValue=" + UmValue + ", statusString=" + statusString
+				+ ", statusCode=" + statusCode + "]";
 	}
 	
 	public void reset() {	/* function to reset all variable values for every api hit*/
@@ -94,6 +109,8 @@ public class WoMeterLookupResponse {
 		partNumber_meterLookup=null;
 		partDescription_meterLookup=null;
 		assetNum_meterLookup=null;
+		position=null;
+		lcn=null;
 		statusCode=0;
 		statusString=null;
 		UmValue=false;
