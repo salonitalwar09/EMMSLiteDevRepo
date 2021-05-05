@@ -114,8 +114,8 @@ public class WoMeterService {
 		return bean;
 	}
 
-	public List<WoMeterEntity> getMeterById(String assetNum) {
-		List<WoMeterEntity> WoMeterList =woMeterRepository.findMeterDetailsById(assetNum);
+	public List<WoMeterEntity> getMeterById(Long workOrderId) {
+		List<WoMeterEntity> WoMeterList =woMeterRepository.findMeterDetailsById(workOrderId);
 		if(!WoMeterList.isEmpty())
 		WoMeterList.get(0).setStatusCode(200);
 		return WoMeterList;
