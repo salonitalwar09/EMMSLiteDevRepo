@@ -23,7 +23,7 @@ public class WoMeterEntity implements Serializable{
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="wo_meter_id")
 	private Integer woMeterId;
-	@Column(name="workOrderId")
+	@Column(name="work_order_id")
 	private Long workOrderId;
 	@Column(name="asset_id")
 	private Long assetId;

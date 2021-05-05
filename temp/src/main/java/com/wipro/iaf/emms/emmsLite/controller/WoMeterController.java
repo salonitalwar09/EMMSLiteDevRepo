@@ -60,9 +60,9 @@ public class WoMeterController {
 		return new ResponseEntity<>(woMeterService.getMeterLookupById(assetId),HttpStatus.OK);		
 	}
 	
-	@GetMapping("/getMeterById/{assetNum}")
-	public ResponseEntity<List<WoMeterEntity>> getMeterById(@PathVariable String assetNum){
-		return new ResponseEntity<>(woMeterService.getMeterById(assetNum),HttpStatus.OK);		
+	@GetMapping("/getMeterByWorkOrderId/{workOrderId}")
+	public ResponseEntity<List<WoMeterEntity>> getMeterById(@PathVariable Long workOrderId){
+		return new ResponseEntity<>(woMeterService.getMeterById(workOrderId),HttpStatus.OK);		
 	}
 	
 }

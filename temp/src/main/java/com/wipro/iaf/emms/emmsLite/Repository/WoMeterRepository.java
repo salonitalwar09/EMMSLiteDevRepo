@@ -68,6 +68,6 @@ public interface WoMeterRepository extends JpaRepository<WoMeterEntity,Integer>{
 	public IMeterQueryResponseBean getMeterLookupQueryById(@Param("assetId") String assetid);
 
 	@Query(value="select * from elite_wo_meter_tb woMeter"
-			+ " where woMeter.asset_num=?1",nativeQuery=true)
-	public List<WoMeterEntity> findMeterDetailsById(@Param("assetNum")String assetNum);
+			+ " where woMeter.work_order_id=?1",nativeQuery=true)
+	public List<WoMeterEntity> findMeterDetailsById(@Param("workOrderId")Long workOrderId);
 }
