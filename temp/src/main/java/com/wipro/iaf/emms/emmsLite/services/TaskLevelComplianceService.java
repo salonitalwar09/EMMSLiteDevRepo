@@ -36,23 +36,11 @@ public class TaskLevelComplianceService {
 	@Autowired
 	private TaskLevelComplianceRepository taskLevelComplianceRepository;
 	@Autowired
-	private TaskLevelComplianceEntity taskLevelComplianceEntity;
-	@Autowired
 	private WorkOrderRepository workOrderRepository;
 	@Autowired
 	private WorkOrderEntity workOrderEntity;
 	@Autowired
 	private PersonRepository personRepository;
-	/*@Autowired
-	private PersonEntity personEntity;*/
-
-	/*//Service to Fetch All Work Order Data
-	public List<WorkOrderEntity> fetchAllWorkOrderDetails() {
-		System.out.println("Inside TaskLevelComplianceService getAllWorkOrderDetails: Request reached Service");
-		List<WorkOrderEntity> workOrderDetailsList = new ArrayList<>();
-		workOrderDetailsList = workOrderRepository.findAll();	
-		return workOrderDetailsList;
-	}*/
 
 	//Service to Fetch all Technician Details for Service No. Lookup
 	public List<PersonEntity> fetchAllTechnicianDetails() {
@@ -61,7 +49,6 @@ public class TaskLevelComplianceService {
 	}
 
 	//Service to Fetch Technician Name from selected Service No.
-	//public String fetchPersonName(TaskLevelComplianceEntity inputTaskLevelComplianceEntity, String servicenum) {
 	public String fetchPersonName(String servicenum) {
 		System.out.println("Inside TaskLevelComplianceService fetchPersonName: Request reached Service");
 		System.out.println("Inside TaskLevelComplianceService fetchPersonName: " + "servicenum: " + servicenum);
@@ -74,58 +61,45 @@ public class TaskLevelComplianceService {
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance: Request reached Service");
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance: " + "workorderid: " + workorderid);
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance: " + "inputTaskLevelComplianceEntity: " + inputTaskLevelComplianceEntity);
-		//WorkOrderEntity inputWorkOrderEntity = workOrderRepository.findByWorkOrderId(workorderid);
 
-		//System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance: " + "inputWorkOrderEntity: " + inputWorkOrderEntity.getAsset_num() + " " + inputWorkOrderEntity.getWorkorder_id());
-		//TaskLevelComplianceEntity taskLevelComplianceEntity= new TaskLevelComplianceEntity();
-		
-		//taskLevelComplianceEntity.setEliteWorkorderTb(inputWorkOrderEntity);
-		taskLevelComplianceEntity.setWorkorderid(workorderid);
+		//taskLevelComplianceEntity.setWorkorderid(workorderid);
+		inputTaskLevelComplianceEntity.setWorkorderid(workorderid);
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance:"
 				+" Workorder ID: " + workorderid);
 
-		taskLevelComplianceEntity.setTechnicianServicenum(inputTaskLevelComplianceEntity.getTechnicianServicenum());
+		//taskLevelComplianceEntity.setTechnicianServicenum(inputTaskLevelComplianceEntity.getTechnicianServicenum());
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance:"
 				+" Technician Service Number: " + inputTaskLevelComplianceEntity.getTechnicianServicenum());
 
-		taskLevelComplianceEntity.setTechnicianName(inputTaskLevelComplianceEntity.getTechnicianName());
+		//taskLevelComplianceEntity.setTechnicianName(inputTaskLevelComplianceEntity.getTechnicianName());
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance:"
 				+" Technician Name: " + inputTaskLevelComplianceEntity.getTechnicianName());
 
-		taskLevelComplianceEntity.setTaskDesc(inputTaskLevelComplianceEntity.getTaskDesc());
+		//taskLevelComplianceEntity.setTaskDesc(inputTaskLevelComplianceEntity.getTaskDesc());
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance:"
 				+" Task Description: " + inputTaskLevelComplianceEntity.getTaskDesc());
 
-		/*Timestamp complianceTimestamp = new Timestamp(new Date().getTime());
-		taskLevelComplianceEntity.setComplianceDte(complianceTimestamp);
+		TaskLevelComplianceEntity taskLevelComplianceEntity = taskLevelComplianceRepository.save(inputTaskLevelComplianceEntity);
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance:"
-				+" Compliance TimeStamp: " + complianceTimestamp);*/
-
-		taskLevelComplianceEntity = taskLevelComplianceRepository.save(taskLevelComplianceEntity);
+				+" taskLevelComplianceEntity: " + taskLevelComplianceEntity);
 		System.out.println("Inside TaskLevelComplianceService createTaskLevelCompliance:"
 				+" taskLevelComplianceEntity Saved");
 		return taskLevelComplianceEntity;
 	}
 
 	//Service to Display Saved Rows onLoad for given WorkOrderId and logged-in servicenum
-	public List<TaskLevelComplianceEntity> fetchAllTaskLevelCompliance(String workorderid, LoginEntity loginEntity) {
+	public List<TaskLevelComplianceEntity> fetchAllTaskLevelCompliance(String workorderid, String userid) {
 		System.out.println("Inside TaskLevelComplianceService getAllTaskLevelCompliance: Request reached Service");
-		String servicenum = loginEntity.getUserid();
+		String servicenum = userid;
 		System.out.println("Inside TaskLevelComplianceService getAllTaskLevelCompliance: " + "workorderid: " + workorderid + ", servicenum: " + servicenum);
-		//WorkOrderEntity displayWorkOrderEntity = workOrderRepository.findTlcScreenValues(workorderid);
-		//System.out.println("Inside TaskLevelComplianceService getAllTaskLevelCompliance: " + "displayWorkOrderEntity: " + displayWorkOrderEntity);
 		List<TaskLevelComplianceEntity> displayTaskLevelComplianceEntityList = taskLevelComplianceRepository.findByLoggedInUser(workorderid, servicenum);
 		System.out.println("Inside TaskLevelComplianceService getAllTaskLevelCompliance: " + "displayTaskLevelComplianceEntityList: " + displayTaskLevelComplianceEntityList);
 		return displayTaskLevelComplianceEntityList;
-		//Map<WorkOrderEntity,List<TaskLevelComplianceEntity>> TaskLevelComplianceMap = new HashMap<WorkOrderEntity,List<TaskLevelComplianceEntity>>();
-		//TaskLevelComplianceMap.put(displayWorkOrderEntity, displayTaskLevelComplianceEntityList);
-		//return TaskLevelComplianceMap;
-		//return taskLevelComplianceRepository.findTlcDetails(workorderid, servicenum);
 	}
 
 	//Service to Comply Task Level Compliance Row with Compliance Date update
 	//on Comply button click
-	public void complyTaskLevelCompliance(String tlcid) {
+	public TaskLevelComplianceEntity complyTaskLevelCompliance(String tlcid) {
 		System.out.println("Inside TaskLevelComplianceService complyTaskLevelCompliance: Request reached Service");
 		TaskLevelComplianceEntity complianceTlcEntity = taskLevelComplianceRepository.findById(tlcid).get();
 		System.out.println("Inside TaskLevelComplianceService complyTaskLevelCompliance:"
@@ -135,6 +109,7 @@ public class TaskLevelComplianceService {
 				+" Compliance Date for " + tlcid + " : " + complianceDte);
 		complianceTlcEntity.setComplianceDte(complianceDte);
 		taskLevelComplianceRepository.save(complianceTlcEntity);
+		return complianceTlcEntity;
 	}
 
 	//Service to Delete Task Level Compliance Row on Delete button click
