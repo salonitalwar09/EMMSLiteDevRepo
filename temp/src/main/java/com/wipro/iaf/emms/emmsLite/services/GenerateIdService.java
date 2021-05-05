@@ -21,7 +21,7 @@ public class GenerateIdService {
 				generateidrepository.generateKeyCounter(key);
 			}else{
 				System.out.println("update Key:: "+keyValue);
-				generateidrepository.updateKeyCounter(key);
+				//generateidrepository.updateKeyCounter(key); Not Req to Set incremented Counter in DB:: Shivam
 			}
 			keyValue++;
 			return keyValue;	

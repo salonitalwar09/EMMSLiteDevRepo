@@ -33,13 +33,13 @@ public class WorkOrderResponseBean {
 	private String worktype;
 	private int code;
 	private String responsestatus;
-	private Long removalRowId;
+	private Long insRemRowId;
 	
-	public Long getRemovalRowId() {
-		return removalRowId;
+	public Long getinsRemRowId() {
+		return insRemRowId;
 	}
-	public void setRemovalRowId(Long removalRowId) {
-		this.removalRowId = removalRowId;
+	public void setinsRemRowId(Long insRemRowId) {
+		this.insRemRowId = insRemRowId;
 	}
 	public String getWorkorderid() {
 		return workorderid;

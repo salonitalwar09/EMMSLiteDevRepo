@@ -24,7 +24,9 @@ public class AlndomainService {
 	@Autowired
 	AlndomainRepository alndomainRepository;
 
-	public List<AlndomainEntity> jobTypeSet(){
+	/*Not Required to be fetch from DB, We will fetch Hardcoded values:: Shivam
+	 * 
+	 * public List<AlndomainEntity> jobTypeSet(){
 		List<AlndomainEntity> jobTypeList = new ArrayList();
 		try {
 			System.out.println("Job Type List Try Block::");
@@ -33,18 +35,6 @@ public class AlndomainService {
 		} catch (Exception e) {
 			System.out.println("Job Type List Catch:: "+e.getMessage());
 			return jobTypeList;
-		}
-	}
-
-	public List<AlndomainEntity> RemReasonSet(){
-		List<AlndomainEntity> RemReasonList = new ArrayList();
-		try {
-			System.out.println("Removal Reason Try Block::");
-			RemReasonList = alndomainRepository.getRemReason();
-			return RemReasonList;
-		} catch (Exception e) {
-			System.out.println("Removal Reason List Catch:: "+e.getMessage());
-			return RemReasonList;
 		}
 	}
 	public List<AlndomainEntity> remTypeSet(){
@@ -56,6 +46,17 @@ public class AlndomainService {
 		} catch (Exception e) {
 			System.out.println("Removal Type List Catch:: "+e.getMessage());
 			return remTypeList;
+		}
+	}*/
+	public List<AlndomainEntity> RemReasonSet(){
+		List<AlndomainEntity> RemReasonList = new ArrayList();
+		try {
+			System.out.println("Removal Reason Try Block::");
+			RemReasonList = alndomainRepository.getRemReason();
+			return RemReasonList;
+		} catch (Exception e) {
+			System.out.println("Removal Reason List Catch:: "+e.getMessage());
+			return RemReasonList;
 		}
 	}
 }

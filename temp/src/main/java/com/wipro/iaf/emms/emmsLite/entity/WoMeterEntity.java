@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="elite_wo_meter_tb")
@@ -48,6 +49,8 @@ public class WoMeterEntity implements Serializable{
 	private String updatedBy;
 	@Column(name="updated_date")
 	private LocalDateTime updatedDate;
+	@Transient
+	private int statusCode;
 	public Integer getWoMeterId() {
 		return woMeterId;
 	}
@@ -131,6 +134,12 @@ public class WoMeterEntity implements Serializable{
 	}
 	public void setWorkOrderId(Long workOrderId) {
 		this.workOrderId = workOrderId;
+	}	
+	public int getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
 	}
 	@Override
 	public String toString() {
@@ -138,7 +147,7 @@ public class WoMeterEntity implements Serializable{
 				+ ", description=" + description + ", partNum=" + partNum + ", serialNum=" + serialNum + ", buildItem="
 				+ buildItem + ", assetNum=" + assetNum + ", meterName=" + meterName + ", initialValue=" + initialValue
 				+ ", finalValue=" + finalValue + ", readingDate=" + readingDate + ", updatedBy=" + updatedBy
-				+ ", updatedDate=" + updatedDate + "]";
+				+ ", updatedDate=" + updatedDate + ", statusCode=" + statusCode + "]";
 	}
 	public WoMeterEntity() {
 	}

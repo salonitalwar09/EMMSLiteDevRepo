@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.wipro.iaf.emms.emmsLite.beans.IMeterQueryResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.WoMeterEntity;
 
 /**
@@ -17,16 +18,15 @@ import com.wipro.iaf.emms.emmsLite.entity.WoMeterEntity;
 @Repository
 public interface WoMeterRepository extends JpaRepository<WoMeterEntity,Integer>{
 
-	/*@Query(value="SELECT asset.description,asset.serialnum, asset.assetnum from asset where asset.assetid in (SELECT elite_plusasaonoff_tb.assetid from elite_plusasaonoff_tb where elite_plusasaonoff_tb.offtime is null and elite_plusasaonoff_tb.parentassetid is not null)",nativeQuery=true)
-	public List<String> getAssetLookupQuery1();*/
-
 	@Query(value="select ast.assetnum,"
 			+" plus.name as builditem,"
+			+" plus.POSITION,"
+			+" plus.LCN,"
 			+" ast.SERIALNUM,"
 			+" ast.description,"
 			+" ast.assetid as assetid,"
 			+" cat.item as partNumber,"
-			+" cat.description as partDescription"
+			+" cat.description as partDescription"	
 			+" from elite_PLUSASAONOFF_tb plus "
 			+" join asset ast"
 			+" on plus.assetid = ast.assetid"
@@ -39,6 +39,8 @@ public interface WoMeterRepository extends JpaRepository<WoMeterEntity,Integer>{
 
 	@Query(value="select ast.assetnum,"
 			+" plus.name as builditem,"
+			+" plus.POSITION,"
+			+" plus.LCN,"
 			+" ast.SERIALNUM,"
 			+" ast.description,"
 			+" cat.item as partNumber,"
@@ -50,4 +52,22 @@ public interface WoMeterRepository extends JpaRepository<WoMeterEntity,Integer>{
 			+" on ast.assetid = cat.plusacacatid"
 			+" where plus.assetid=?1",nativeQuery=true)
 	public String getAssetLookupQueryById(@Param("assetId") String assetid);
+	
+	@Query(value="select ast.assetnum as meterpartNumber_meterLookup,"
+			+" plus.name as builditem,"
+			+" ast.SERIALNUM,"
+			+" ast.description as assetDescription,"
+			+" cat.item as partNumber,"
+			+" cat.description as Description_Meter"
+			+" from elite_PLUSASAONOFF_tb plus "
+			+" join asset ast"
+			+" on plus.assetid = ast.assetid"
+			+" join plusacacat cat"
+			+" on ast.assetid = cat.plusacacatid"
+			+" where plus.assetid=?1",nativeQuery=true)
+	public IMeterQueryResponseBean getMeterLookupQueryById(@Param("assetId") String assetid);
+
+	@Query(value="select * from elite_wo_meter_tb woMeter"
+			+ " where woMeter.asset_num=?1",nativeQuery=true)
+	public List<WoMeterEntity> findMeterDetailsById(@Param("assetNum")String assetNum);
 }
