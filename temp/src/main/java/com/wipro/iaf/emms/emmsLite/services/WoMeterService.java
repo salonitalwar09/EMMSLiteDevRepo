@@ -56,7 +56,7 @@ public class WoMeterService {
 		}
 		System.out.println("Workorder asset and_meter lookup data rendered");
 		System.out.println("Asset description bean ----- "+woMeterLookupResponseList.toString());
-		return woMeterLookupResponseList;		
+		return woMeterLookupResponseList;
 	}
 
 	public WoMeterLookupResponse getAssetLookupById(String assetId) {
