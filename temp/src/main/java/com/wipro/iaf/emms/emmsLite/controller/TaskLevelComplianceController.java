@@ -42,74 +42,62 @@ public class TaskLevelComplianceController {
 	private TaskLevelComplianceService taskLevelComplianceService;
 	@Autowired
 	private TaskLevelComplianceRepository taskLevelComplianceRepository;
-	/*@Autowired
-	private TaskLevelComplianceEntity taskLevelComplianceEntity;*/
 	@Autowired
 	private WorkOrderService workOrderService;
 	@Autowired
 	private WorkOrderEntity workOrderEntity;
-	/*@Autowired
-	private PersonEntity personEntity;*/
-	
-	/*@GetMapping("/fetchWorkOrderDetails")
-	public List<WorkOrderEntity> getAllWorkOrderDetailsList()
-	{
-		System.out.println("Inside TaskLevelComplianceController getAllWorkOrderDetailsList: Request reached /emmsLite/fetchWorkOrderDetails Controller");
-		return workOrderService.getAllWO();
-	}*/
-	
+
 	@GetMapping("/fetchTechnicianDetails")
 	public List<PersonEntity> fetchAllTechnicianDetails()
 	{
 		System.out.println("Inside TaskLevelComplianceController getAllTechnicianDetails: Request reached /emmsLite/fetchTechnicianDetails Controller");
 		return taskLevelComplianceService.fetchAllTechnicianDetails();
 	}
-	
+
 	@GetMapping("/fetchTechnicianName/{servicenum}")
-	//public String fetchTechnicianName(@PathVariable("servicenum") String servicenum, @RequestBody TaskLevelComplianceEntity inputTaskLevelComplianceEntity)
 	public String fetchTechnicianName(@PathVariable("servicenum") String servicenum)
 	{
 		System.out.println("Inside TaskLevelComplianceController getAllPersonDetailsList: Request reached /emmsLite/fetchTechnicianName Controller");
 		return taskLevelComplianceService.fetchPersonName(servicenum);
 	}
-	
+
 	@PostMapping("/createTaskLevelCompliance/{workorderid}")
-	public ResponseEntity<String> createTaskLevelCompliance(@PathVariable("workorderid") String workorderid, @RequestBody TaskLevelComplianceEntity inputTaskLevelComplianceEntity){
+	public ResponseEntity<TaskLevelComplianceEntity> createTaskLevelCompliance(@PathVariable("workorderid") String workorderid, @RequestBody TaskLevelComplianceEntity inputTaskLevelComplianceEntity){
 		System.out.println("Inside TaskLevelComplianceController createTaskLevelCompliance: Request reached /emmsLite/createTaskLevelCompliance Controller");
+		System.out.println("Inside TaskLevelComplianceController createTaskLevelCompliance: " + "inputTaskLevelComplianceEntity: " + inputTaskLevelComplianceEntity);
 		try {
 			TaskLevelComplianceEntity taskLevelComplianceEntity = taskLevelComplianceService.createTaskLevelCompliance(workorderid, inputTaskLevelComplianceEntity);
 			System.out.println("Inside TaskLevelComplianceController createTaskLevelCompliance: TaskLevelCompliance created successfully");
-			return new ResponseEntity<>("TaskLevelCompliance Created",HttpStatus.OK);
+			return new ResponseEntity<>(taskLevelComplianceEntity,HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("Inside TaskLevelComplianceController createTaskLevelCompliance: TaskLevelCompliance creation failed");
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
+
 	@PutMapping("/complyTaskLevelCompliance/{tlcid}")
-	public ResponseEntity<String> complyTaskLevelCompliance(@PathVariable("tlcid") String tlcid)
+	public ResponseEntity<TaskLevelComplianceEntity> complyTaskLevelCompliance(@PathVariable("tlcid") String tlcid)
 	{
+		TaskLevelComplianceEntity taskLevelComplianceEntity;
 		try {
 			System.out.println("Inside TaskLevelComplianceController complyTaskLevelCompliance: Request reached /emmsLite/complyTaskLevelCompliance Controller");
-			taskLevelComplianceService.complyTaskLevelCompliance(tlcid);
+			taskLevelComplianceEntity = taskLevelComplianceService.complyTaskLevelCompliance(tlcid);
 			System.out.println("Inside TaskLevelComplianceController complyTaskLevelCompliance: TaskLevelCompliance complied successfully");
-			return new ResponseEntity<>("TaskLevelCompliance Complied",HttpStatus.OK);
+			System.out.println("Inside TaskLevelComplianceController complyTaskLevelCompliance: " + "taskLevelComplianceEntity: " + taskLevelComplianceEntity);
+			return new ResponseEntity<>(taskLevelComplianceEntity,HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("Inside TaskLevelComplianceController complyTaskLevelCompliance: TaskLevelCompliance comply failed");
-			return  new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
+
 	@PostMapping("/fetchTaskLevelComplianceDetails/{workorderid}")
-	//public List<TaskLevelComplianceEntity> fetchAssignedTaskLevelComplianceist(@PathVariable("workorderid") String workorderid, @RequestBody TaskLevelComplianceEntity taskLevelComplianceEntity)
-	public List<TaskLevelComplianceEntity> fetchAssignedTaskLevelComplianceist(@PathVariable("workorderid") String workorderid, @RequestBody LoginEntity loginEntity)
+	public List<TaskLevelComplianceEntity> fetchAssignedTaskLevelComplianceist(@PathVariable("workorderid") String workorderid, @RequestBody String userid)
 	{
 		System.out.println("Inside TaskLevelComplianceController fetchTaskLevelComplianceDetails: Request reached /emmsLite/fetchTaskLevelComplianceDetails Controller");
-		//String servicenum = "00002";
-		//System.out.println("Inside TaskLevelComplianceController fetchTaskLevelComplianceDetails: " + "Service No. of Requestor: " + servicenum);
-		return taskLevelComplianceService.fetchAllTaskLevelCompliance(workorderid, loginEntity);
+		return taskLevelComplianceService.fetchAllTaskLevelCompliance(workorderid, userid);
 	}
-	
+
 	@GetMapping("/deleteTaskLevelCompliance/{tlcid}")
 	public ResponseEntity<String> deleteTaskLevelCompliance(@PathVariable("tlcid") String tlcid)
 	{
@@ -117,10 +105,10 @@ public class TaskLevelComplianceController {
 			System.out.println("Inside TaskLevelComplianceController deleteTaskLevelCompliance: Request reached /emmsLite/deleteTaskLevelCompliance Controller");
 			taskLevelComplianceService.deleteTaskLevelCompliance(tlcid);
 			System.out.println("Inside TaskLevelComplianceController deleteTaskLevelCompliance: TaskLevelCompliance deleted successfully");
-			return new ResponseEntity<>("TaskLevelCompliance Deleted",HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("Inside TaskLevelComplianceController deleteTaskLevelCompliance: TaskLevelCompliance deletion failed");
-			return  new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
+			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 	}
 }

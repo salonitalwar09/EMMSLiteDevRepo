@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -25,13 +28,18 @@ public class FlbSortieARService {
 	public List<FlbSortieAREntity> findByRecordId(String recordId) {
 		System.out.println("++++++++++++++++++++Inside flb findByRecordId++++++++++++++++++++");
 		List<FlbSortieAREntity> sorties = null;
-
+		
+		if(recordId.contains("1")) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "BBBBBBBBBBBBB");
+		}
+		
 		try {
 			sorties = fLBSortieARRepository.findAllByRecordId(recordId);
-			System.out.println("Sorties fetched from repo");
+			System.out.println("Sorties fetched from repo" + sorties.toString());
 		} catch (Exception e) {
 			System.out.println("Some Error occured while fetching sortie from repo");
 			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Some Error occured while fetching sortie from repo", e);
 		}
 
 		System.out.println("++++++++++++++++++++end of flb findByRecordId++++++++++++++++++++");
@@ -39,54 +47,42 @@ public class FlbSortieARService {
 	}
 
 	// Returns true if new row is created and false otherwise
-	public CommonResponseBean createSortie(String recordId, FlbSortieAREntity newRow) {
+	public FlbSortieAREntity createSortie(String recordId, FlbSortieAREntity newRow) {
 		System.out.println("++++++++++++++++++++Inside flb createSortie++++++++++++++++++++");
-		CommonResponseBean response = new CommonResponseBean();
-		String message = "";
 		if (newRow != null) {
 			try {
 				newRow.setRecordId(recordId);
 				System.out.println("Inserting new row in DB");
 				fLBSortieARRepository.save(newRow);
-				response.setStatus(HttpStatus.CREATED);
-				message = "Sortie added successfully";
 				System.out.println("New row inserted");
 			} catch (DataIntegrityViolationException dive) {
-				System.out.println("This sortie already exist in DB");
-				response.setStatus(HttpStatus.CONFLICT);
-				message = "This sortie already exists or Some required data not received";
+				System.out.println("This sortie already exists or Some required data not received");
 				System.out.println(dive.getMessage());
+				throw new ResponseStatusException(HttpStatus.CONFLICT, "This sortie already exists or Some required data not received");				
 			} catch (Exception e) {
 				System.out.println("Some Error occured");
-				response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-				message = "Some error occurred";
 				System.out.println(e.getMessage());
+				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Erro", e);
 			}
 		} else {
 			System.out.println("Bad request");
-			message = "Bad request";
-			response.setStatus(HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		response.setMessage(message);
 		System.out.println("++++++++++++++++++++end of flb createSortie++++++++++++++++++++");
-		return response;
+		return newRow;
 	}
 
 	// Save all the sorties
-	public CommonResponseBean saveSorties(String recordId, List<FlbSortieAREntity> sortieList) {
+	public void saveSorties(String recordId, List<FlbSortieAREntity> sortieList) {
 		System.out.println("++++++++++++++++++++Inside flb saveSortie Service++++++++++++++++++++");
-		CommonResponseBean response = new CommonResponseBean();
-		response.setStatus(HttpStatus.OK);
-		String message = "Sorties Added Successfully";
-		List<String> unsavedIds = new ArrayList<String>();
+		List<Long> unsavedIds = new ArrayList<Long>();
 		if (sortieList != null) {
 			for (FlbSortieAREntity sortie : sortieList) {
 				try {
 					System.out.println("Searching Sortie with sortieNum: " + sortie.getSortieNum());
-					Optional<FlbSortieAREntity> row = fLBSortieARRepository.findBySortieNum(recordId,
-							sortie.getSortieNum());
+					Optional<FlbSortieAREntity> row = fLBSortieARRepository.findBySortieId(recordId,
+							sortie.getSortieId());
 					FlbSortieAREntity rowData = row.get();
-					System.out.println(rowData);
 					if (rowData != null) {
 						System.out.println("Sortie Exist");
 						if (sortie.getDuration() != null) {
@@ -121,19 +117,17 @@ public class FlbSortieARService {
 						System.out.println("Data inserted");
 					}
 				} catch (Exception e) {
-					unsavedIds.add(sortie.getSortieNum());
-					response.setStatus(HttpStatus.PARTIAL_CONTENT);
-					System.out.println("Row with sortie num: " + sortie.getSortieNum() + ", does not exist.");
+					unsavedIds.add(sortie.getSortieId());
+					System.out.println("Row with sortie id: " + sortie.getSortieId() + ", does not exist.");
 					System.out.println(e.getMessage());
 				}
 			}
 		}
 		if (unsavedIds.size() > 0) {
-			message = "Following ids are not saved: " + unsavedIds.toString();
+			String message = "Following ids are not saved: " + unsavedIds.toString();
+			throw new ResponseStatusException(HttpStatus.PARTIAL_CONTENT, message);
 		}
-		response.setMessage(message);
 		System.out.println("++++++++++++++++++++end of flb saveSortie Service++++++++++++++++++++");
-		return response;
 	}
 
 }

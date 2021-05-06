@@ -8,8 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -30,8 +31,9 @@ public class FlbSortieAREntity {
 	private String reason;
 	private String remarks;
 	private String fltType;
-	@Column(insertable=false)
-	private String status;
+	@Column(nullable = false,columnDefinition = "varchar(20) default 'PENDING'")
+	private String status = "PENDING";
+	@Column(columnDefinition = "double default 2.34")
 	private Double duration;
 	@JsonFormat(pattern = "dd-MMM-yy HH:mm:ss")
 	private Date sortieDate;
@@ -39,6 +41,7 @@ public class FlbSortieAREntity {
 	@JsonFormat(pattern = "HH:mm:ss")
 	private Date etd;
 	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date statusDate;
 	
 	public Long getSortieId() {
@@ -113,4 +116,13 @@ public class FlbSortieAREntity {
 	public void setStatusDate(Date statusDate) {
 		this.statusDate = statusDate;
 	}
+	@Override
+	public String toString() {
+		return "FlbSortieAREntity [sortieId=" + sortieId + ", sortieNum=" + sortieNum + ", recordId=" + recordId
+				+ ", reason=" + reason + ", remarks=" + remarks + ", fltType=" + fltType + ", status=" + status
+				+ ", duration=" + duration + ", sortieDate=" + sortieDate + ", etdDate=" + etdDate + ", etd=" + etd
+				+ ", statusDate=" + statusDate + "]";
+	}
+	
+	
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wipro.iaf.emms.emmsLite.Repository.WoMeterRepository;
+import com.wipro.iaf.emms.emmsLite.beans.IMeterQueryResponseBean;
 import com.wipro.iaf.emms.emmsLite.beans.WoMeterLookupResponse;
 import com.wipro.iaf.emms.emmsLite.entity.WoMeterEntity;
 
@@ -24,6 +25,8 @@ public class WoMeterService {
 
 	@Autowired
 	private WoMeterRepository woMeterRepository;
+	
+	
 
 	public List<WoMeterLookupResponse> getAssetLookup(){
 		ArrayList<String> woMeterQueryList = new ArrayList<>();
@@ -40,13 +43,15 @@ public class WoMeterService {
 			String delimatedArray[]=ListNumber.split(",");
 			woMeterLookupResponse.setAssetNum_meterLookup(delimatedArray[0]);
 			woMeterLookupResponse.setBuildItem(delimatedArray[1]);
-			woMeterLookupResponse.setSerialNum(delimatedArray[2]);
-			woMeterLookupResponse.setAssetDescription_assetLookup(delimatedArray[3]);
-			woMeterLookupResponse.setAssetId_assetLookup(delimatedArray[4]);
-			woMeterLookupResponse.setPartNumber_meterLookup(delimatedArray[5]);
-			woMeterLookupResponse.setPartDescription_meterLookup(delimatedArray[6]);
+			woMeterLookupResponse.setPosition(delimatedArray[2]);
+			woMeterLookupResponse.setLcn(delimatedArray[3]);
+			woMeterLookupResponse.setSerialNum(delimatedArray[4]);
+			woMeterLookupResponse.setAssetDescription_assetLookup(delimatedArray[5]);
+			woMeterLookupResponse.setAssetId_assetLookup(delimatedArray[6]);
+			woMeterLookupResponse.setPartNumber_meterLookup(delimatedArray[7]);
+			woMeterLookupResponse.setPartDescription_meterLookup(delimatedArray[8]);
 			woMeterLookupResponse.setStatusCode(200);
-			woMeterLookupResponse.setStatusString("Workorder asset and_meter lookup data rendered");
+			woMeterLookupResponse.setStatusString("Workorder asset and meter lookup data rendered");
 			woMeterLookupResponseList.add(woMeterLookupResponse);
 		}
 		System.out.println("Workorder asset and_meter lookup data rendered");
@@ -64,10 +69,14 @@ public class WoMeterService {
 			woMeterLookupResponse.setAssetId_assetLookup(assetId);
 			woMeterLookupResponse.setAssetNum_meterLookup(delimatedArray[0]);
 			woMeterLookupResponse.setBuildItem(delimatedArray[1]);
-			woMeterLookupResponse.setSerialNum(delimatedArray[2]);
-			woMeterLookupResponse.setAssetDescription_assetLookup(delimatedArray[3]);
-			woMeterLookupResponse.setPartNumber_meterLookup(delimatedArray[4]);
-			woMeterLookupResponse.setPartDescription_meterLookup(delimatedArray[5]);
+			woMeterLookupResponse.setPosition(delimatedArray[2]);
+			woMeterLookupResponse.setLcn(delimatedArray[3]);
+			woMeterLookupResponse.setSerialNum(delimatedArray[4]);
+			woMeterLookupResponse.setAssetDescription_assetLookup(delimatedArray[5]);
+			woMeterLookupResponse.setPartNumber_meterLookup(delimatedArray[6]);
+			woMeterLookupResponse.setPartDescription_meterLookup(delimatedArray[7]);
+			woMeterLookupResponse.setPosition(delimatedArray[6]);
+			woMeterLookupResponse.setLcn(delimatedArray[7]);
 			woMeterLookupResponse.setStatusCode(200);
 			woMeterLookupResponse.setStatusString("Workorder asset and_meter lookup data rendered for ");
 			
@@ -98,6 +107,28 @@ public class WoMeterService {
 		woMeterLookupResponse.setStatusString("Meter data saved");
 		return woMeterLookupResponse;
 	}
+	
+	public IMeterQueryResponseBean getMeterLookupById(String assetId) {
+		IMeterQueryResponseBean bean  =  woMeterRepository.getMeterLookupQueryById(assetId);
+		System.out.println("response bean from db query-- "+bean.toString());
+		return bean;
+	}
 
+	public List<WoMeterEntity> getMeterById(Long workOrderId) {
+		List<WoMeterEntity> WoMeterList =woMeterRepository.findMeterDetailsById(workOrderId);
+		if(!WoMeterList.isEmpty())
+		WoMeterList.get(0).setStatusCode(200);
+		return WoMeterList;
+	}
+
+	public WoMeterLookupResponse deleteMeterDetails(int woMeterId) {
+		WoMeterLookupResponse woMeterLookupResponse=new WoMeterLookupResponse();
+		woMeterRepository.deleteById(woMeterId);
+		if(woMeterRepository.findById(woMeterId)!=null)
+			woMeterLookupResponse.setStatusCode(200);
+		else
+			woMeterLookupResponse.setStatusCode(500);
+		return woMeterLookupResponse;
+	}
 }
 

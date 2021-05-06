@@ -1,3 +1,7 @@
+/**
+ * TaskLevelComplianceEntity is the persistent class for the elite_wo_tlc_tb database table.
+ */
+
 package com.wipro.iaf.emms.emmsLite.entity;
 
 import java.io.Serializable;
@@ -11,13 +15,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.sql.Timestamp;
 
 /**
- * The persistent class for the elite_wo_tlc_tb database table.
- * 
+ * @author Resham Das
+ *
  */
+
+
 @Entity
 @Table(name = "elite_wo_tlc_tb")
 @NamedQuery(name = "TaskLevelComplianceEntity.findAll", query = "SELECT t FROM TaskLevelComplianceEntity t")
-@Component
 public class TaskLevelComplianceEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
