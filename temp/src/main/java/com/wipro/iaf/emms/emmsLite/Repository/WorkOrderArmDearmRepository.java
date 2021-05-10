@@ -23,8 +23,8 @@ public interface WorkOrderArmDearmRepository extends JpaRepository<WorkOrderArmD
 	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb", nativeQuery=true)
 	public List<WorkOrderArmDearmEntity> getAllWOArmDeArmRecords();
 	
-	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.BUILD_ITEM=?1 and armdearm.ARM_GIGNO=?2", nativeQuery=true)
-	public List<WorkOrderArmDearmEntity> getBuildItemGigNoRecords(@Param("BUILD_ITEM") String buildItem, @Param("ARM_GIGNO") String armGIGNo);
+	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.BUILD_ITEM=?1 and armdearm.ARM_GIGNO=?2 and armdearm.ARM_POSITION=?3 and armdearm.WORKORDER_ID=?4", nativeQuery=true)
+	public List<WorkOrderArmDearmEntity> getBuildItemGigNoRecords(@Param("BUILD_ITEM") String buildItem, @Param("ARM_GIGNO") String armGIGNo,@Param("ARM_POSITION") String armPositionNo, @Param("WORKORDER_ID") String workOrderId);
 	
 	@Query(value = "SELECT item.ARM_GIGNO FROM emms_lite.elite_item_tb item", nativeQuery=true)
 	public List<String> getItemListForArmItem();
@@ -46,4 +46,7 @@ public interface WorkOrderArmDearmRepository extends JpaRepository<WorkOrderArmD
 	
 	@Query(value = "DELETE FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.ARMID_PK=?1", nativeQuery=true)
 	public String deleteBuildItem(@Param("armid_pk") Integer arm_id);
+	
+	@Query(value = "SELECT MAX(ARMID_PK) FROM emms_lite.elite_wo_armdearm_tb armdearm", nativeQuery=true)
+	public int getMaxArmId();
 }
