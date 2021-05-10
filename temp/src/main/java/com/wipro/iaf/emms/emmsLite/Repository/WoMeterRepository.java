@@ -33,25 +33,26 @@ public interface WoMeterRepository extends JpaRepository<WoMeterEntity,Integer>{
 			+" join plusacacat cat"
 			+" on ast.assetid = cat.plusacacatid"
 			+" where plus.offtime is null"
-			+" and plus.parentassetid is not null",nativeQuery=true)
+			+" and plus.parentassetid is not null and plus.ontime is not null",nativeQuery=true)
 	public List<String> getAssetLookupQuery();
-
-
+	
 	@Query(value="select ast.assetnum,"
 			+" plus.name as builditem,"
 			+" plus.POSITION,"
 			+" plus.LCN,"
 			+" ast.SERIALNUM,"
 			+" ast.description,"
+			+" ast.assetid as assetid,"
 			+" cat.item as partNumber,"
-			+" cat.description as partDescription"
+			+" cat.description as partDescription"	
 			+" from elite_PLUSASAONOFF_tb plus "
 			+" join asset ast"
 			+" on plus.assetid = ast.assetid"
 			+" join plusacacat cat"
 			+" on ast.assetid = cat.plusacacatid"
-			+" where plus.assetid=?1",nativeQuery=true)
-	public String getAssetLookupQueryById(@Param("assetId") String assetid);
+			+" where plus.offtime is null"
+			+" and plus.parentassetid is null and plus.ontime is not null",nativeQuery=true)
+	public List<String> getInstallBuildItemLookup();
 	
 	@Query(value="select ast.assetnum as meterpartNumber_meterLookup,"
 			+" plus.name as builditem,"
