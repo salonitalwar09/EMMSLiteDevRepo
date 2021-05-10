@@ -35,7 +35,7 @@ public class FlbSortieAREntity {
 	private String status = "PENDING";
 	@Column(columnDefinition = "double default 2.34")
 	private Double duration;
-	@JsonFormat(pattern = "dd-MMM-yy HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date sortieDate;
 	private Date etdDate;
 	@JsonFormat(pattern = "HH:mm:ss")

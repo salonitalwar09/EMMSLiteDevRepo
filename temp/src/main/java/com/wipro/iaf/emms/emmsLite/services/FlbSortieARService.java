@@ -29,10 +29,6 @@ public class FlbSortieARService {
 		System.out.println("++++++++++++++++++++Inside flb findByRecordId++++++++++++++++++++");
 		List<FlbSortieAREntity> sorties = null;
 		
-		if(recordId.contains("1")) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "BBBBBBBBBBBBB");
-		}
-		
 		try {
 			sorties = fLBSortieARRepository.findAllByRecordId(recordId);
 			System.out.println("Sorties fetched from repo" + sorties.toString());
