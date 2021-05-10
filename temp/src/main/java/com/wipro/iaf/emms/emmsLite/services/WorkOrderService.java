@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wipro.iaf.emms.emmsLite.Constants.Constants;
+import com.wipro.iaf.emms.emmsLite.Repository.GenerateIdRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.WorkOrderRepository;
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.GenerateIdEntity;
@@ -35,6 +36,8 @@ public class WorkOrderService {
 	Constants constants;
 	@Autowired
 	WorkOrderResponseBean workorderResponseBean;
+	@Autowired
+	GenerateIdRepository generateidrepository;
 
 
 	public List<WorkOrderEntity>getAllWorkOrder()
@@ -95,6 +98,7 @@ public class WorkOrderService {
 	public WorkOrderResponseBean createWO(WorkOrderEntity workorderentity){
 		try {
 			String key= constants.woNum;
+			generateidrepository.updateKeyCounter(key);//Set incremneted Wo-Num Counter in Db:: Shivam
 			String prefix = generateidservice.getPrefix(key);
 			workorderentity.setDet_id(prefix);
 		} catch (Exception e) {

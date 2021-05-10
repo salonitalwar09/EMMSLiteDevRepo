@@ -11,6 +11,6 @@ import com.wipro.iaf.emms.emmsLite.entity.FlbPostFlightEntity;
 
 @Repository
 public interface FlbPostFlightRepository extends JpaRepository<FlbPostFlightEntity, Long> {
-	@Query(value="SELECT * FROM elite_flb_post_flt_tb WHERE recordId=?1", nativeQuery = true)
+	@Query(value="SELECT * FROM elite_flb_post_flt_tb WHERE record_id=?1", nativeQuery = true)
 	public List<FlbPostFlightEntity> findAllByRecordId(@Param("recordId") String recordId);
 }

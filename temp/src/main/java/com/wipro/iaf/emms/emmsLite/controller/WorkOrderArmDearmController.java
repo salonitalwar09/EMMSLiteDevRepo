@@ -58,8 +58,8 @@ public class WorkOrderArmDearmController {
 		return workOrderArmDeArmService.getArmamentItemDDList();
 	}
 	
-	//To view the station no for a particular hard point build item
-	@GetMapping("/viewStationNo/{armamentNo}")
+	//To view the Armament Description for a particular hard point build item
+	@GetMapping("/viewArmDesc/{armamentNo}")
 	public String getArmamentDescription(@PathVariable("armamentNo") String armGIGNo)
 	{
 		System.out.println("getArmamentDescription");

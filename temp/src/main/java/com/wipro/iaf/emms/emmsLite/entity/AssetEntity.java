@@ -3,7 +3,6 @@ package com.wipro.iaf.emms.emmsLite.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Table(name = "asset")

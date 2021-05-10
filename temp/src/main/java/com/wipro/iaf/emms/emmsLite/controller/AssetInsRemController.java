@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderResponseBean;
+import com.wipro.iaf.emms.emmsLite.entity.AlndomainEntity;
 import com.wipro.iaf.emms.emmsLite.entity.AssetInsRemEntity;
+import com.wipro.iaf.emms.emmsLite.services.AlndomainService;
 import com.wipro.iaf.emms.emmsLite.services.AssetInsRemService;
 
 /**
@@ -34,6 +36,8 @@ public class AssetInsRemController {
 	AssetInsRemEntity assetInsRemEntity;
 	@Autowired
 	AssetInsRemService assetInsRemService;
+	@Autowired
+	AlndomainService alndomainService;
 
 
 	@GetMapping("/viewAssetInsRem/{workorderId}")
@@ -41,11 +45,29 @@ public class AssetInsRemController {
 		System.out.println("Asset remove List based on WOID:: "+workorderId);
 		return assetInsRemService.assetRemSet(workorderId);
 	}
-	@PostMapping("/createRemRow/{workorderId}")
-	public ResponseEntity<WorkOrderResponseBean> createRemRow(@RequestBody AssetInsRemEntity assetInsRemEntity, @PathVariable("workorderId") Long workorderId ){
+	@GetMapping("/viewRemReason")
+	public List<AlndomainEntity>getRemReason(){
+		System.out.println("Removal Reason List ");
+		return alndomainService.RemReasonSet();
+	}
+	/*Not Required to be fetch from DB, We will fetch Hardcoded values:: Shivam
+	 * 
+	 * @GetMapping("/viewJobType")
+	public List<AlndomainEntity>getJobType(){
+		System.out.println("JobType List ");
+		return alndomainService.jobTypeSet();
+	}
+
+	@GetMapping("/viewRemType")
+	public List<AlndomainEntity>getRemType(){
+		System.out.println("Removal Type List ");
+		return alndomainService.remTypeSet();
+	}*/
+	@PostMapping("/createInsRemRow/{workorderId}")
+	public ResponseEntity<WorkOrderResponseBean> createInsRemRow(@RequestBody AssetInsRemEntity assetInsRemEntity, @PathVariable("workorderId") Long workorderId ){
 		try {
-			System.out.println("Create Remove Asset row for WoID:: "+workorderId+"Asset Remove Enitity:: "+assetInsRemEntity.toString());
-			assetInsRemService.createRemRow(workorderId, assetInsRemEntity);
+			System.out.println("Create Install / Remove Asset row for WoID:: "+workorderId+"Asset InstallRemove Enitity:: "+assetInsRemEntity.toString());
+			assetInsRemService.createInsRemRow(workorderId, assetInsRemEntity);
 			return new ResponseEntity<>(workorderResponseBean,HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

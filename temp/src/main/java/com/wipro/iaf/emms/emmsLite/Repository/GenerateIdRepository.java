@@ -13,22 +13,23 @@ import com.wipro.iaf.emms.emmsLite.entity.GenerateIdEntity;
  * Description::Repository to Generate and maintain running ID records across various modules
  *
  */
+// emms_lite Replaced with elite:: Shivam
 @Repository
 public interface GenerateIdRepository extends JpaRepository<GenerateIdEntity, String> {
-	@Query(value = "SELECT MAX(gentb.KEY) FROM emms_lite.elite_generate_id_tb gentb where gentb.property_name=?;", nativeQuery=true)
+	@Query(value = "SELECT MAX(gentb.KEY) FROM elite.elite_generate_id_tb gentb where gentb.property_name=?;", nativeQuery=true)
 	public int getKeyValue(String key);
 	
-	@Query(value = "SELECT gentb.prefix FROM emms_lite.elite_generate_id_tb gentb where gentb.property_name=?;", nativeQuery=true)
+	@Query(value = "SELECT gentb.prefix FROM elite.elite_generate_id_tb gentb where gentb.property_name=?;", nativeQuery=true)
 	public String getPrefix(String key);
 	
 	@Transactional
 	@Modifying
-	@Query(value = "update emms_lite.elite_generate_id_tb gentb set gentb.KEY=1 where gentb.property_name=?;", nativeQuery=true)
+	@Query(value = "update elite.elite_generate_id_tb gentb set gentb.KEY=1 where gentb.property_name=?;", nativeQuery=true)
 	public void generateKeyCounter(String key);
 	
 	@Transactional
 	@Modifying
-	@Query(value = "update emms_lite.elite_generate_id_tb gentb set gentb.KEY=gentb.KEY+1 where gentb.property_name=?;", nativeQuery=true)
+	@Query(value = "update elite.elite_generate_id_tb gentb set gentb.KEY=gentb.KEY+1 where gentb.property_name=?;", nativeQuery=true)
 	public void updateKeyCounter(String key);
 
 }

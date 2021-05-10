@@ -1,6 +1,9 @@
 package com.wipro.iaf.emms.emmsLite.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,9 +41,15 @@ public class WorkOrderArmDeArmService {
 		if (sortieList != null) {
 			System.out.println("****Reached inside getAllWOArmDeArming****sortieList != null****");
 			sortieList = woArmDearmRepo.getAllWOArmDeArmRecords();
-			woArmDearmResponseBean.setCode(202);
-			woArmDearmResponseBean.setStatus("Successful");
-			woArmDearmResponseBean.setDescription("All Work Order Arming De-Arming records fetched successfully");
+			if (!sortieList.isEmpty()) {
+				woArmDearmResponseBean.setCode(202);
+				woArmDearmResponseBean.setStatus("Successful");
+				woArmDearmResponseBean.setDescription("All Work Order Arming De-Arming records fetched successfully");
+			}else {
+				woArmDearmResponseBean.setCode(202);
+				woArmDearmResponseBean.setStatus("Successful");
+				woArmDearmResponseBean.setDescription("There are no records present for Work Order Arming De-Arming");
+			}			
 		} 					
 		return sortieList;
 	}
@@ -110,31 +119,48 @@ public class WorkOrderArmDeArmService {
 	
 	public WorkOrderArmDearmResponseBean onLoadClickItem (String armId) {
 		StringBuffer str = new StringBuffer();
-		WorkOrderArmDearmEntity evaluatedQ = woArmDearmRepo.getEvaluatedQuantBuildItem(Integer.valueOf(armId));
+		int current = 0;
+		int load = 0;
+		int unload = 0;
+		int evaluateQuan = 0;
 		Optional<WorkOrderArmDearmEntity> woArmDearmEntityList = woArmDearmRepo.findById(Integer.valueOf(armId));		
 		WorkOrderArmDearmEntity woArmDearmEntity = woArmDearmEntityList.get();
-		List<WorkOrderArmDearmEntity> woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo());
-		if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 1) {			
-			WorkOrderArmDearmEntity woArmDearmPrevious = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2);
+		List<WorkOrderArmDearmEntity> woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getArmPosition(),woArmDearmEntity.getWorkorderId());
+		
+		if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 1) {
+			int max = woArmDearmRepo.getMaxArmId();
+			System.out.println("********The max value is="+max);
+			woBuildGigSelectiveList.sort(Comparator.comparing(WorkOrderArmDearmEntity::getArm_id));
+			System.out.println("********woArmDearmPrevious="+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2).getArm_id());
+			System.out.println("********woArmDearmCurrent ="+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1).getArm_id());
 			WorkOrderArmDearmEntity woArmDearmCurrent = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1);
-			if (woArmDearmPrevious.getEvaluatedQuant() != 0 && (woArmDearmCurrent.getCurrentQuant() == null || woArmDearmCurrent.getCurrentQuant() == 0)) {
+			WorkOrderArmDearmEntity woArmDearmPrevious = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2);
+			if ((woArmDearmPrevious.getEvaluatedQuant() != null && woArmDearmPrevious.getEvaluatedQuant() != 0) && (woArmDearmCurrent.getCurrentQuant() == null || woArmDearmCurrent.getCurrentQuant() == 0)) {
 				woArmDearmCurrent.setCurrentQuant(woArmDearmPrevious.getEvaluatedQuant());
+				System.out.println("***********Current Quantity="+woArmDearmCurrent.getCurrentQuant());
 				woArmDearmRepo.save(woArmDearmCurrent);				
 				str.append("Current Quantity Load Successful");
 			}
 		}
-			
+		WorkOrderArmDearmEntity evaluatedQ = woArmDearmRepo.getEvaluatedQuantBuildItem(Integer.valueOf(armId));	
 		if (evaluatedQ.getEvaluatedQuant() == null || evaluatedQ.getEvaluatedQuant() == 0 ) {
-			int current = evaluatedQ.getCurrentQuant();
-			int load = evaluatedQ.getLoadQuant();
-			int unload = evaluatedQ.getUnloadQuant();
-			int evaluateQuan = 0;
-			if (load != 0) {
-				evaluateQuan = current + load;
+			if (evaluatedQ.getCurrentQuant() != null) {
+				current = evaluatedQ.getCurrentQuant();
 			}
-			if (unload != 0 && current > unload) {
-				evaluateQuan = current - unload;
+			if (evaluatedQ.getLoadQuant() != null) {
+				load = evaluatedQ.getLoadQuant();
 			}
+			if (evaluatedQ.getUnloadQuant() != null) {
+				unload = evaluatedQ.getUnloadQuant();
+			}			
+			if (current !=0) {
+				if (load != 0) {
+					evaluateQuan = current + load;
+				}
+				if (unload != 0 && current > unload) {
+					evaluateQuan = current - unload;
+				}
+			}			
 			woArmDearmEntity.setEvaluatedQuant(evaluateQuan);
 			str.append("Evaluated Quantity Load Successful");
 		}

@@ -23,20 +23,20 @@ public interface WorkOrderArmDearmRepository extends JpaRepository<WorkOrderArmD
 	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb", nativeQuery=true)
 	public List<WorkOrderArmDearmEntity> getAllWOArmDeArmRecords();
 	
-	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.BUILD_ITEM=?1 and armdearm.ARM_GIGNO=?2", nativeQuery=true)
-	public List<WorkOrderArmDearmEntity> getBuildItemGigNoRecords(@Param("BUILD_ITEM") String buildItem, @Param("ARM_GIGNO") String armGIGNo);
+	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.BUILD_ITEM=?1 and armdearm.ARM_GIGNO=?2 and armdearm.ARM_POSITION=?3 and armdearm.WORKORDER_ID=?4", nativeQuery=true)
+	public List<WorkOrderArmDearmEntity> getBuildItemGigNoRecords(@Param("BUILD_ITEM") String buildItem, @Param("ARM_GIGNO") String armGIGNo,@Param("ARM_POSITION") String armPositionNo, @Param("WORKORDER_ID") String workOrderId);
 	
-	@Query(value = "SELECT item.itemnum FROM emms_lite.elite_item_tb item", nativeQuery=true)
+	@Query(value = "SELECT item.ARM_GIGNO FROM emms_lite.elite_item_tb item", nativeQuery=true)
 	public List<String> getItemListForArmItem();
+	
+	@Query(value = "SELECT item.ARM_DESCRIPTION FROM emms_lite.elite_item_tb item where item.ARM_GIGNO=?1", nativeQuery=true)
+	public String getArmamentDescriptionForGIG(@Param("ARM_GIGNO") String armGIGNo);
 	
 	@Query(value = "SELECT builditem.BUILDITEMID FROM emms_lite.elite_build_item_tb builditem where builditem.build_type=?1", nativeQuery=true)
 	public List<String> getBuildItemListForArmItem(@Param("build_type") String buildType);
 	
 	@Query(value = "SELECT builditem.POSITION FROM emms_lite.elite_build_item_tb builditem where builditem.BUILDITEMID=?1", nativeQuery=true)
 	public String getBuildItemPositionForBuildItem(@Param("BUILDITEMID") String buildItem);
-	
-	@Query(value = "SELECT builditem.ARM_DESCRIPTION FROM emms_lite.elite_build_item_tb builditem where builditem.ARM_GIGNO=?1", nativeQuery=true)
-	public String getArmamentDescriptionForGIG(@Param("ARM_GIGNO") String armGIGNo);
 	
 	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.ARMID_PK=?1", nativeQuery=true)
 	public WorkOrderArmDearmEntity getEvaluatedQuantBuildItem(@Param("armid_pk") Integer arm_id);
@@ -46,4 +46,7 @@ public interface WorkOrderArmDearmRepository extends JpaRepository<WorkOrderArmD
 	
 	@Query(value = "DELETE FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.ARMID_PK=?1", nativeQuery=true)
 	public String deleteBuildItem(@Param("armid_pk") Integer arm_id);
+	
+	@Query(value = "SELECT MAX(ARMID_PK) FROM emms_lite.elite_wo_armdearm_tb armdearm", nativeQuery=true)
+	public int getMaxArmId();
 }

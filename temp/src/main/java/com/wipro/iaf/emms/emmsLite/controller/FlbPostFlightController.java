@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,5 +49,17 @@ public class FlbPostFlightController {
 		
 		System.out.println("++++++++++++++++++++++++++++++++++++++++end of createPostFlightData++++++++++++++++++++++++++++++++++++++++");
 		return new ResponseEntity<>(response, response.getStatus());
+	}
+	
+	@PutMapping("/save/{recordId}")
+	private ResponseEntity<CommonResponseBean> saveSorties(@RequestBody List<FlbSortieAREntity> sortieList, @PathVariable("recordId") String recordId) {
+		System.out.println("++++++++++++++++++++++++++++++++++++++++Inside saveSorties++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("Record Id provided in path: " + recordId);
+		
+		// Code starts here
+//		flb.saveSorties(recordId, sortieList);
+		
+		System.out.println("++++++++++++++++++++++++++++++++++++++++end of saveSorties++++++++++++++++++++++++++++++++++++++++");
+		return null;
 	}
 }
