@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.iaf.emms.emmsLite.Repository.WorkOrderArmDearmRepository;
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderArmDearmResponseBean;
+import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
+import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
 import com.wipro.iaf.emms.emmsLite.services.WorkOrderArmDeArmService;
 
@@ -43,46 +45,46 @@ public class WorkOrderArmDearmController {
 	private WorkOrderArmDearmResponseBean woArmDearmResponseBean;
 	
 	//To view all the entries for the Arming/De-Arming for a particular WO
-	@GetMapping("/viewWOArmDeArm")
-	public List<WorkOrderArmDearmEntity> getWOArmDearmEntityList()
+	@GetMapping("/viewWOArmDeArm/{workOrderId}")
+	public List<WorkOrderArmDearmEntity> getWOArmDearmEntityList(@PathVariable("workOrderId")String workOrderId)
 	{
 		System.out.println("getWOArmDearmEntityList");
-		return workOrderArmDeArmService.getAllWOArmDeArming();
+		return workOrderArmDeArmService.getAllWOArmDeArming(workOrderId);
 	}
 	
 	//To view the Armament Item list/GIG No. list
 	@GetMapping("/viewArmamentItemDD")
-	public List<String> getArmamentItemList()
+	public List<ArmGIGEntity> getArmamentItemList()
 	{
 		System.out.println("getArmamentItemList");
 		return workOrderArmDeArmService.getArmamentItemDDList();
 	}
 	
 	//To view the Armament Description for a particular hard point build item
-	@GetMapping("/viewArmDesc/{armamentNo}")
+/*	@GetMapping("/viewArmDesc/{armamentNo}")
 	public String getArmamentDescription(@PathVariable("armamentNo") String armGIGNo)
 	{
 		System.out.println("getArmamentDescription");
 		return workOrderArmDeArmService.getArmDescription(armGIGNo);
 	}
-	
+*/
 	//To view the build item list that are of type Hard Point
-	@GetMapping("/viewBuildItem/{buildItemType}")
-	public List<String> getValuesForBuildType(@PathVariable("buildItemType") String buildType)
+	@GetMapping("/viewBuildItem")
+	public List<BuildItemEntity> getValuesForBuildType()
 	{
 		System.out.println("getValuesForBuildType");
-		return workOrderArmDeArmService.getValuesForBuildType(buildType);
+		return workOrderArmDeArmService.getValuesForBuildType();
 	}
 	
 	//To view the station no for a particular hard point build item
-	@GetMapping("/viewStationNo/{buildItem}")
+/*	@GetMapping("/viewStationNo/{buildItem}")
 	public String getStationNoValue(@PathVariable("buildItem") String builditem)
 	{
 		System.out.println("getStationNoList");
 		return workOrderArmDeArmService.getStationNoForBuildItem(builditem);
 	}
-			
-	//To save the complete row of the Arming/DeArming
+*/			
+	//To save the complete row of the Arming/DeArming and calculate the current quantity
 	@PostMapping("/saveNewRowBuildItem/{workOrderId}")
 	public ResponseEntity<WorkOrderArmDearmResponseBean> addNewBuildItem(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId){
 		return new ResponseEntity<>(workOrderArmDeArmService.addNewBuildItemRow(woArmDearmEntity, workorderId),HttpStatus.OK);
