@@ -45,11 +45,11 @@ public class WorkOrderArmDearmController {
 	private WorkOrderArmDearmResponseBean woArmDearmResponseBean;
 	
 	//To view all the entries for the Arming/De-Arming for a particular WO
-	@GetMapping("/viewWOArmDeArm")
-	public List<WorkOrderArmDearmEntity> getWOArmDearmEntityList()
+	@GetMapping("/viewWOArmDeArm/{workOrderId}")
+	public List<WorkOrderArmDearmEntity> getWOArmDearmEntityList(@PathVariable("workOrderId")String workOrderId)
 	{
 		System.out.println("getWOArmDearmEntityList");
-		return workOrderArmDeArmService.getAllWOArmDeArming();
+		return workOrderArmDeArmService.getAllWOArmDeArming(workOrderId);
 	}
 	
 	//To view the Armament Item list/GIG No. list
@@ -69,11 +69,11 @@ public class WorkOrderArmDearmController {
 	}
 */
 	//To view the build item list that are of type Hard Point
-	@GetMapping("/viewBuildItem/{buildItemType}")
-	public List<BuildItemEntity> getValuesForBuildType(@PathVariable("buildItemType") String buildType)
+	@GetMapping("/viewBuildItem")
+	public List<BuildItemEntity> getValuesForBuildType()
 	{
 		System.out.println("getValuesForBuildType");
-		return workOrderArmDeArmService.getValuesForBuildType(buildType);
+		return workOrderArmDeArmService.getValuesForBuildType();
 	}
 	
 	//To view the station no for a particular hard point build item

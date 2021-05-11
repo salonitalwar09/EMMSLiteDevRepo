@@ -42,13 +42,13 @@ public class WorkOrderArmDeArmService {
 	@Autowired
 	Constants con;
 	
-	public List<WorkOrderArmDearmEntity>getAllWOArmDeArming()
+	public List<WorkOrderArmDearmEntity>getAllWOArmDeArming(String workOrderId)
 	{
 		List<WorkOrderArmDearmEntity> sortieList = new ArrayList<>();
 		System.out.println("****Reached inside getAllWOArmDeArming Service****");
 		if (sortieList != null) {
 			System.out.println("****Reached inside getAllWOArmDeArming****sortieList != null****");
-			sortieList = woArmDearmRepo.getAllWOArmDeArmRecords();
+			sortieList = woArmDearmRepo.getAllWOArmDeArmRecords(workOrderId);
 			if (!sortieList.isEmpty()) {
 				woArmDearmResponseBean.setCode(202);
 				woArmDearmResponseBean.setStatus("Successful");
@@ -99,8 +99,9 @@ public class WorkOrderArmDeArmService {
 		return "";
 	}	
 */
-	public List<BuildItemEntity> getValuesForBuildType(String buildType) {
+	public List<BuildItemEntity> getValuesForBuildType() {
 		List<BuildItemEntity> buildItemList = new ArrayList<>();
+		String buildType = "HARD POINT";
 		buildItemList = buildItemRepository.getBuildItemListForArmItem(buildType);
 		return buildItemList; 
 	}
