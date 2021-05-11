@@ -84,7 +84,7 @@ public class WorkOrderArmDearmController {
 		return workOrderArmDeArmService.getStationNoForBuildItem(builditem);
 	}
 */			
-	//To save the complete row of the Arming/DeArming
+	//To save the complete row of the Arming/DeArming and calculate the current quantity
 	@PostMapping("/saveNewRowBuildItem/{workOrderId}")
 	public ResponseEntity<WorkOrderArmDearmResponseBean> addNewBuildItem(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId){
 		return new ResponseEntity<>(workOrderArmDeArmService.addNewBuildItemRow(woArmDearmEntity, workorderId),HttpStatus.OK);
@@ -96,14 +96,6 @@ public class WorkOrderArmDearmController {
 	{
 		System.out.println("onLoadClick");
 		return new ResponseEntity<>(workOrderArmDeArmService.onLoadClickItem(arm_Id),HttpStatus.OK);	
-	}
-	
-	//To calculate the current quantity for Build Item of the Arming/DeArming
-	@GetMapping("/onSaveClick/{armId}")	
-	public ResponseEntity<WorkOrderArmDearmResponseBean> onSaveClick(@PathVariable("armId")String arm_Id)
-	{
-		System.out.println("onSaveClick");
-		return new ResponseEntity<>(workOrderArmDeArmService.onSaveClickItem(arm_Id),HttpStatus.OK);	
 	}
 	
 	//To delete the evaluated quantity of the Arming/DeArming
