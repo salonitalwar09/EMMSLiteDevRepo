@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,6 +72,17 @@ public class AssetInsRemController {
 			return new ResponseEntity<>(workorderResponseBean,HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);		}
+			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);	
+		}
+	}
+	@PutMapping("/assetInsRem/{workorderId}/{insRemId}")
+	public ResponseEntity<String> assetInsRemFunction(@PathVariable Long workorderId, @PathVariable Long insRemId){
+		try {
+			System.out.println("WorkorderId from Path Variable:: "+workorderId );
+			System.out.println("Install/Remove RecordId from Path Variable:: "+insRemId);
+			return  new ResponseEntity<>("Asset Instal/ Remove Successfull",HttpStatus.OK);
+		} catch (Exception e) {
+			return  new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
+		}
 	}
 }

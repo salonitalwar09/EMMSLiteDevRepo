@@ -53,6 +53,7 @@ public class AssetInsRemService {
 		assetInsRemEntity.setRemInsDate(statusDate.format(now));
 		System.out.println("Install/Removal Date:: "+statusDate.format(now));
 		assetInsRemEntity.setRemInsBy("801002");
+		assetInsRemEntity.setStatus("Pending");
 		assetInsRemRepository.save(assetInsRemEntity);
 		workorderResponseBean.setinsRemRowId(assetInsRemEntity.getInsRemId());
 		return workorderResponseBean;
