@@ -11,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wipro.iaf.emms.emmsLite.Constants.Constants;
+import com.wipro.iaf.emms.emmsLite.Repository.ArmamentGIGRepository;
+import com.wipro.iaf.emms.emmsLite.Repository.BuildItemRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.WorkOrderArmDearmRepository;
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderArmDearmResponseBean;
+import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
+import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
 
 /**
@@ -29,6 +33,10 @@ public class WorkOrderArmDeArmService {
 	
 	@Autowired
 	WorkOrderArmDearmRepository woArmDearmRepo;
+	@Autowired
+	BuildItemRepository buildItemRepository;
+	@Autowired
+	ArmamentGIGRepository armGIGRepository;
 	@Autowired
 	WorkOrderArmDearmResponseBean woArmDearmResponseBean;
 	@Autowired
@@ -54,13 +62,13 @@ public class WorkOrderArmDeArmService {
 		return sortieList;
 	}
 	
-	public List<String>getArmamentItemDDList()
+	public List<ArmGIGEntity>getArmamentItemDDList()
 	{
 		System.out.println("****Reached inside getArmamentItemDDList****");
-		List<String>armamentItemList = new ArrayList<>();		
+		List<ArmGIGEntity>armamentItemList = new ArrayList<>();		
 		if (armamentItemList != null) {
 			System.out.println("****Reached inside getArmamentItemDDList****armamentItemList != null");
-			armamentItemList = woArmDearmRepo.getItemListForArmItem();
+			armamentItemList = armGIGRepository.getItemListForArmItem();
 			woArmDearmResponseBean.setCode(202);
 			woArmDearmResponseBean.setStatus("Successful");
 			woArmDearmResponseBean.setDescription("Armament Item GIG No Lookup Successful");
@@ -68,7 +76,7 @@ public class WorkOrderArmDeArmService {
 		return armamentItemList;
 	}
 	
-	public String getStationNoForBuildItem(String builditem) {
+/*	public String getStationNoForBuildItem(String builditem) {
 		System.out.println("****Reached inside getStationNoForBuildItem****");
 		String stationNo = woArmDearmRepo.getBuildItemPositionForBuildItem(builditem);
 		if (stationNo != null) {
@@ -80,8 +88,8 @@ public class WorkOrderArmDeArmService {
 		}
 		return "";
 	}
-	
-	public String getArmDescription(String gigNo) {
+*/	
+/*	public String getArmDescription(String gigNo) {
 		System.out.println("****Reached inside getArmDescription****");
 		String armGigNo = woArmDearmRepo.getArmamentDescriptionForGIG(gigNo);
 		if (armGigNo != null) {
@@ -90,10 +98,10 @@ public class WorkOrderArmDeArmService {
 		}
 		return "";
 	}	
-	
-	public List<String> getValuesForBuildType(String buildType) {
-		List<String> buildItemList = new ArrayList<>();
-		buildItemList = woArmDearmRepo.getBuildItemListForArmItem(buildType);
+*/
+	public List<BuildItemEntity> getValuesForBuildType(String buildType) {
+		List<BuildItemEntity> buildItemList = new ArrayList<>();
+		buildItemList = buildItemRepository.getBuildItemListForArmItem(buildType);
 		return buildItemList; 
 	}
 	
