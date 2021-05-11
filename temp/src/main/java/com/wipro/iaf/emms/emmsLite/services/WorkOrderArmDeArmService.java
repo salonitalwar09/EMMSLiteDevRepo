@@ -131,17 +131,7 @@ public class WorkOrderArmDeArmService {
 			int max = woArmDearmRepo.getMaxArmId();
 			System.out.println("********The max value is="+max);
 			woBuildGigSelectiveList.sort(Comparator.comparing(WorkOrderArmDearmEntity::getArm_id));
-			System.out.println("********woArmDearmPrevious="+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2).getArm_id());
-			System.out.println("********woArmDearmCurrent ="+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1).getArm_id());
-			WorkOrderArmDearmEntity woArmDearmCurrent = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1);
-			WorkOrderArmDearmEntity woArmDearmPrevious = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2);
-			if ((woArmDearmPrevious.getEvaluatedQuant() != null && woArmDearmPrevious.getEvaluatedQuant() != 0) && (woArmDearmCurrent.getCurrentQuant() == null || woArmDearmCurrent.getCurrentQuant() == 0)) {
-				woArmDearmCurrent.setCurrentQuant(woArmDearmPrevious.getEvaluatedQuant());
-				System.out.println("***********Current Quantity="+woArmDearmCurrent.getCurrentQuant());
-				woArmDearmRepo.save(woArmDearmCurrent);				
-				str.append("Current Quantity Load Successful");
 			}
-		}
 		WorkOrderArmDearmEntity evaluatedQ = woArmDearmRepo.getEvaluatedQuantBuildItem(Integer.valueOf(armId));	
 		if (evaluatedQ.getEvaluatedQuant() == null || evaluatedQ.getEvaluatedQuant() == 0 ) {
 			if (evaluatedQ.getCurrentQuant() != null) {
@@ -174,7 +164,44 @@ public class WorkOrderArmDeArmService {
 			woArmDearmResponseBean.setStatus(str.toString());
 		} else {
 			woArmDearmResponseBean.setCode(500);		
-			woArmDearmResponseBean.setStatus("Evaluated Quantity and Current Quantity and Status Update Failed");
+			woArmDearmResponseBean.setStatus("Evaluated Quantity and Status Update Failed");
+		}
+				
+		return woArmDearmResponseBean;
+	}
+	
+	public WorkOrderArmDearmResponseBean onSaveClickItem (String armId) {
+		StringBuffer str = new StringBuffer();
+		int current = 0;
+		int load = 0;
+		int unload = 0;
+		int evaluateQuan = 0;
+		Optional<WorkOrderArmDearmEntity> woArmDearmEntityList = woArmDearmRepo.findById(Integer.valueOf(armId));		
+		WorkOrderArmDearmEntity woArmDearmEntity = woArmDearmEntityList.get();
+		List<WorkOrderArmDearmEntity> woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getArmPosition(),woArmDearmEntity.getWorkorderId());
+		
+		if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 1) {
+			int max = woArmDearmRepo.getMaxArmId();
+			System.out.println("********The max value is="+max);
+			woBuildGigSelectiveList.sort(Comparator.comparing(WorkOrderArmDearmEntity::getArm_id));
+			System.out.println("********woArmDearmPrevious="+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2).getArm_id());
+			System.out.println("********woArmDearmCurrent ="+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1).getArm_id());
+			WorkOrderArmDearmEntity woArmDearmCurrent = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1);
+			WorkOrderArmDearmEntity woArmDearmPrevious = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2);
+			if ((woArmDearmPrevious.getEvaluatedQuant() != null && woArmDearmPrevious.getEvaluatedQuant() != 0) && (woArmDearmCurrent.getCurrentQuant() == null || woArmDearmCurrent.getCurrentQuant() == 0)) {
+				woArmDearmCurrent.setCurrentQuant(woArmDearmPrevious.getEvaluatedQuant());
+				System.out.println("***********Current Quantity="+woArmDearmCurrent.getCurrentQuant());
+				woArmDearmRepo.save(woArmDearmCurrent);				
+				str.append("Current Quantity Load Successful");
+			}
+		}		
+		woArmDearmRepo.save(woArmDearmEntity);
+		if (!str.equals("") && !str.equals(null)) {
+			woArmDearmResponseBean.setCode(202);		
+			woArmDearmResponseBean.setStatus(str.toString());
+		} else {
+			woArmDearmResponseBean.setCode(500);		
+			woArmDearmResponseBean.setStatus("Current Quantity Update Failed");
 		}
 				
 		return woArmDearmResponseBean;
