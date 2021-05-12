@@ -37,7 +37,11 @@ public class WorkOrderArmDearmController {
 	@Autowired
 	private WorkOrderArmDeArmService workOrderArmDeArmService;
 	
-	//To view all the entries for the Arming/De-Arming for a particular WO
+	/**
+	 * Method to view all the entries for the Arming/De-Arming for a particular Work Order
+	 * @param workOrderId
+	 * @return
+	 */
 	@GetMapping("/viewWOArmDeArm/{workOrderId}")
 	public List<WorkOrderArmDearmEntity> getWOArmDearmEntityList(@PathVariable("workOrderId")String workOrderId)
 	{
@@ -45,7 +49,10 @@ public class WorkOrderArmDearmController {
 		return workOrderArmDeArmService.getAllWOArmDeArming(workOrderId);
 	}
 	
-	//To view the Armament Item list/GIG No. list
+	/**
+	 * Method to view the Armament Item list/GIG No. list
+	 * @return ArmGIGEntity
+	 */
 	@GetMapping("/viewArmamentItemDD")
 	public List<ArmGIGEntity> getArmamentItemList()
 	{
@@ -54,14 +61,18 @@ public class WorkOrderArmDearmController {
 	}
 	
 	//To view the Armament Description for a particular hard point build item
-/*	@GetMapping("/viewArmDesc/{armamentNo}")
+	/*	@GetMapping("/viewArmDesc/{armamentNo}")
 	public String getArmamentDescription(@PathVariable("armamentNo") String armGIGNo)
 	{
 		System.out.println("getArmamentDescription");
 		return workOrderArmDeArmService.getArmDescription(armGIGNo);
 	}
-*/
-	//To view the build item list that are of type Hard Point
+	 */
+	
+	/**
+	 * Method to view the build item list that are of type Hard Point
+	 * @return BuildItemEntity
+	 */
 	@GetMapping("/viewBuildItem")
 	public List<BuildItemEntity> getValuesForBuildType()
 	{
@@ -76,22 +87,46 @@ public class WorkOrderArmDearmController {
 		System.out.println("getStationNoList");
 		return workOrderArmDeArmService.getStationNoForBuildItem(builditem);
 	}
-*/			
-	//To save the complete row of the Arming/DeArming and calculate the current quantity
+*/		
+	/**
+	 * Method to save the complete row of the Arming/DeArming and calculate the current quantity
+	 * @param woArmDearmEntity
+	 * @param workorderId
+	 * @param arm_id
+	 * @return WorkOrderArmDearmEntity
+	 */
 	@PostMapping("/saveNewRowBuildItem/{workOrderId}/{armpk_id}")
-	public ResponseEntity<WorkOrderArmDearmResponseBean> addNewBuildItem(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("armpk_id") String arm_id){
-		return new ResponseEntity<>(workOrderArmDeArmService.addNewBuildItemRow(woArmDearmEntity, workorderId,arm_id),HttpStatus.OK);
+	public ResponseEntity<WorkOrderArmDearmEntity> saveCurrentQuantity(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("armpk_id") String arm_id){
+		try {
+			System.out.println("++++++++Inside saveCurrentQuantity Controller+++WORKORDERID:: "+workorderId);			
+			return  new ResponseEntity<>(workOrderArmDeArmService.saveCurrentQuantityForRow(woArmDearmEntity, workorderId), HttpStatus.OK);
+		} catch (Exception e) {
+			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
 	
-	//To calculate the evaluated quantity and update status for Build Item of the Arming/DeArming
-	@GetMapping("/onLoadClick/{armId}")	
-	public ResponseEntity<WorkOrderArmDearmResponseBean> onLoadClick(@PathVariable("armId")String arm_Id)
+	/**
+	 * Method to calculate the evaluated quantity and update status for Build Item of the Arming/DeArming
+	 * @param workOrderArmDearmEntity
+	 * @param workorderId
+	 * @return WorkOrderArmDearmEntity
+	 */
+	@GetMapping("/onLoadClick/{workorderId}")	
+	public ResponseEntity<WorkOrderArmDearmEntity> onLoadClick(@RequestBody WorkOrderArmDearmEntity workOrderArmDearmEntity,@PathVariable("workorderId")String workorderId)
 	{
-		System.out.println("onLoadClick");
-		return new ResponseEntity<>(workOrderArmDeArmService.onLoadClickItem(arm_Id),HttpStatus.OK);	
+		try {
+			System.out.println("++++++++Inside onLoadClick Controller+++WORKORDERID:: "+workorderId);			
+			return  new ResponseEntity<>(workOrderArmDeArmService.onLoadClickItem(workOrderArmDearmEntity,workorderId), HttpStatus.OK);
+		} catch (Exception e) {
+			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}	
 	}
 	
-	//To delete the evaluated quantity of the Arming/DeArming
+	/**
+	 * Method to delete the evaluated quantity of the Arming/DeArming
+	 * @param arm_id
+	 * @return WorkOrderArmDearmResponseBean
+	 */ 
 	@PutMapping("/deleteBuildItemRow/{armidpk}")
 	public ResponseEntity<WorkOrderArmDearmResponseBean> deleteBuildItemRow(@PathVariable("armidpk")String arm_id){
 		return new ResponseEntity<>(workOrderArmDeArmService.deleteBuildItem(arm_id),HttpStatus.OK);
