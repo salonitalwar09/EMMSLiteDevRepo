@@ -38,7 +38,7 @@ public class LoginService {
 			loginResponse.setCode(200);
 			loginResponse.setLoginStatus("User is present in the system");
 			String passwordFromDb =loginRepo.checkPassword(userid);
-			if(passwordFromDb!=null && passwordFromDb.equals(userid)){
+			if(passwordFromDb!=null){
 				loginResponse.setCode(202);
 				loginResponse.setPasswordStatus("Password is present in the system");
 			}
