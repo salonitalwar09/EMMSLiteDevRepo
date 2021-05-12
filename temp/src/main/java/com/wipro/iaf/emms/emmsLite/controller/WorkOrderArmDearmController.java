@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderArmDearmResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
+import com.wipro.iaf.emms.emmsLite.entity.AssetInsRemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
 import com.wipro.iaf.emms.emmsLite.services.WorkOrderArmDeArmService;
@@ -79,16 +80,16 @@ public class WorkOrderArmDearmController {
 */			
 	//To save the complete row of the Arming/DeArming and calculate the current quantity
 	@PostMapping("/saveNewRowBuildItem/{workOrderId}/{armpk_id}")
-	public ResponseEntity<WorkOrderArmDearmResponseBean> addNewBuildItem(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("armpk_id") String arm_id){
-		return new ResponseEntity<>(workOrderArmDeArmService.addNewBuildItemRow(woArmDearmEntity, workorderId,arm_id),HttpStatus.OK);
+	public WorkOrderArmDearmEntity saveCurrentQuantity(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("armpk_id") String arm_id){
+		return workOrderArmDeArmService.saveCurrentQuantityForRow(woArmDearmEntity, workorderId);
 	}
 	
 	//To calculate the evaluated quantity and update status for Build Item of the Arming/DeArming
-	@GetMapping("/onLoadClick/{armId}")	
-	public ResponseEntity<WorkOrderArmDearmResponseBean> onLoadClick(@PathVariable("armId")String arm_Id)
+	@GetMapping("/onLoadClick/{workorderId}")	
+	public WorkOrderArmDearmEntity onLoadClick(@RequestBody WorkOrderArmDearmEntity workOrderArmDearmEntity,@PathVariable("workorderId")String workorderId)
 	{
 		System.out.println("onLoadClick");
-		return new ResponseEntity<>(workOrderArmDeArmService.onLoadClickItem(arm_Id),HttpStatus.OK);	
+		return workOrderArmDeArmService.onLoadClickItem(workOrderArmDearmEntity,workorderId);	
 	}
 	
 	//To delete the evaluated quantity of the Arming/DeArming
