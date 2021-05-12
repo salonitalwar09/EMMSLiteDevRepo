@@ -22,15 +22,17 @@ public class LoginEntity implements Serializable{
 	@Column(name="password")
 	private String password;
 	@Column(name="answer_one",nullable=true)
-	String answerOne;
+	private String answerOne;
 	@Column(name="answer_two",nullable=true)
-	String answerTwo;
+	private String answerTwo;
 	@Column(name="answer_three",nullable=true)
-	String answerThree;
+	private String answerThree;
 	@Column(name="block_count")
-	int blockCount;
+	private int blockCount;
 	@Column(name="change_pass_time")
 	private LocalDateTime changePassTime;
+	@Column(name="user_role")
+	private String userRole;
 	@Transient
 	String updatePassword; 
 		
@@ -84,13 +86,17 @@ public class LoginEntity implements Serializable{
 	public void setChangePassTime(LocalDateTime changePassTime) {
 		this.changePassTime = changePassTime;
 	}
+	public String getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
 	@Override
 	public String toString() {
-		return "LoginEntity [userid=" + userid + ", password=" + password
-				+ ", answerOne=" + answerOne + ", answerTwo=" + answerTwo
-				+ ", answerThree=" + answerThree + ", blockCount=" + blockCount
-				+ ", changePassTime=" + changePassTime + ", updatePassword="
-				+ updatePassword + "]";
+		return "LoginEntity [userid=" + userid + ", password=" + password + ", answerOne=" + answerOne + ", answerTwo="
+				+ answerTwo + ", answerThree=" + answerThree + ", blockCount=" + blockCount + ", changePassTime="
+				+ changePassTime + ", userRole=" + userRole + ", updatePassword=" + updatePassword + "]";
 	}
 	public LoginEntity() {
 	}	

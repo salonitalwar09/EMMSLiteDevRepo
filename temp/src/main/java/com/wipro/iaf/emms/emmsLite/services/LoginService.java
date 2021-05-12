@@ -38,7 +38,7 @@ public class LoginService {
 			loginResponse.setCode(200);
 			loginResponse.setLoginStatus("User is present in the system");
 			String passwordFromDb =loginRepo.checkPassword(userid);
-			if(passwordFromDb!=null && passwordFromDb.equals(userid)){
+			if(passwordFromDb!=null){
 				loginResponse.setCode(202);
 				loginResponse.setPasswordStatus("Password is present in the system");
 			}
@@ -60,7 +60,6 @@ public class LoginService {
 
 		loginResponse.reset();
 		Optional<LoginEntity> loginEntityFromDb= loginRepo.findById(login.getUserid());
-		System.out.println("login Entity from db--"+loginEntityFromDb.get().toString());
 
 		if(loginEntityFromDb.get().getBlockCount()>=5){
 			loginEntityFromDb.get().setPassword("BLOCKED");
@@ -82,6 +81,7 @@ public class LoginService {
 				System.out.println("User authenticated");
 				loginEntityFromDb.get().setBlockCount(0);
 				loginRepo.save(loginEntityFromDb.get());
+				loginResponse.setUserRole(loginEntityFromDb.get().getUserRole());
 				loginResponse.setCode(200);
 				loginResponse.setLoginStatus("User authenticated");
 			}
