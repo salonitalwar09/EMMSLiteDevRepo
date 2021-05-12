@@ -18,7 +18,7 @@ import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
  * under Work Order.
  */
 @Repository
-public interface ArmamentGIGRepository extends JpaRepository<WorkOrderArmDearmEntity, Integer>{
+public interface ArmamentGIGRepository extends JpaRepository<ArmGIGEntity, Integer>{
 	@Query(value = "SELECT * FROM emms_lite.elite_item_tb item", nativeQuery=true)
 	public List<ArmGIGEntity> getItemListForArmItem();
 }

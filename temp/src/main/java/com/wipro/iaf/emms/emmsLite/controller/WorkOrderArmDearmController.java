@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wipro.iaf.emms.emmsLite.Repository.WorkOrderArmDearmRepository;
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderArmDearmResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
 import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
@@ -37,12 +36,6 @@ public class WorkOrderArmDearmController {
 
 	@Autowired
 	private WorkOrderArmDeArmService workOrderArmDeArmService;
-	
-	@Autowired
-	private WorkOrderArmDearmRepository workOrderArmDearmRepo;
-	
-	@Autowired
-	private WorkOrderArmDearmResponseBean woArmDearmResponseBean;
 	
 	//To view all the entries for the Arming/De-Arming for a particular WO
 	@GetMapping("/viewWOArmDeArm/{workOrderId}")
@@ -85,9 +78,9 @@ public class WorkOrderArmDearmController {
 	}
 */			
 	//To save the complete row of the Arming/DeArming and calculate the current quantity
-	@PostMapping("/saveNewRowBuildItem/{workOrderId}")
-	public ResponseEntity<WorkOrderArmDearmResponseBean> addNewBuildItem(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId){
-		return new ResponseEntity<>(workOrderArmDeArmService.addNewBuildItemRow(woArmDearmEntity, workorderId),HttpStatus.OK);
+	@PostMapping("/saveNewRowBuildItem/{workOrderId}/{armpk_id}")
+	public ResponseEntity<WorkOrderArmDearmResponseBean> addNewBuildItem(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("armpk_id") String arm_id){
+		return new ResponseEntity<>(workOrderArmDeArmService.addNewBuildItemRow(woArmDearmEntity, workorderId,arm_id),HttpStatus.OK);
 	}
 	
 	//To calculate the evaluated quantity and update status for Build Item of the Arming/DeArming

@@ -45,7 +45,7 @@ public class WorkOrderArmDeArmService {
 		List<WorkOrderArmDearmEntity> armDearmList = new ArrayList<>();
 		System.out.println("+++++++++++++Inside getAllWOArmDeArming+++++++++++++");
 		if (armDearmList != null) {
-			System.out.println("+++++++++++++Inside getAllWOArmDeArming++++++sortieList is not null+++++++");
+			System.out.println("+++++++++++++Inside getAllWOArmDeArming++++++armDearmList is not null+++++++");
 			try {
 				armDearmList = woArmDearmRepo.getAllWOArmDeArmRecords(workOrderId);
 			}catch(Exception e) {
@@ -54,12 +54,12 @@ public class WorkOrderArmDeArmService {
 			}
 			
 			if (!armDearmList.isEmpty()) {
-				System.out.println("+++++++++++++Inside getAllWOArmDeArming++++++sortieList is not empty+++++++");
+				System.out.println("+++++++++++++Inside getAllWOArmDeArming++++++armDearmList is not empty+++++++");
 				woArmDearmResponseBean.setCode(202);
 				woArmDearmResponseBean.setStatus("Successful");
 				woArmDearmResponseBean.setDescription("All Work Order Arming De-Arming records fetched successfully");
 			}else {
-				System.out.println("+++++++++++++Inside getAllWOArmDeArming++++++sortieList is empty+++++++");
+				System.out.println("+++++++++++++Inside getAllWOArmDeArming++++++armDearmList is empty+++++++");
 				woArmDearmResponseBean.setCode(202);
 				woArmDearmResponseBean.setStatus("Successful");
 				woArmDearmResponseBean.setDescription("There are no records present for Work Order Arming De-Arming");
@@ -127,58 +127,59 @@ public class WorkOrderArmDeArmService {
 		return buildItemList; 
 	}
 	
-	public WorkOrderArmDearmResponseBean addNewBuildItemRow(WorkOrderArmDearmEntity woArmDearmEntity, String workorderId){
+	public WorkOrderArmDearmResponseBean addNewBuildItemRow(WorkOrderArmDearmEntity woArmDearmEntity, String workorderId,String arm_id){
 		woArmDearmResponseBean.reset();
 		StringBuffer str = new StringBuffer();
-		List<WorkOrderArmDearmEntity> woBuildGigSelectiveList = new ArrayList<>(); 
-		System.out.println("+++++++++++++Inside addNewBuildItemRow+++++++++++++");
-		if (workorderId!= null && woArmDearmEntity != null) {
-			if (woArmDearmEntity.getBuildItem() != null
-					&& woArmDearmEntity.getArmPosition() != null
-					&& woArmDearmEntity.getArmGIGNo() != null) {
-				System.out.println("+++++++++++++Inside addNewBuildItemRow+++++++No value is null++++++");
-				woArmDearmEntity.setWorkorderId(workorderId);
-				woArmDearmEntity.setArmStatus("NEW");
-				try {
-					woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getArmPosition(),woArmDearmEntity.getWorkorderId());
-				}catch(Exception e){
-					System.out.println("Error occured while Arming De-Arming data for specific Build Item,GIG NO.,ARM POSITION from repository");
-					System.out.println(e.getMessage());
-				}
-				if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 1) {
-					System.out.println("+++++++++++++Inside getValuesForBuildType++++++woBuildGigSelectiveList>1+++++++");
-					int max = woArmDearmRepo.getMaxArmId();
-					System.out.println("+++++++++++++Inside getValuesForBuildType+++++MAX ARM ID++++++++"+max);
-					woBuildGigSelectiveList.sort(Comparator.comparing(WorkOrderArmDearmEntity::getArm_id));										
-					WorkOrderArmDearmEntity woArmDearmPrevious = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2);					
-					if (woArmDearmEntity != null && woArmDearmPrevious != null && (woArmDearmPrevious.getEvaluatedQuant() != null && woArmDearmPrevious.getEvaluatedQuant() != 0) && (woArmDearmEntity.getCurrentQuant() == null || woArmDearmEntity.getCurrentQuant() == 0)) {
-						System.out.println("+++++++++++++Inside getValuesForBuildType+++++PREVIOUS VALUE++++++++"+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-2).getArm_id());
-						System.out.println("+++++++++++++Inside getValuesForBuildType+++++CURRENT VALUE++++++++"+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1).getArm_id());
-						woArmDearmEntity.setCurrentQuant(woArmDearmPrevious.getEvaluatedQuant());
-						System.out.println("+++++++++++++Inside getValuesForBuildType+++++CURRENT QUANTITY IS SET TO++++++++"+woArmDearmEntity.getCurrentQuant());
-						woArmDearmRepo.save(woArmDearmEntity);				
-						str.append("Current Quantity Load Successful");
+		if (Integer.parseInt(arm_id) == 0) {
+			List<WorkOrderArmDearmEntity> woBuildGigSelectiveList = new ArrayList<>(); 
+			System.out.println("+++++++++++++Inside addNewBuildItemRow+++++++++++++");
+			if (workorderId!= null && woArmDearmEntity != null) {
+				if (woArmDearmEntity.getBuildItem() != null
+						&& woArmDearmEntity.getArmPosition() != null
+						&& woArmDearmEntity.getArmGIGNo() != null) {
+					System.out.println("+++++++++++++Inside addNewBuildItemRow+++++++No value is null++++++");
+					woArmDearmEntity.setWorkorderId(workorderId);
+					woArmDearmEntity.setArmStatus("NEW");
+					try {
+						woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getArmPosition(),workorderId);
+					}catch(Exception e){
+						System.out.println("Error occured while Arming De-Arming data for specific Build Item,GIG NO.,ARM POSITION from repository");
+						System.out.println(e.getMessage());
 					}
-				}
-				
-				if (!str.equals("") && !str.equals(null)) {
-					woArmDearmResponseBean.setCode(202);		
-					woArmDearmResponseBean.setStatus(str.toString());
-				} else {
-					woArmDearmResponseBean.setCode(500);		
-					woArmDearmResponseBean.setStatus("Current Quantity Update Failed");
-				}
-				woArmDearmRepo.save(woArmDearmEntity);
-				woArmDearmResponseBean.setCode(202);
-				woArmDearmResponseBean.setStatus("Database Addition Successful");
-				woArmDearmResponseBean.setAddArmStatus("New Build Item has been added successfully");
-			}			
-		}else {
-			woArmDearmResponseBean.setCode(500);
-			woArmDearmResponseBean.setStatus("Database Addition was not Successful");
-			woArmDearmResponseBean.setAddArmStatus("New Build Item Addition Failed");
+					if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 1) {
+						System.out.println("+++++++++++++Inside getValuesForBuildType++++++woBuildGigSelectiveList>1+++++++");
+						int max = woArmDearmRepo.getMaxArmId();
+						System.out.println("+++++++++++++Inside getValuesForBuildType+++++MAX ARM ID++++++++"+max);
+						woBuildGigSelectiveList.sort(Comparator.comparing(WorkOrderArmDearmEntity::getArm_id));										
+						WorkOrderArmDearmEntity woArmDearmPrevious = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1);					
+						if (woArmDearmEntity != null && woArmDearmPrevious != null && (woArmDearmPrevious.getEvaluatedQuant() != null && woArmDearmPrevious.getEvaluatedQuant() != 0) && (woArmDearmEntity.getCurrentQuant() == null || woArmDearmEntity.getCurrentQuant() == 0)) {
+							System.out.println("+++++++++++++Inside getValuesForBuildType+++++PREVIOUS VALUE++++++++"+woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1).getArm_id());						
+							woArmDearmEntity.setCurrentQuant(woArmDearmPrevious.getEvaluatedQuant());
+							System.out.println("+++++++++++++Inside getValuesForBuildType+++++CURRENT QUANTITY IS SET TO++++++++"+woArmDearmEntity.getCurrentQuant());
+							woArmDearmRepo.save(woArmDearmEntity);				
+							str.append("Current Quantity Load Successful");
+						}
+					}
+					
+					if (!str.equals(null)) {
+						woArmDearmResponseBean.setCode(202);		
+						woArmDearmResponseBean.setStatus(str.toString());
+					} else {
+						woArmDearmResponseBean.setCode(500);		
+						woArmDearmResponseBean.setStatus("Current Quantity Update Failed");
+					}
+					woArmDearmRepo.save(woArmDearmEntity);
+					woArmDearmResponseBean.setCode(202);
+					woArmDearmResponseBean.setStatus("Database Addition Successful");
+					woArmDearmResponseBean.setAddArmStatus("New Build Item has been added successfully");
+				}			
+			}else {
+				woArmDearmResponseBean.setCode(500);
+				woArmDearmResponseBean.setStatus("Database Addition was not Successful");
+				woArmDearmResponseBean.setAddArmStatus("New Build Item Addition Failed");
+			}
 		}
-		System.out.println("+++++++++++++End of addNewBuildItemRow+++++++++++++");
+			System.out.println("+++++++++++++End of addNewBuildItemRow+++++++++++++");
 		return woArmDearmResponseBean;
 	}
 	
