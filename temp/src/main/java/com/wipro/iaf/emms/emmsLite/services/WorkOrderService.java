@@ -69,7 +69,7 @@ public class WorkOrderService {
 		LocalDateTime now = LocalDateTime.now();
 		System.out.println("Current Date:: "+closeWoDate.format(now)	);
 		woEntity.setClosure_date(closeWoDate.format(now));
-		woEntity.setClosed_by("801002");
+		woEntity.setClosed_by(workorderentity.getClosed_by());
 		woEntity.setWo_status(workorderentity.getWo_status());
 		workorderRepsitory.save(woEntity);
 		workorderResponseBean.setCode(200);
@@ -114,7 +114,7 @@ public class WorkOrderService {
 		workorderentity.setCreation_date(createWoDate.format(now));
 		System.out.println("Serial Num:: "+workorderentity.getSerial_num());
 		System.out.println("Asset Description:: "+workorderentity.getAsset_desc());
-		workorderentity.setCreated_by("801002");
+		//workorderentity.setCreated_by("801002");
 		workorderentity = workorderRepsitory.save(workorderentity);
 		System.out.println("After save");
 		workorderResponseBean.setCode(200);
