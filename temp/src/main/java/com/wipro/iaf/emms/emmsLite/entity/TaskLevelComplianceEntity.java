@@ -46,6 +46,50 @@ public class TaskLevelComplianceEntity implements Serializable {
 	@Column(name = "workorder_id")
 	private String workorderid;
 
+	@Column(name = "task_no")
+	private String taskNo;
+
+	@Column(name = "create_dte")
+	private Timestamp createDte;
+
+	@Column(name = "created_by")
+	private String createdBy;
+
+	@Column(name = "complied_by")
+	private String compliedBy;
+
+	public String getTaskNo() {
+		return taskNo;
+	}
+
+	public void setTaskNo(String taskNo) {
+		this.taskNo = taskNo;
+	}
+
+	public Timestamp getCreateDte() {
+		return createDte;
+	}
+
+	public void setCreateDte(Timestamp createDte) {
+		this.createDte = createDte;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getCompliedBy() {
+		return compliedBy;
+	}
+
+	public void setCompliedBy(String compliedBy) {
+		this.compliedBy = compliedBy;
+	}
+
 	public TaskLevelComplianceEntity() {
 	}
 
@@ -97,9 +141,11 @@ public class TaskLevelComplianceEntity implements Serializable {
 		this.workorderid = workorderid;
 	}
 
-	@Override public String toString() { return
-			"TaskLevelComplianceEntity [tlcId=" + tlcId + ", complianceDte=" +
-			complianceDte + ", taskDesc=" + taskDesc + ", technicianName=" +
-			technicianName + ", technicianServicenum=" + technicianServicenum +
-			", workorderid=" + workorderid + "]"; }
+	@Override
+	public String toString() {
+		return "TaskLevelComplianceEntity [tlcId=" + tlcId + ", complianceDte=" + complianceDte + ", taskDesc="
+				+ taskDesc + ", technicianName=" + technicianName + ", technicianServicenum=" + technicianServicenum
+				+ ", workorderid=" + workorderid + ", taskNo=" + taskNo + ", createDte=" + createDte + ", createdBy="
+				+ createdBy + ", compliedBy=" + compliedBy + "]";
+	}
 }

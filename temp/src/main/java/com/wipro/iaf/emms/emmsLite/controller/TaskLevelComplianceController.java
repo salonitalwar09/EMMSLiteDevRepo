@@ -50,14 +50,14 @@ public class TaskLevelComplianceController {
 	@GetMapping("/fetchTechnicianDetails")
 	public List<PersonEntity> fetchAllTechnicianDetails()
 	{
-		System.out.println("Inside TaskLevelComplianceController getAllTechnicianDetails: Request reached /emmsLite/fetchTechnicianDetails Controller");
+		System.out.println("Inside TaskLevelComplianceController fetchAllTechnicianDetails: Request reached /emmsLite/fetchTechnicianDetails Controller");
 		return taskLevelComplianceService.fetchAllTechnicianDetails();
 	}
 
 	@GetMapping("/fetchTechnicianName/{servicenum}")
 	public String fetchTechnicianName(@PathVariable("servicenum") String servicenum)
 	{
-		System.out.println("Inside TaskLevelComplianceController getAllPersonDetailsList: Request reached /emmsLite/fetchTechnicianName Controller");
+		System.out.println("Inside TaskLevelComplianceController fetchTechnicianName: Request reached /emmsLite/fetchTechnicianName Controller");
 		return taskLevelComplianceService.fetchPersonName(servicenum);
 	}
 
@@ -76,12 +76,13 @@ public class TaskLevelComplianceController {
 	}
 
 	@PutMapping("/complyTaskLevelCompliance/{tlcid}")
-	public ResponseEntity<TaskLevelComplianceEntity> complyTaskLevelCompliance(@PathVariable("tlcid") String tlcid)
+	public ResponseEntity<TaskLevelComplianceEntity> complyTaskLevelCompliance(@PathVariable("tlcid") String tlcid, @RequestBody String userid)
 	{
 		TaskLevelComplianceEntity taskLevelComplianceEntity;
 		try {
 			System.out.println("Inside TaskLevelComplianceController complyTaskLevelCompliance: Request reached /emmsLite/complyTaskLevelCompliance Controller");
-			taskLevelComplianceEntity = taskLevelComplianceService.complyTaskLevelCompliance(tlcid);
+			System.out.println("Inside TaskLevelComplianceController complyTaskLevelCompliance: " + "userid: " + userid);
+			taskLevelComplianceEntity = taskLevelComplianceService.complyTaskLevelCompliance(tlcid, userid);
 			System.out.println("Inside TaskLevelComplianceController complyTaskLevelCompliance: TaskLevelCompliance complied successfully");
 			System.out.println("Inside TaskLevelComplianceController complyTaskLevelCompliance: " + "taskLevelComplianceEntity: " + taskLevelComplianceEntity);
 			return new ResponseEntity<>(taskLevelComplianceEntity,HttpStatus.OK);
