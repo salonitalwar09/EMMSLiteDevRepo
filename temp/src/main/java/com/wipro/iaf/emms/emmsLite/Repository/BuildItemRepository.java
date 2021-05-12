@@ -19,7 +19,7 @@ import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
  * under Work Order.
  */
 @Repository
-public interface BuildItemRepository extends JpaRepository<WorkOrderArmDearmEntity, Integer>{
+public interface BuildItemRepository extends JpaRepository<BuildItemEntity, Integer>{
 	@Query(value = "SELECT * FROM emms_lite.elite_build_item_tb builditem where builditem.build_type=?1", nativeQuery=true)
 	public List<BuildItemEntity> getBuildItemListForArmItem(@Param("build_type") String buildType);
 }
