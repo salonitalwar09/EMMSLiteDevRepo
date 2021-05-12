@@ -19,6 +19,7 @@ import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
 import com.wipro.iaf.emms.emmsLite.entity.AssetInsRemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
+import com.wipro.iaf.emms.emmsLite.entity.WorkOrderEntity;
 import com.wipro.iaf.emms.emmsLite.services.WorkOrderArmDeArmService;
 
 /**
@@ -80,16 +81,25 @@ public class WorkOrderArmDearmController {
 */			
 	//To save the complete row of the Arming/DeArming and calculate the current quantity
 	@PostMapping("/saveNewRowBuildItem/{workOrderId}/{armpk_id}")
-	public WorkOrderArmDearmEntity saveCurrentQuantity(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("armpk_id") String arm_id){
-		return workOrderArmDeArmService.saveCurrentQuantityForRow(woArmDearmEntity, workorderId);
+	public ResponseEntity<WorkOrderArmDearmEntity> saveCurrentQuantity(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("armpk_id") String arm_id){
+		try {
+			System.out.println("++++++++Inside saveCurrentQuantity Controller+++WORKORDERID:: "+workorderId);			
+			return  new ResponseEntity<>(workOrderArmDeArmService.saveCurrentQuantityForRow(woArmDearmEntity, workorderId), HttpStatus.OK);
+		} catch (Exception e) {
+			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
 	
 	//To calculate the evaluated quantity and update status for Build Item of the Arming/DeArming
 	@GetMapping("/onLoadClick/{workorderId}")	
-	public WorkOrderArmDearmEntity onLoadClick(@RequestBody WorkOrderArmDearmEntity workOrderArmDearmEntity,@PathVariable("workorderId")String workorderId)
+	public ResponseEntity<WorkOrderArmDearmEntity> onLoadClick(@RequestBody WorkOrderArmDearmEntity workOrderArmDearmEntity,@PathVariable("workorderId")String workorderId)
 	{
-		System.out.println("onLoadClick");
-		return workOrderArmDeArmService.onLoadClickItem(workOrderArmDearmEntity,workorderId);	
+		try {
+			System.out.println("++++++++Inside onLoadClick Controller+++WORKORDERID:: "+workorderId);			
+			return  new ResponseEntity<>(workOrderArmDeArmService.onLoadClickItem(workOrderArmDearmEntity,workorderId), HttpStatus.OK);
+		} catch (Exception e) {
+			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}	
 	}
 	
 	//To delete the evaluated quantity of the Arming/DeArming
