@@ -95,7 +95,7 @@ public class WorkOrderArmDearmController {
 	 * @param arm_id
 	 * @return WorkOrderArmDearmEntity
 	 */
-	@PostMapping("/saveNewRowBuildItem/{workOrderId}/{armpk_id}")
+	@PostMapping("/saveNewRowBuildItem/{workOrderId}")
 	public ResponseEntity<WorkOrderArmDearmEntity> saveCurrentQuantity(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("armpk_id") String arm_id){
 		try {
 			System.out.println("++++++++Inside saveCurrentQuantity Controller+++WORKORDERID:: "+workorderId);			
