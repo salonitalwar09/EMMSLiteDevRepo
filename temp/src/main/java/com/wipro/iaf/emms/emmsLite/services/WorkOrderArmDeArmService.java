@@ -126,7 +126,7 @@ public class WorkOrderArmDeArmService {
 					System.out.println("Error occured while Arming De-Arming data for specific Build Item,GIG NO.,ARM POSITION from repository");
 					System.out.println(e.getMessage());
 				}
-				if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 1) {
+				if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 0) {
 					System.out.println("+++++++++++++Inside saveCurrentQuantityForRow++++++woBuildGigSelectiveList>1+++++++");										
 					woBuildGigSelectiveList.sort(Comparator.comparing(WorkOrderArmDearmEntity::getArm_id));										
 					WorkOrderArmDearmEntity woArmDearmPrevious = woBuildGigSelectiveList.get(woBuildGigSelectiveList.size()-1);					
@@ -145,7 +145,7 @@ public class WorkOrderArmDeArmService {
 						woArmDearmResponseBean.setCode(500);		
 						woArmDearmResponseBean.setStatus("Current Quantity Update Failed");
 					}
-					woArmDearmRepo.save(woArmDearmEntity);
+					//woArmDearmRepo.save(woArmDearmEntity);
 					woArmDearmResponseBean.setCode(202);
 					woArmDearmResponseBean.setStatus("Database Addition Successful");
 					woArmDearmResponseBean.setAddArmStatus("New Build Item has been added successfully");
