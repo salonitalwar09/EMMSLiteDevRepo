@@ -66,6 +66,15 @@ public class AssetInsRemEntity {
 	private String insSerialNo;
 	@Column(name="install_cond")
 	private String insCond;
+	@Column(name="status")
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Long getInsRemId() {
 		return insRemId;
 	}

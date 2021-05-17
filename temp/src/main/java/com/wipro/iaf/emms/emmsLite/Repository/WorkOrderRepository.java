@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderEntity;
 
+//Replace elite with emms_lite in schema name:: Shivam
+
 @Repository
 public interface WorkOrderRepository  extends JpaRepository<WorkOrderEntity, Long>{
 	@Query(value = "SELECT * FROM emms_lite.elite_workorder_tb", nativeQuery=true)

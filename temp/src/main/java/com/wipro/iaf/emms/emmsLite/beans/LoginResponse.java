@@ -9,6 +9,7 @@ public class LoginResponse {
 	private String status;
 	private String loginStatus;
 	private String passwordStatus;
+	private String UserRole;
 
 	public String getLoginStatus() {
 		return loginStatus;
@@ -42,6 +43,14 @@ public class LoginResponse {
 		this.status = status;
 	}
 	
+	public String getUserRole() {
+		return UserRole;
+	}
+
+	public void setUserRole(String userRole) {
+		UserRole = userRole;
+	}
+
 	public void reset(){
 		this.code=0;
 		this.loginStatus=null;
@@ -51,7 +60,8 @@ public class LoginResponse {
 	
 	@Override
 	public String toString() {
-		return "LoginResponse [code=" + code + ", status=" + status + "]";
+		return "LoginResponse [code=" + code + ", status=" + status + ", loginStatus=" + loginStatus
+				+ ", passwordStatus=" + passwordStatus + ", UserRole=" + UserRole + "]";
 	}
 	public LoginResponse() {
 	}
