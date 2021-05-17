@@ -107,8 +107,7 @@ public class WorkOrderArmDeArmService {
 	
 	public WorkOrderArmDearmEntity saveCurrentQuantityForRow(WorkOrderArmDearmEntity woArmDearmEntity, String workorderId){
 		System.out.println("+++++++++++++Inside saveCurrentQuantityForRow+++++++++++++");
-		woArmDearmResponseBean.reset();
-		int max = 0;
+		woArmDearmResponseBean.reset();		
 		StringBuffer str = new StringBuffer();
 		List<WorkOrderArmDearmEntity> woBuildGigSelectiveList = new ArrayList<>(); 			
 		if (workorderId!= null && woArmDearmEntity != null) {
@@ -119,9 +118,7 @@ public class WorkOrderArmDeArmService {
 				woArmDearmEntity.setWorkorderId(workorderId);
 				woArmDearmEntity.setArmStatus("NEW");
 				try {
-					woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getArmPosition(),workorderId);
-					max = woArmDearmRepo.getMaxArmId();
-					System.out.println("+++++++++++++Inside getValuesForBuildType+++++MAX ARM ID++++++++"+max);
+					woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getArmPosition(),workorderId);					
 				}catch(Exception e){
 					System.out.println("Error occured while Arming De-Arming data for specific Build Item,GIG NO.,ARM POSITION from repository");
 					System.out.println(e.getMessage());
