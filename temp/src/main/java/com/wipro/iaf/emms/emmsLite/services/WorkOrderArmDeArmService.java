@@ -135,6 +135,9 @@ public class WorkOrderArmDeArmService {
 						woArmDearmEntity.setCurrentQuant(woArmDearmPrevious.getEvaluatedQuant());
 						System.out.println("+++++++++++++Inside getValuesForBuildType+++++CURRENT QUANTITY IS SET TO++++++++"+woArmDearmEntity.getCurrentQuant());			
 						str.append("Current Quantity Load Successful");
+					}else {
+						woArmDearmEntity.setCurrentQuant(0);
+						System.out.println("+++++++++++++Inside getValuesForBuildType+++++CURRENT QUANTITY IS SET TO++++++++"+woArmDearmEntity.getCurrentQuant());
 					}
 				}
 					
