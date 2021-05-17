@@ -14,6 +14,7 @@ public class HeaderService {
 
 	public PlannedAssetHeaderEntity getPlannedAssetHeader() {
 		// TODO Auto-generated method stub
+		System.out.println("Inside header controller");
 		return plannedAssetHeaderRepository.findById(1001).get();
 	}
 

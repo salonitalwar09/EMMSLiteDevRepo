@@ -49,6 +49,7 @@ public class FlbSortieARService {
 			try {
 				newRow.setRecordId(recordId);
 				System.out.println("Inserting new row in DB");
+				System.out.println(newRow.toString());
 				fLBSortieARRepository.save(newRow);
 				System.out.println("New row inserted");
 			} catch (DataIntegrityViolationException dive) {
@@ -81,6 +82,9 @@ public class FlbSortieARService {
 					FlbSortieAREntity rowData = row.get();
 					if (rowData != null) {
 						System.out.println("Sortie Exist");
+						if (sortie.getSortieNum() != null) {
+							rowData.setSortieNum(sortie.getSortieNum());
+						}
 						if (sortie.getDuration() != null) {
 							rowData.setDuration(sortie.getDuration());
 						}
@@ -107,6 +111,9 @@ public class FlbSortieARService {
 						}
 						if (sortie.getStatusDate() != null) {
 							rowData.setStatusDate(sortie.getStatusDate());
+						}
+						if(sortie.getChangedBy() != null) {
+							rowData.setChangedBy(sortie.getChangedBy());
 						}
 						System.out.println("Inserting data in table");
 						fLBSortieARRepository.save(rowData);
