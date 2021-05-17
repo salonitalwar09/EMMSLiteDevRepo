@@ -95,7 +95,7 @@ public class WorkOrderArmDearmController {
 	 * @param arm_id
 	 * @return WorkOrderArmDearmEntity
 	 */
-	@GetMapping("/saveNewRowBuildItem/{workOrderId}")
+	@PostMapping("/saveNewRowBuildItem/{workOrderId}")
 	public ResponseEntity<WorkOrderArmDearmEntity> saveCurrentQuantity(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId){
 		try {
 			System.out.println("++++++++Inside saveCurrentQuantity Controller+++WORKORDERID:: "+workorderId);			
@@ -111,7 +111,7 @@ public class WorkOrderArmDearmController {
 	 * @param workorderId
 	 * @return WorkOrderArmDearmEntity
 	 */
-	@GetMapping("/onLoadClick/{workorderId}")	
+	@PostMapping("/onLoadClick/{workorderId}")	
 	public ResponseEntity<WorkOrderArmDearmEntity> onLoadClick(@RequestBody WorkOrderArmDearmEntity workOrderArmDearmEntity,@PathVariable("workorderId")String workorderId)
 	{
 		try {
