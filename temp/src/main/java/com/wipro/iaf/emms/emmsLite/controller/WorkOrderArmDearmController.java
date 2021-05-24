@@ -111,12 +111,12 @@ public class WorkOrderArmDearmController {
 	 * @param workorderId
 	 * @return WorkOrderArmDearmEntity
 	 */
-	@PostMapping("/onLoadClick/{workorderId}")	
-	public ResponseEntity<WorkOrderArmDearmEntity> onLoadClick(@RequestBody WorkOrderArmDearmEntity workOrderArmDearmEntity,@PathVariable("workorderId")String workorderId)
+	@PostMapping("/onLoadClick/{workorderId}/{assetNum}")	
+	public ResponseEntity<WorkOrderArmDearmEntity> onLoadClick(@RequestBody WorkOrderArmDearmEntity workOrderArmDearmEntity,@PathVariable("workorderId")String workorderId,@PathVariable("assetNum")String assetNum)
 	{
 		try {
-			System.out.println("++++++++Inside onLoadClick Controller+++WORKORDERID:: "+workorderId);			
-			return  new ResponseEntity<>(workOrderArmDeArmService.onLoadClickItem(workOrderArmDearmEntity,workorderId), HttpStatus.OK);
+			System.out.println("++++++++Inside onLoadClick Controller+++WORKORDERID:: "+workorderId+"+++++ASSETNUM:: "+assetNum);			
+			return  new ResponseEntity<>(workOrderArmDeArmService.onLoadClickItem(workOrderArmDearmEntity,workorderId,assetNum), HttpStatus.OK);
 		} catch (Exception e) {
 			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}	

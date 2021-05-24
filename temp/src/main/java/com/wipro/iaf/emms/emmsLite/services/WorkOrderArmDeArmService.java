@@ -3,20 +3,21 @@ package com.wipro.iaf.emms.emmsLite.services;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.wipro.iaf.emms.emmsLite.Constants.Constants;
 import com.wipro.iaf.emms.emmsLite.Repository.ArmamentGIGRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.BuildItemRepository;
+import com.wipro.iaf.emms.emmsLite.Repository.WOArmingAssetRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.WorkOrderArmDearmRepository;
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderArmDearmResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
+import com.wipro.iaf.emms.emmsLite.entity.ArmingAssetEntity;
 import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
+import com.wipro.iaf.emms.emmsLite.entity.WorkTypeEntity;
 
 /**
  * 
@@ -37,9 +38,13 @@ public class WorkOrderArmDeArmService {
 	@Autowired
 	ArmamentGIGRepository armGIGRepository;
 	@Autowired
+	WOArmingAssetRepository woArmDearmAssetRepo;
+	@Autowired
 	WorkOrderArmDearmResponseBean woArmDearmResponseBean;
 	@Autowired
 	Constants con;
+	@Autowired
+	ArmingAssetEntity armingAssetEntity;
 	
 	public List<WorkOrderArmDearmEntity>getAllWOArmDeArming(String workOrderId)
 	{
@@ -162,7 +167,15 @@ public class WorkOrderArmDeArmService {
 		return woArmDearmEntity;
 	}
 	
-	public WorkOrderArmDearmEntity onLoadClickItem (WorkOrderArmDearmEntity workOrderArmDearmEntity, String workorderId) {
+	/**
+	 * Method to calculate the Evaluated Quantity for a row and change the status to 'COMPLETED' 
+	 * for the same in the database. Updates the Current Quantity in the Arming/De-Arming to the 
+	 * above calculated Evaluated Quantity for a particular Build Item,Station No and Armament/GIG No.
+	 * @param workOrderArmDearmEntity
+	 * @param workorderId
+	 * @return
+	 */
+	public WorkOrderArmDearmEntity onLoadClickItem (WorkOrderArmDearmEntity workOrderArmDearmEntity, String workorderId, String assetNum) {
 		System.out.println("+++++++++++++Inside onLoadClickItem+++++++++++++");
 		StringBuffer str = new StringBuffer();
 		int current = 0;
@@ -202,6 +215,18 @@ public class WorkOrderArmDeArmService {
 				str.append("Status Update to COMPLETED Successful");
 			}		
 			woArmDearmRepo.save(workOrderArmDearmEntity);
+			if (assetNum != null) {
+				armingAssetEntity.setAssetNum(assetNum);
+			}
+			armingAssetEntity.setBuildItem(workOrderArmDearmEntity.getBuildItem());
+			armingAssetEntity.setStationNo(workOrderArmDearmEntity.getStationNo());
+			armingAssetEntity.setArmPosition(workOrderArmDearmEntity.getArmDescription());
+			armingAssetEntity.setArmGIGNo(workOrderArmDearmEntity.getArmGIGNo());
+			armingAssetEntity.setPartNo(workOrderArmDearmEntity.getPartNo());
+			armingAssetEntity.setSerialNo(workOrderArmDearmEntity.getSerialNo());
+			armingAssetEntity.setLotNo(workOrderArmDearmEntity.getLotNo());
+			armingAssetEntity.setCurrentQuant(workOrderArmDearmEntity.getEvaluatedQuant());			
+			woArmDearmAssetRepo.save(armingAssetEntity);
 			}
 		if (!str.equals(null)) {
 			woArmDearmResponseBean.setCode(202);		
