@@ -28,6 +28,9 @@ public class EliteSngDtlsTb implements Serializable {
 
 	private String description;
 
+	@Column(name="det_id")
+	private String detId;
+
 	@Column(name="failure_class")
 	private String failureClass;
 
@@ -57,11 +60,6 @@ public class EliteSngDtlsTb implements Serializable {
 	private String summary;
 
 	private String wdc;
-
-	//bi-directional many-to-one association to EliteHeaderTb
-	@ManyToOne
-	@JoinColumn(name="det_id")
-	private EliteHeaderTb eliteHeaderTb;
 
 	public EliteSngDtlsTb() {
 	}
@@ -104,6 +102,14 @@ public class EliteSngDtlsTb implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getDetId() {
+		return this.detId;
+	}
+
+	public void setDetId(String detId) {
+		this.detId = detId;
 	}
 
 	public String getFailureClass() {
@@ -192,14 +198,6 @@ public class EliteSngDtlsTb implements Serializable {
 
 	public void setWdc(String wdc) {
 		this.wdc = wdc;
-	}
-
-	public EliteHeaderTb getEliteHeaderTb() {
-		return this.eliteHeaderTb;
-	}
-
-	public void setEliteHeaderTb(EliteHeaderTb eliteHeaderTb) {
-		this.eliteHeaderTb = eliteHeaderTb;
 	}
 
 }
