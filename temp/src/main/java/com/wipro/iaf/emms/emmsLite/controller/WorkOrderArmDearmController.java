@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderArmDearmResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
+import com.wipro.iaf.emms.emmsLite.entity.ArmingAssetEntity;
 import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
 import com.wipro.iaf.emms.emmsLite.services.WorkOrderArmDeArmService;
@@ -42,11 +43,24 @@ public class WorkOrderArmDearmController {
 	 * @param workOrderId
 	 * @return
 	 */
-	@GetMapping("/viewWOArmDeArm/{workOrderId}")
+	/*@GetMapping("/viewWOArmDeArm/{workOrderId}")
 	public List<WorkOrderArmDearmEntity> getWOArmDearmEntityList(@PathVariable("workOrderId")String workOrderId)
 	{
 		System.out.println("getWOArmDearmEntityList");
 		return workOrderArmDeArmService.getAllWOArmDeArming(workOrderId);
+	}*/
+	
+	/**
+	 * Method to view all the entries for the Arming/De-Arming for a particular Work Order of type A-REM 
+	 * applicable for unloading only.
+	 * @param workOrderId
+	 * @return
+	 */
+	@GetMapping("/viewWODeArmUnload/{assetNum}")
+	public List<ArmingAssetEntity> getEnteriesForUnload(@PathVariable("assetNum")String assetNum)
+	{
+		System.out.println("++++++Begin viewWODearmUnload+++Controller++++FOR UNLOAD");
+		return workOrderArmDeArmService.getAllWOUnloadRecords(assetNum);
 	}
 	
 	/**

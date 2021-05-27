@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
-import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
 
 /**
  * 
