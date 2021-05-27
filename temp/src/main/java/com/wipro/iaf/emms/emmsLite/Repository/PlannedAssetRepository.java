@@ -5,16 +5,14 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-
-import com.wipro.iaf.emms.emmsLite.entity.AssetEntity;
+import com.wipro.iaf.emms.emmsLite.entity.ElitePlndAstTb;
 
 @Repository
-public interface PlannedAssetRepository extends JpaRepository<AssetEntity, String>{
+public interface PlannedAssetRepository extends JpaRepository<ElitePlndAstTb, String>{
 
 	
-	@Query(value="SELECT * FROM emms_lite.Asset", nativeQuery=true)
-	public List<AssetEntity> getPlndAsstDetails();
+	@Query(value="SELECT * FROM emms_lite.elite_plnd_ast_tb ", nativeQuery=true)
+	public List<ElitePlndAstTb> getPlndAsstDetails();
 	
 	
 }
