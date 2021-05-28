@@ -2,9 +2,6 @@ package com.wipro.iaf.emms.emmsLite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.iaf.emms.emmsLite.Repository.PlannedAssetRepository;
-
-import com.wipro.iaf.emms.emmsLite.entity.AssetEntity;
-import com.wipro.iaf.emms.emmsLite.entity.WorkOrderEntity;
+import com.wipro.iaf.emms.emmsLite.entity.ElitePlndAstTb;
 import com.wipro.iaf.emms.emmsLite.services.PlannedAssetService;
 
 @RestController
@@ -29,10 +24,10 @@ public class PlannedAssetController {
 	private PlannedAssetRepository plannedAssetRepository;
 	
 	@GetMapping("/viewAsset")
- public List<AssetEntity> getPlndAsstDetails()
+ public List<ElitePlndAstTb> getPlndAsstDetails()
   {
 		System.out.println("1");
-	 List<AssetEntity> plannedAssetBean =new ArrayList<>();
+	 List<ElitePlndAstTb> plannedAssetBean =new ArrayList<>();
 	 
 	 plannedAssetBean = plannedAssetService.getPlndAsstDetails();
 	System.out.println("2");
