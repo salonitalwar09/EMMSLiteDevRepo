@@ -40,9 +40,9 @@ public class WoMeterEntity implements Serializable{
 	@Column(name="meter_name")
 	private String meterName; 
 	@Column(name="initial_value")
-	private double initialValue;
+	private String initialValue;
 	@Column(name="final_value")
-	private double finalValue;
+	private String finalValue;
 	@Column(name="reading_date")
 	private LocalDateTime readingDate;
 	@Column(name="updated_by")
@@ -111,16 +111,16 @@ public class WoMeterEntity implements Serializable{
 	public void setMeterName(String meterName) {
 		this.meterName = meterName;
 	}
-	public double getInitialValue() {
+	public String getInitialValue() {
 		return initialValue;
 	}
-	public void setInitialValue(double initialValue) {
+	public void setInitialValue(String initialValue) {
 		this.initialValue = initialValue;
 	}
-	public double getFinalValue() {
+	public String getFinalValue() {
 		return finalValue;
 	}
-	public void setFinalValue(double finalValue) {
+	public void setFinalValue(String finalValue) {
 		this.finalValue = finalValue;
 	}
 	public LocalDateTime getReadingDate() {
