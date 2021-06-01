@@ -2,7 +2,6 @@ package com.wipro.iaf.emms.emmsLite.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
@@ -41,10 +40,6 @@ public class EliteHeaderTb implements Serializable {
 	private String trnsfrDte;
 
 	private String variation;
-
-	//bi-directional many-to-one association to EliteSngDtlsTb
-	@OneToMany(mappedBy="eliteHeaderTb")
-	private List<EliteSngDtlsTb> eliteSngDtlsTbs;
 
 	public EliteHeaderTb() {
 	}
@@ -127,28 +122,6 @@ public class EliteHeaderTb implements Serializable {
 
 	public void setVariation(String variation) {
 		this.variation = variation;
-	}
-
-	public List<EliteSngDtlsTb> getEliteSngDtlsTbs() {
-		return this.eliteSngDtlsTbs;
-	}
-
-	public void setEliteSngDtlsTbs(List<EliteSngDtlsTb> eliteSngDtlsTbs) {
-		this.eliteSngDtlsTbs = eliteSngDtlsTbs;
-	}
-
-	public EliteSngDtlsTb addEliteSngDtlsTb(EliteSngDtlsTb eliteSngDtlsTb) {
-		getEliteSngDtlsTbs().add(eliteSngDtlsTb);
-		eliteSngDtlsTb.setEliteHeaderTb(this);
-
-		return eliteSngDtlsTb;
-	}
-
-	public EliteSngDtlsTb removeEliteSngDtlsTb(EliteSngDtlsTb eliteSngDtlsTb) {
-		getEliteSngDtlsTbs().remove(eliteSngDtlsTb);
-		eliteSngDtlsTb.setEliteHeaderTb(null);
-
-		return eliteSngDtlsTb;
 	}
 
 }

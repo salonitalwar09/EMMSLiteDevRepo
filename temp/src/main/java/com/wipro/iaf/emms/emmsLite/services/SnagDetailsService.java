@@ -6,11 +6,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wipro.iaf.emms.emmsLite.Constants.Constants;
+import com.wipro.iaf.emms.emmsLite.Repository.AssetRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.CauseCodeRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.FailureClassRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.ProblemCodeRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.RemedyCodeRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.SnagDetailsRepository;
+import com.wipro.iaf.emms.emmsLite.entity.AssetEntity;
+import com.wipro.iaf.emms.emmsLite.entity.EliteSngDtlsTb;
 import com.wipro.iaf.emms.emmsLite.entity.RemedyEntity;
 import com.wipro.iaf.emms.emmsLite.entity.FailureClassEntity;
 import com.wipro.iaf.emms.emmsLite.entity.ProblemEntity;
@@ -30,6 +34,20 @@ public class SnagDetailsService {
 	
 	@Autowired
 	public RemedyCodeRepository remedyCodeRepository;
+	
+	@Autowired
+	GenerateIdService generateidservice;
+	
+	@Autowired
+	SnagDetailsRepository snagDetailsRepository;
+	
+	@Autowired
+	AssetRepository assetRepository;
+	
+	
+	@Autowired
+	Constants constants;
+	
 	
 	public List<FailureClassEntity> getFailure() {
 		List<FailureClassEntity> failureList = new ArrayList<>();
@@ -92,7 +110,37 @@ public class SnagDetailsService {
 		
 		
 	}
+	public List<AssetEntity> getAsset() {
+		// TODO Auto-generated method stub
+		List<AssetEntity> AssetList = new ArrayList<>();
+		try{
+			AssetList= assetRepository.getAsset();
+		}
+		
+		catch(Exception e)
+		{
+			System.out.println("Exception in SnagDetailsService.getAsset() : "+ e.toString());
+		}
+		return AssetList;
+	}
 
 	
+
+	public List<EliteSngDtlsTb> viewSnag() {
+		// TODO Auto-generated method stub
+		List<EliteSngDtlsTb> snagList = new ArrayList<>();
+		
+			try{
+				snagList= snagDetailsRepository.viewSnag();
+			}
+			
+			catch(Exception e)
+			{
+				System.out.println("Exception in SnagDetailsService.viewSnag() : "+ e.toString());
+				e.printStackTrace();
+			}
+			return snagList;
+		
+	}
 
 }

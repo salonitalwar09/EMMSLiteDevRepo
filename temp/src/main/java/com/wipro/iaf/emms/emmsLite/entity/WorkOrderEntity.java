@@ -31,13 +31,22 @@ public class WorkOrderEntity {
 	private String wo_num;
 	private String work_type;
 	private String serial_num;
+	private String creation_date;
 	private String closure_date;
 	private String cm_item;
 	private String cm_desc;
 	private String det_id;
 	private String pm_desc;
+	private String created_by;
 	private String closed_by;
+	private String asset_desc;
 
+	public String getAsset_desc() {
+		return asset_desc;
+	}
+	public void setAsset_desc(String asset_desc) {
+		this.asset_desc = asset_desc;
+	}
 	public Long getWorkorder_id() {
 		return workorder_id;
 	}
@@ -86,12 +95,6 @@ public class WorkOrderEntity {
 	public void setSerial_num(String serial_num) {
 		this.serial_num = serial_num;
 	}
-	public String getClosure_date() {
-		return closure_date;
-	}
-	public void setClosure_date(String closure_date) {
-		this.closure_date = closure_date;
-	}
 	public String getCm_item() {
 		return cm_item;
 	}
@@ -122,16 +125,37 @@ public class WorkOrderEntity {
 	public void setClosed_by(String closed_by) {
 		this.closed_by = closed_by;
 	}
+
+	public String getCreation_date() {
+		return creation_date;
+	}
+	public void setCreation_date(String creation_date) {
+		this.creation_date = creation_date;
+	}
 	@Override
 	public String toString() {
 		return "WorkOrderEntity [workorder_id=" + workorder_id + ", asset_num="
 				+ asset_num + ", wo_desc=" + wo_desc + ", pm=" + pm
 				+ ", wo_status=" + wo_status + ", wo_num=" + wo_num
 				+ ", work_type=" + work_type + ", serial_num=" + serial_num
-				+ ", closure_date=" + closure_date + ", cm_item=" + cm_item
+				+ ", creation_date=" + creation_date + ", cm_item=" + cm_item
 				+ ", cm_desc=" + cm_desc + ", det_id=" + det_id + ", pm_desc="
-				+ pm_desc + ", closed_by=" + closed_by + "]";
+				+ pm_desc + ", closed_by=" + closed_by + ", asset_desc="
+				+ asset_desc + "]";
+	}
+	public String getClosure_date() {
+		return closure_date;
+	}
+	public void setClosure_date(String closure_date) {
+		this.closure_date = closure_date;
+	}
+	public String getCreated_by() {
+		return created_by;
+	}
+	public void setCreated_by(String created_by) {
+		this.created_by = created_by;
 	}
 
+	
 
 }

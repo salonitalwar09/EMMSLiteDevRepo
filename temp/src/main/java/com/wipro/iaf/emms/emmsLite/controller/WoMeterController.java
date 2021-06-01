@@ -35,14 +35,14 @@ public class WoMeterController {
 	@Autowired
 	private WoMeterService woMeterService;
 	
-	@GetMapping("/getAssetLookup")
+	@GetMapping("/getAssetAndRmBuildItemLookup")
 	public ResponseEntity<List<WoMeterLookupResponse>> getAssetDetails(){
-		return new ResponseEntity<>(woMeterService.getAssetLookup(),HttpStatus.OK);		
+		return new ResponseEntity<>(woMeterService.getAssetLookup(0),HttpStatus.OK);		
 	}
 	
-	@GetMapping("/getAssetLookupById/{assetId}")
-	public ResponseEntity<WoMeterLookupResponse> getAssetLookupById(@PathVariable String assetId){
-		return new ResponseEntity<>(woMeterService.getAssetLookupById(assetId),HttpStatus.OK);		
+	@GetMapping("/getInstallBuildItemLookup")
+	public ResponseEntity<List<WoMeterLookupResponse>> getInstallBuildItemLookup(){
+		return new ResponseEntity<>(woMeterService.getAssetLookup(1),HttpStatus.OK);		
 	}
 	
 	@PostMapping("/saveMeterDetails/{workOrderId}")

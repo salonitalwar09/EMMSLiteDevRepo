@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wipro.iaf.emms.emmsLite.Repository.PlannedAssetRepository;
-
 import com.wipro.iaf.emms.emmsLite.entity.AssetEntity;
+import com.wipro.iaf.emms.emmsLite.entity.ElitePlndAstTb;
 
 
 @Service
@@ -20,9 +20,9 @@ public class PlannedAssetService {
 	
 	
 	
-	public List<AssetEntity> getPlndAsstDetails()
+	public List<ElitePlndAstTb> getPlndAsstDetails()
 	{
-		  List <AssetEntity> assetDetails = new ArrayList<>();
+		  List <ElitePlndAstTb> assetDetails = new ArrayList<>();
 		  //List<PlannedAssetBean> assetBean = new ArrayList<PlannedAssetBean>();
 		try{
 	

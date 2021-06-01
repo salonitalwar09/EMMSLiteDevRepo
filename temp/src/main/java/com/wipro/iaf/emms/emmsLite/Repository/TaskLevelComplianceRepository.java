@@ -33,4 +33,6 @@ public interface TaskLevelComplianceRepository extends JpaRepository<TaskLevelCo
 	@Query(value = "DELETE FROM emms_lite.elite_wo_tlc_tb WHERE tlc_id=?1", nativeQuery = true)
 	public void deleteByTlcId(String tlcid);
 	
+	@Query(value = "SELECT MAX(TASK_NO) FROM emms_lite.elite_wo_tlc_tb", nativeQuery=true)
+	public String getTaskNoCount();
 }
