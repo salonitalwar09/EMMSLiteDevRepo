@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderArmDearmResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
+import com.wipro.iaf.emms.emmsLite.entity.ArmingAssetEntity;
 import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
 import com.wipro.iaf.emms.emmsLite.services.WorkOrderArmDeArmService;
@@ -38,15 +39,16 @@ public class WorkOrderArmDearmController {
 	private WorkOrderArmDeArmService workOrderArmDeArmService;
 	
 	/**
-	 * Method to view all the entries for the Arming/De-Arming for a particular Work Order
+	 * Method to view all the entries for the Arming/De-Arming for a particular Work Order of type A-REM 
+	 * applicable for unloading only.
 	 * @param workOrderId
 	 * @return
 	 */
-	@GetMapping("/viewWOArmDeArm/{workOrderId}")
-	public List<WorkOrderArmDearmEntity> getWOArmDearmEntityList(@PathVariable("workOrderId")String workOrderId)
+	@GetMapping("/viewWODeArmUnload/{assetNum}")
+	public List<ArmingAssetEntity> getEnteriesForUnload(@PathVariable("assetNum")String assetNum)
 	{
-		System.out.println("getWOArmDearmEntityList");
-		return workOrderArmDeArmService.getAllWOArmDeArming(workOrderId);
+		System.out.println("++++++Begin viewWODearmUnload+++Controller++++FOR UNLOAD");
+		return workOrderArmDeArmService.getAllWOUnloadRecords(assetNum);
 	}
 	
 	/**
@@ -60,15 +62,6 @@ public class WorkOrderArmDearmController {
 		return workOrderArmDeArmService.getArmamentItemDDList();
 	}
 	
-	//To view the Armament Description for a particular hard point build item
-	/*	@GetMapping("/viewArmDesc/{armamentNo}")
-	public String getArmamentDescription(@PathVariable("armamentNo") String armGIGNo)
-	{
-		System.out.println("getArmamentDescription");
-		return workOrderArmDeArmService.getArmDescription(armGIGNo);
-	}
-	 */
-	
 	/**
 	 * Method to view the build item list that are of type Hard Point
 	 * @return BuildItemEntity
@@ -79,15 +72,7 @@ public class WorkOrderArmDearmController {
 		System.out.println("getValuesForBuildType");
 		return workOrderArmDeArmService.getValuesForBuildType();
 	}
-	
-	//To view the station no for a particular hard point build item
-/*	@GetMapping("/viewStationNo/{buildItem}")
-	public String getStationNoValue(@PathVariable("buildItem") String builditem)
-	{
-		System.out.println("getStationNoList");
-		return workOrderArmDeArmService.getStationNoForBuildItem(builditem);
-	}
-*/		
+			
 	/**
 	 * Method to save the complete row of the Arming/DeArming and calculate the current quantity
 	 * @param woArmDearmEntity
@@ -100,6 +85,24 @@ public class WorkOrderArmDearmController {
 		try {
 			System.out.println("++++++++Inside saveCurrentQuantity Controller+++WORKORDERID:: "+workorderId);			
 			return  new ResponseEntity<>(workOrderArmDeArmService.saveCurrentQuantityForRow(woArmDearmEntity, workorderId), HttpStatus.OK);
+		} catch (Exception e) {
+			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+	}
+	
+	/**
+	 * Method to save the complete row of the Arming/DeArming for loading asset in the A-CON/A-FIT Work Order type.
+	 * It calculates the evaluated quantity and enters the values in database with status as 'NEW'.
+	 * It also updates the 'ASSET' table with the new entry.
+	 * @param woArmDearmEntity
+	 * @param workorderId
+	 * @return WorkOrderArmDearmEntity
+	 */
+	@PostMapping("/saveNewRowForLoad/{workOrderId}/{assetNum}")
+	public ResponseEntity<WorkOrderArmDearmEntity> saveControllerForLoad(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("assetNum")String assetNum){
+		try {
+			System.out.println("++++++++Inside saveCurrentRowForLoad Controller+++WORKORDERID:: "+workorderId);			
+			return  new ResponseEntity<>(workOrderArmDeArmService.saveLoadandUnloadRow(woArmDearmEntity, workorderId, assetNum), HttpStatus.OK);
 		} catch (Exception e) {
 			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
@@ -131,4 +134,16 @@ public class WorkOrderArmDearmController {
 	public ResponseEntity<WorkOrderArmDearmResponseBean> deleteBuildItemRow(@PathVariable("armidpk")String arm_id){
 		return new ResponseEntity<>(workOrderArmDeArmService.deleteBuildItem(arm_id),HttpStatus.OK);
 	}
+	
+	/**
+	 * Method to view all the entries for the Arming/De-Arming for a particular Work Order
+	 * @param workOrderId
+	 * @return
+	 */
+	/*@GetMapping("/viewWOArmDeArm/{workOrderId}")
+	public List<WorkOrderArmDearmEntity> getWOArmDearmEntityList(@PathVariable("workOrderId")String workOrderId)
+	{
+		System.out.println("getWOArmDearmEntityList");
+		return workOrderArmDeArmService.getAllWOArmDeArming(workOrderId);
+	}*/
 }

@@ -3,6 +3,7 @@ package com.wipro.iaf.emms.emmsLite.services;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,11 +12,13 @@ import com.wipro.iaf.emms.emmsLite.Constants.Constants;
 import com.wipro.iaf.emms.emmsLite.Repository.ArmamentGIGRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.BuildItemRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.WOArmingAssetRepository;
+import com.wipro.iaf.emms.emmsLite.Repository.WOArmingHistoryRepository;
 import com.wipro.iaf.emms.emmsLite.Repository.WorkOrderArmDearmRepository;
 import com.wipro.iaf.emms.emmsLite.beans.WorkOrderArmDearmResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.ArmGIGEntity;
 import com.wipro.iaf.emms.emmsLite.entity.ArmingAssetEntity;
 import com.wipro.iaf.emms.emmsLite.entity.BuildItemEntity;
+import com.wipro.iaf.emms.emmsLite.entity.WOArmingHistoryEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkOrderArmDearmEntity;
 import com.wipro.iaf.emms.emmsLite.entity.WorkTypeEntity;
 
@@ -39,6 +42,8 @@ public class WorkOrderArmDeArmService {
 	ArmamentGIGRepository armGIGRepository;
 	@Autowired
 	WOArmingAssetRepository woArmDearmAssetRepo;
+	@Autowired
+	WOArmingHistoryRepository woArmingHistoryRepo;
 	@Autowired
 	WorkOrderArmDearmResponseBean woArmDearmResponseBean;
 	@Autowired
@@ -73,6 +78,42 @@ public class WorkOrderArmDeArmService {
 		} 
 		System.out.println("+++++++++++++End of getAllWOArmDeArming+++++++++++++");
 		return armDearmList;
+	}
+	
+	/**
+	 * This method allows user to view all the entries in the Arming/De-Arming ASSET table corresponding to a  
+	 * particular ASSET Number where the current quantity of the asset is greater than 0.
+	 * User can then enter the unload quantity for the entries that are returned from the above table on view.
+	 * @param assetNum
+	 * @return
+	 */
+	public List<ArmingAssetEntity> getAllWOUnloadRecords(String assetNum) {
+	
+		List<ArmingAssetEntity> deArmAssetList = new ArrayList<>();
+		System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++++++++++");
+		if (deArmAssetList != null) {
+			System.out.println("+++++++++++++Inside getAllWOUnloadRecords++++++deArmAssetList is not null+++++++");
+			try {
+				deArmAssetList = woArmDearmAssetRepo.getAllWODeArmAssetRecords(assetNum);
+			}catch(Exception e) {
+				System.out.println("Error occured while Arming De-Arming data from repository");
+				System.out.println(e.getMessage());
+			}
+			
+			if (!deArmAssetList.isEmpty()) {
+				System.out.println("+++++++++++++Inside getAllWOUnloadRecords++++++deArmAssetList is not empty+++++++");
+				woArmDearmResponseBean.setCode(202);
+				woArmDearmResponseBean.setStatus("Successful");
+				woArmDearmResponseBean.setDescription("All Work Order Arming De-Arming records fetched successfully");
+			}else {
+				System.out.println("+++++++++++++Inside getAllWOUnloadRecords++++++deArmAssetList is empty+++++++");
+				woArmDearmResponseBean.setCode(202);
+				woArmDearmResponseBean.setStatus("Successful");
+				woArmDearmResponseBean.setDescription("There are no records present for Work Order Arming De-Arming");
+			}			
+		} 
+		System.out.println("+++++++++++++End of getAllWOUnloadRecords+++++++++++++");
+		return deArmAssetList;
 	}
 	
 	public List<ArmGIGEntity>getArmamentItemDDList()
@@ -167,6 +208,90 @@ public class WorkOrderArmDeArmService {
 		return woArmDearmEntity;
 	}
 	
+	public WorkOrderArmDearmEntity saveLoadandUnloadRow(WorkOrderArmDearmEntity woArmDearmEntity, String workorderId, String assetNum){
+		System.out.println("+++++++++++++Start of saveLoadandUnloadRow+++++++++++++");
+		int current = 0;
+		int unload = 0;
+		int evaluated =0;
+		if (workorderId!= null && woArmDearmEntity != null) {
+			if (woArmDearmEntity.getBuildItem() != null
+					&& woArmDearmEntity.getStationNo() != null
+					&& woArmDearmEntity.getArmGIGNo() != null) {
+				System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++No value is null++++++");
+				woArmDearmEntity.setWorkorderId(workorderId);
+				woArmDearmEntity.setArmStatus("NEW");
+				if (woArmDearmEntity.getLoadQuant() != null && woArmDearmEntity.getLoadQuant() != 0) {
+					woArmDearmEntity.setCurrentQuant(0);				
+					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++LOAD QUANT IS NOT NULL OR 0++++++");
+					woArmDearmEntity.setEvaluatedQuant(woArmDearmEntity.getLoadQuant());
+					armingAssetEntity.setAssetNum(assetNum);
+					armingAssetEntity.setBuildItem(woArmDearmEntity.getBuildItem());
+					armingAssetEntity.setStationNo(woArmDearmEntity.getStationNo());
+					armingAssetEntity.setArmGIGNo(woArmDearmEntity.getArmGIGNo());
+					armingAssetEntity.setArmPosition(woArmDearmEntity.getArmPosition());
+					armingAssetEntity.setLotNo(woArmDearmEntity.getLotNo());
+					armingAssetEntity.setSerialNo(woArmDearmEntity.getSerialNo());
+					armingAssetEntity.setPartNo(woArmDearmEntity.getPartNo());
+					armingAssetEntity.setCurrentQuant(woArmDearmEntity.getLoadQuant());
+					woArmDearmAssetRepo.save(armingAssetEntity);
+				}else if (woArmDearmEntity.getUnloadQuant() != null && woArmDearmEntity.getUnloadQuant() != 0) {
+					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UN LOAD QUANT IS NOT NULL OR 0++++++");
+					if (woArmDearmEntity.getCurrentQuant() != null) {
+						current = woArmDearmEntity.getCurrentQuant();
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++CURRENT QUANT++++++"+current);
+					}
+					if (woArmDearmEntity.getUnloadQuant() != null) {
+						unload = woArmDearmEntity.getUnloadQuant();
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UNLOAD QUANT++++++"+unload);
+					}
+					if (woArmDearmEntity.getEvaluatedQuant() != null) {
+						evaluated = woArmDearmEntity.getEvaluatedQuant();
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED QUANT++++++"+evaluated);
+					}
+					if (unload != 0 && current > unload) {
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UNLOAD QUANT NOT 0++++++"+unload);
+						evaluated = current - unload;
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED QUANT FOR UNLOADING++++++"+evaluated);
+						if (assetNum != null ) {
+							System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++ASSETNUM NOT NULL++++++");
+							List<ArmingAssetEntity> armingAssetEntity = woArmDearmAssetRepo.getAssetRecord(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getStationNo(), assetNum);
+							if (armingAssetEntity != null && armingAssetEntity.get(0) != null) {
+								System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++armingAssetEntity.get(0) IS NOT NULL++++++");
+								ArmingAssetEntity armAsset = armingAssetEntity.get(0);
+								if (evaluated != 0) {
+									System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED IS NOT ZERO++++++");
+									armAsset.setCurrentQuant(evaluated);
+									woArmDearmAssetRepo.save(armAsset);
+								}else {
+									System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED IS ZERO++++++");
+									armAsset.setCurrentQuant(0);
+									WOArmingHistoryEntity armingHistoryEntity = new WOArmingHistoryEntity();
+									armingHistoryEntity.setArmGIGNo(armAsset.getArmGIGNo());
+									armingHistoryEntity.setArmPosition(armAsset.getArmPosition());
+									armingHistoryEntity.setAssetNum(armAsset.getAssetNum());
+									armingHistoryEntity.setBuildItem(armAsset.getBuildItem());
+									armingHistoryEntity.setCurrentQuant(0);
+									armingHistoryEntity.setLotNo(armAsset.getLotNo());
+									armingHistoryEntity.setPartNo(armAsset.getPartNo());
+									armingHistoryEntity.setSerialNo(armAsset.getSerialNo());
+									armingHistoryEntity.setStationNo(armAsset.getStationNo());
+									woArmingHistoryRepo.save(armingHistoryEntity);
+									woArmDearmAssetRepo.deleteById(armAsset.getArmingAssetId());
+								}
+							}							
+						}
+					}
+					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++BEFORE SETTING EVAL QUANT++++++"+unload);
+					woArmDearmEntity.setEvaluatedQuant(evaluated);
+				}
+				System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++Going to save the row in DB++++++");
+				woArmDearmRepo.save(woArmDearmEntity);
+			}
+		}
+		System.out.println("+++++++++++++End of saveLoadandUnloadRow+++++++++++++");
+		return woArmDearmEntity;
+	}
+	
 	/**
 	 * Method to calculate the Evaluated Quantity for a row and change the status to 'COMPLETED' 
 	 * for the same in the database. Updates the Current Quantity in the Arming/De-Arming to the 
@@ -183,50 +308,75 @@ public class WorkOrderArmDeArmService {
 		int unload = 0;
 		int evaluated =0;
 		if (workOrderArmDearmEntity != null) {
-			if (workOrderArmDearmEntity.getCurrentQuant() != null) {
-				current = workOrderArmDearmEntity.getCurrentQuant();
-				System.out.println("+++++++++++++Inside onLoadClickItem+++++++CURRENT QUANT++++++"+current);
-			}
-			if (workOrderArmDearmEntity.getLoadQuant() != null) {
-				load = workOrderArmDearmEntity.getLoadQuant();
-				System.out.println("+++++++++++++Inside onLoadClickItem+++++++LOAD QUANT++++++"+load);
-			}
-			if (workOrderArmDearmEntity.getUnloadQuant() != null) {
-				unload = workOrderArmDearmEntity.getUnloadQuant();
-				System.out.println("+++++++++++++Inside onLoadClickItem+++++++UNLOAD QUANT++++++"+unload);
-			}
-			if (workOrderArmDearmEntity.getEvaluatedQuant() != null) {
-				evaluated = workOrderArmDearmEntity.getEvaluatedQuant();
-				System.out.println("+++++++++++++Inside onLoadClickItem+++++++EVALUATED QUANT++++++"+evaluated);
-			}
-			if (load != 0) {
-				evaluated = current + load;
-			}
-			if (unload != 0 && current > unload) {
-				evaluated = current - unload;
-			}
-		
-			workOrderArmDearmEntity.setEvaluatedQuant(evaluated);
-			workOrderArmDearmEntity.setWorkorderId(workorderId);
-			str.append("Evaluated Quantity Load Successful");	
-			
-			if (workOrderArmDearmEntity.getArmStatus() != null && !workOrderArmDearmEntity.getArmStatus().equals(con.COMP_STATUS)) {
-				workOrderArmDearmEntity.setArmStatus(con.COMP_STATUS);
-				str.append("Status Update to COMPLETED Successful");
+			Optional<WorkOrderArmDearmEntity> woArmDearmEntityList = woArmDearmRepo.findById(Integer.valueOf(workOrderArmDearmEntity.getArm_id()));		
+			WorkOrderArmDearmEntity woArmDearmEntity = woArmDearmEntityList.get();
+			if (woArmDearmEntity != null) {
+				System.out.println("+++++++++++++Inside onLoadClickItem+++++++woArmDearmEntity IS NOT NULL++++++");
+				if (woArmDearmEntity.getCurrentQuant() != null) {
+					//current = workOrderArmDearmEntity.getCurrentQuant();
+					current = woArmDearmEntity.getCurrentQuant();
+					System.out.println("+++++++++++++Inside onLoadClickItem+++++++CURRENT QUANT++++++"+current);
+				}
+				if (woArmDearmEntity.getLoadQuant() != null) {
+					//load = workOrderArmDearmEntity.getLoadQuant();
+					load = woArmDearmEntity.getLoadQuant();
+					System.out.println("+++++++++++++Inside onLoadClickItem+++++++LOAD QUANT++++++"+load);
+				}
+				if (woArmDearmEntity.getUnloadQuant() != null) {
+					//unload = workOrderArmDearmEntity.getUnloadQuant();
+					unload = woArmDearmEntity.getUnloadQuant();
+					System.out.println("+++++++++++++Inside onLoadClickItem+++++++UNLOAD QUANT++++++"+unload);
+				}
+				if (woArmDearmEntity.getEvaluatedQuant() != null) {
+					evaluated = workOrderArmDearmEntity.getEvaluatedQuant();
+					System.out.println("+++++++++++++Inside onLoadClickItem+++++++EVALUATED QUANT++++++"+evaluated);
+				}
+				if (load != 0) {
+					evaluated = current + load;
+				}
+				if (unload != 0 && current > unload) {
+					System.out.println("+++++++++++++Inside onLoadClickItem+++++++UNLOAD QUANT NOT 0++++++"+unload);
+					evaluated = current - unload;
+					System.out.println("+++++++++++++Inside onLoadClickItem+++++++EVALUATED QUANT FOR UNLOADING++++++"+evaluated);
+					if (assetNum != null ) {
+						System.out.println("+++++++++++++Inside onLoadClickItem+++++++ASSETNUM NOT NULL++++++");
+						List<ArmingAssetEntity> armingAssetEntity = woArmDearmAssetRepo.getAssetRecord(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getStationNo(), assetNum);
+						if (armingAssetEntity != null && armingAssetEntity.get(0) != null) {
+							System.out.println("+++++++++++++Inside onLoadClickItem+++++++armingAssetEntity.get(0) IS NOT NULL++++++");
+							ArmingAssetEntity armAsset = armingAssetEntity.get(0);
+							if (evaluated != 0) {
+								System.out.println("+++++++++++++Inside onLoadClickItem+++++++EVALUATED IS NOT ZERO++++++");
+								armAsset.setCurrentQuant(evaluated);
+								woArmDearmAssetRepo.save(armAsset);
+							}else {
+								System.out.println("+++++++++++++Inside onLoadClickItem+++++++EVALUATED IS ZERO++++++");
+								armAsset.setCurrentQuant(0);
+								WOArmingHistoryEntity armingHistoryEntity = new WOArmingHistoryEntity();
+								armingHistoryEntity.setArmGIGNo(armAsset.getArmGIGNo());
+								armingHistoryEntity.setArmPosition(armAsset.getArmPosition());
+								armingHistoryEntity.setAssetNum(armAsset.getAssetNum());
+								armingHistoryEntity.setBuildItem(armAsset.getBuildItem());
+								armingHistoryEntity.setCurrentQuant(0);
+								armingHistoryEntity.setLotNo(armAsset.getLotNo());
+								armingHistoryEntity.setPartNo(armAsset.getPartNo());
+								armingHistoryEntity.setSerialNo(armAsset.getSerialNo());
+								armingHistoryEntity.setStationNo(armAsset.getStationNo());
+								woArmingHistoryRepo.save(armingHistoryEntity);
+								woArmDearmAssetRepo.deleteById(armAsset.getArmingAssetId());
+							}
+						}							
+					}
+				}
+				System.out.println("+++++++++++++Inside onLoadClickItem+++++++BEFORE SETTING EVAL QUANT++++++"+unload);
+				woArmDearmEntity.setEvaluatedQuant(evaluated);
+				if (woArmDearmEntity.getArmStatus() != null && !woArmDearmEntity.getArmStatus().equals(con.COMP_STATUS)) {
+					System.out.println("+++++++++++++Inside onLoadClickItem+++++++SETTING ARM STATUS++++++"+unload);
+					woArmDearmEntity.setArmStatus(con.COMP_STATUS);
+					str.append("Status Update to COMPLETED Successful");
+				}
+				woArmDearmRepo.save(woArmDearmEntity);
 			}		
-			woArmDearmRepo.save(workOrderArmDearmEntity);
-			if (assetNum != null) {
-				armingAssetEntity.setAssetNum(assetNum);
-			}
-			armingAssetEntity.setBuildItem(workOrderArmDearmEntity.getBuildItem());
-			armingAssetEntity.setStationNo(workOrderArmDearmEntity.getStationNo());
-			armingAssetEntity.setArmPosition(workOrderArmDearmEntity.getArmDescription());
-			armingAssetEntity.setArmGIGNo(workOrderArmDearmEntity.getArmGIGNo());
-			armingAssetEntity.setPartNo(workOrderArmDearmEntity.getPartNo());
-			armingAssetEntity.setSerialNo(workOrderArmDearmEntity.getSerialNo());
-			armingAssetEntity.setLotNo(workOrderArmDearmEntity.getLotNo());
-			armingAssetEntity.setCurrentQuant(workOrderArmDearmEntity.getEvaluatedQuant());			
-			woArmDearmAssetRepo.save(armingAssetEntity);
+			str.append("Evaluated Quantity Load Successful");
 			}
 		if (!str.equals(null)) {
 			woArmDearmResponseBean.setCode(202);		
@@ -250,7 +400,7 @@ public class WorkOrderArmDeArmService {
 		return woArmDearmResponseBean;
 	}
 	
-	/*public String getEvaluatedQuantity(WorkOrderArmDearmEntity woArmDearmEntity,String armId) {		
+/*public String getEvaluatedQuantity(WorkOrderArmDearmEntity woArmDearmEntity,String armId) {		
 	String currentQuan=null;
 	String loadQuan=null;
 	String unLoadQuan=null;
