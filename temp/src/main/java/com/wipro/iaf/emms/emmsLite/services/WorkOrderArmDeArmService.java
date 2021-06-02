@@ -208,6 +208,90 @@ public class WorkOrderArmDeArmService {
 		return woArmDearmEntity;
 	}
 	
+	public WorkOrderArmDearmEntity saveLoadandUnloadRow(WorkOrderArmDearmEntity woArmDearmEntity, String workorderId, String assetNum){
+		System.out.println("+++++++++++++Start of saveLoadandUnloadRow+++++++++++++");
+		int current = 0;
+		int unload = 0;
+		int evaluated =0;
+		if (workorderId!= null && woArmDearmEntity != null) {
+			if (woArmDearmEntity.getBuildItem() != null
+					&& woArmDearmEntity.getStationNo() != null
+					&& woArmDearmEntity.getArmGIGNo() != null) {
+				System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++No value is null++++++");
+				woArmDearmEntity.setWorkorderId(workorderId);
+				woArmDearmEntity.setArmStatus("NEW");
+				if (woArmDearmEntity.getLoadQuant() != null && woArmDearmEntity.getLoadQuant() != 0) {
+					woArmDearmEntity.setCurrentQuant(0);				
+					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++LOAD QUANT IS NOT NULL OR 0++++++");
+					woArmDearmEntity.setEvaluatedQuant(woArmDearmEntity.getLoadQuant());
+					armingAssetEntity.setAssetNum(assetNum);
+					armingAssetEntity.setBuildItem(woArmDearmEntity.getBuildItem());
+					armingAssetEntity.setStationNo(woArmDearmEntity.getStationNo());
+					armingAssetEntity.setArmGIGNo(woArmDearmEntity.getArmGIGNo());
+					armingAssetEntity.setArmPosition(woArmDearmEntity.getArmPosition());
+					armingAssetEntity.setLotNo(woArmDearmEntity.getLotNo());
+					armingAssetEntity.setSerialNo(woArmDearmEntity.getSerialNo());
+					armingAssetEntity.setPartNo(woArmDearmEntity.getPartNo());
+					armingAssetEntity.setCurrentQuant(woArmDearmEntity.getLoadQuant());
+					woArmDearmAssetRepo.save(armingAssetEntity);
+				}else if (woArmDearmEntity.getUnloadQuant() != null && woArmDearmEntity.getUnloadQuant() != 0) {
+					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UN LOAD QUANT IS NOT NULL OR 0++++++");
+					if (woArmDearmEntity.getCurrentQuant() != null) {
+						current = woArmDearmEntity.getCurrentQuant();
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++CURRENT QUANT++++++"+current);
+					}
+					if (woArmDearmEntity.getUnloadQuant() != null) {
+						unload = woArmDearmEntity.getUnloadQuant();
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UNLOAD QUANT++++++"+unload);
+					}
+					if (woArmDearmEntity.getEvaluatedQuant() != null) {
+						evaluated = woArmDearmEntity.getEvaluatedQuant();
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED QUANT++++++"+evaluated);
+					}
+					if (unload != 0 && current > unload) {
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UNLOAD QUANT NOT 0++++++"+unload);
+						evaluated = current - unload;
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED QUANT FOR UNLOADING++++++"+evaluated);
+						if (assetNum != null ) {
+							System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++ASSETNUM NOT NULL++++++");
+							List<ArmingAssetEntity> armingAssetEntity = woArmDearmAssetRepo.getAssetRecord(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getStationNo(), assetNum);
+							if (armingAssetEntity != null && armingAssetEntity.get(0) != null) {
+								System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++armingAssetEntity.get(0) IS NOT NULL++++++");
+								ArmingAssetEntity armAsset = armingAssetEntity.get(0);
+								if (evaluated != 0) {
+									System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED IS NOT ZERO++++++");
+									armAsset.setCurrentQuant(evaluated);
+									woArmDearmAssetRepo.save(armAsset);
+								}else {
+									System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED IS ZERO++++++");
+									armAsset.setCurrentQuant(0);
+									WOArmingHistoryEntity armingHistoryEntity = new WOArmingHistoryEntity();
+									armingHistoryEntity.setArmGIGNo(armAsset.getArmGIGNo());
+									armingHistoryEntity.setArmPosition(armAsset.getArmPosition());
+									armingHistoryEntity.setAssetNum(armAsset.getAssetNum());
+									armingHistoryEntity.setBuildItem(armAsset.getBuildItem());
+									armingHistoryEntity.setCurrentQuant(0);
+									armingHistoryEntity.setLotNo(armAsset.getLotNo());
+									armingHistoryEntity.setPartNo(armAsset.getPartNo());
+									armingHistoryEntity.setSerialNo(armAsset.getSerialNo());
+									armingHistoryEntity.setStationNo(armAsset.getStationNo());
+									woArmingHistoryRepo.save(armingHistoryEntity);
+									woArmDearmAssetRepo.deleteById(armAsset.getArmingAssetId());
+								}
+							}							
+						}
+					}
+					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++BEFORE SETTING EVAL QUANT++++++"+unload);
+					woArmDearmEntity.setEvaluatedQuant(evaluated);
+				}
+				System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++Going to save the row in DB++++++");
+				woArmDearmRepo.save(woArmDearmEntity);
+			}
+		}
+		System.out.println("+++++++++++++End of saveLoadandUnloadRow+++++++++++++");
+		return woArmDearmEntity;
+	}
+	
 	/**
 	 * Method to calculate the Evaluated Quantity for a row and change the status to 'COMPLETED' 
 	 * for the same in the database. Updates the Current Quantity in the Arming/De-Arming to the 
