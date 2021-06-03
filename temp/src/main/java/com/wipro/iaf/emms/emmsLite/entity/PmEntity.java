@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "elite_pm_tb", schema= "emms_lite")
+@Table(name = "elite_pm_tb", schema= "elite")
 @Component
 public class PmEntity {
 
@@ -22,8 +22,17 @@ public class PmEntity {
 	private String assetNum;
 	@Column(name = "parent")
 	private String parent;
+	@Column(name= "work_type")
+	private String workType;
 
+	
 
+	public String getWorkType() {
+		return workType;
+	}
+	public void setWorkType(String workType) {
+		this.workType = workType;
+	}
 	public Long getPmuId() {
 		return pmuId;
 	}
