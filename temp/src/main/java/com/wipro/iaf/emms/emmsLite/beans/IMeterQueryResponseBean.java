@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public interface IMeterQueryResponseBean {
 
-	 public String getBuildItem();
-	 public String getSerialNum();
-	 public String getAssetDescription();
-	 public String getMeterpartNumber_meterLookup();
-	 public String getDescription_Meter();
-	 public String getPartNumber();
-	 @Value("#{200}")
-	 public int getCode();
+	public String getMeterName();
+	
+	public String getMeterType();
+
+	public String getMeterDescription();
+
+	@Value("#{200}")
+	public int getCode();
 }

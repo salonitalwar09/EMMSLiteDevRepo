@@ -55,9 +55,10 @@ public class WoMeterController {
 		return new ResponseEntity<>(woMeterService.deleteMeterDetails(woMeterId),HttpStatus.OK);
 	}
 	
-	@GetMapping("/getMeterLookupById/{assetId}")
-	public ResponseEntity<IMeterQueryResponseBean> getMeterLookupById(@PathVariable String assetId){
-		return new ResponseEntity<>(woMeterService.getMeterLookupById(assetId),HttpStatus.OK);		
+	@GetMapping("/getMeterLookupById/{assetNum}")
+	public ResponseEntity<List<IMeterQueryResponseBean>> getMeterLookupById(@PathVariable String assetNum){
+		System.out.println("AssetNum="+assetNum);
+		return new ResponseEntity<>(woMeterService.getMeterLookupById(assetNum),HttpStatus.OK);		
 	}
 	
 	@GetMapping("/getMeterByWorkOrderId/{workOrderId}")
