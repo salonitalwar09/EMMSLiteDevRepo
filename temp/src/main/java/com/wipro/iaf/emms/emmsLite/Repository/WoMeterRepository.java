@@ -54,21 +54,27 @@ public interface WoMeterRepository extends JpaRepository<WoMeterEntity,Integer>{
 			+" and plus.parentassetid is null and plus.ontime is not null",nativeQuery=true)
 	public List<String> getInstallBuildItemLookup();
 	
-	@Query(value="select ast.assetnum as meterpartNumber_meterLookup,"
-			+" plus.name as builditem,"
-			+" ast.SERIALNUM,"
-			+" ast.description as assetDescription,"
-			+" cat.item as partNumber,"
-			+" cat.description as Description_Meter"
-			+" from elite_PLUSASAONOFF_tb plus "
-			+" join asset ast"
-			+" on plus.assetid = ast.assetid"
-			+" join plusacacat cat"
-			+" on ast.assetid = cat.plusacacatid"
-			+" where plus.assetid=?1",nativeQuery=true)
-	public IMeterQueryResponseBean getMeterLookupQueryById(@Param("assetId") String assetid);
+	@Query(value="select m.metername as MeterName,m.metertype as MeterType"
+			+ ",m.meterdescription as MeterDescription"
+			+" from elite_assetmeter_tb m"
+			+" where m.assetnum=?1",nativeQuery=true)
+	public List<IMeterQueryResponseBean> getMeterLookupQueryById(@Param("assetNum") String assetNum);
 
 	@Query(value="select * from elite_wo_meter_tb woMeter"
 			+ " where woMeter.work_order_id=?1",nativeQuery=true)
 	public List<WoMeterEntity> findMeterDetailsById(@Param("workOrderId")Long workOrderId);
 }
+/*
+@Query(value="select ast.assetnum as meterpartNumber_meterLookup,"
+		+" m.metertype as metertype,plus.name as builditem,"
+		+" ast.SERIALNUM,"
+		+" ast.description as assetDescription,"
+		+" cat.item as partNumber,"
+		+" cat.description as Description_Meter"
+		+" from elite_assetmeter_tb m,"
+		+ "elite_PLUSASAONOFF_tb plus "
+		+" join asset ast"
+		+" on plus.assetid = ast.assetid"
+		+" join plusacacat cat"
+		+" on ast.assetid = cat.plusacacatid"
+		+" where plus.assetid=?1 and m.assetnum=?2",nativeQuery=true)*/

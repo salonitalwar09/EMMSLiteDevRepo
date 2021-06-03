@@ -85,8 +85,8 @@ public class WoMeterService {
 		return woMeterLookupResponse;
 	}
 
-	public IMeterQueryResponseBean getMeterLookupById(String assetId) {
-		IMeterQueryResponseBean bean  =  woMeterRepository.getMeterLookupQueryById(assetId);
+	public List<IMeterQueryResponseBean> getMeterLookupById(String assetNum) {
+		List<IMeterQueryResponseBean> bean  =  woMeterRepository.getMeterLookupQueryById(assetNum);
 		System.out.println("response bean from db query-- "+bean.toString());
 		return bean;
 	}
