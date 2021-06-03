@@ -19,5 +19,8 @@ import com.wipro.iaf.emms.emmsLite.entity.AssetInsRemEntity;
 public interface AssetInsRemRepository extends JpaRepository<AssetInsRemEntity, Long> {
 	@Query(value = "SELECT * FROM elite.elite_ir_tb where elite_ir_tb.workorder_id=?1" , nativeQuery=true)
 	public List<AssetInsRemEntity> getAllAssetRemRecordByWoId(Long workorderId);
+	
+	@Query(value = "SELECT * FROM elite.elite_ir_tb where elite_ir_tb.ir_id=?1" , nativeQuery=true)
+	public AssetInsRemEntity insRemRecordById(Long irId);
 
 }

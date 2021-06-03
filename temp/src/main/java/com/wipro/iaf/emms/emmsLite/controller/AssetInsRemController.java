@@ -75,11 +75,11 @@ public class AssetInsRemController {
 			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);	
 		}
 	}
-	@PutMapping("/assetInsRem/{workorderId}/{insRemId}")
-	public ResponseEntity<String> assetInsRemFunction(@PathVariable Long workorderId, @PathVariable Long insRemId){
+	@PostMapping("/assetInsRem/{insRemId}")
+	public ResponseEntity<String> assetInsRemFunction(@PathVariable Long insRemId){
 		try {
-			System.out.println("WorkorderId from Path Variable:: "+workorderId );
 			System.out.println("Install/Remove RecordId from Path Variable:: "+insRemId);
+			assetInsRemService.insRemButton(insRemId);
 			return  new ResponseEntity<>("Asset Instal/ Remove Successfull",HttpStatus.OK);
 		} catch (Exception e) {
 			return  new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);

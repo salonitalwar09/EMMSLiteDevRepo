@@ -16,7 +16,7 @@ import com.wipro.iaf.emms.emmsLite.entity.PmEntity;
 
 public interface PmRepository extends JpaRepository<PmEntity, String>{
 	
-	@Query(value = "SELECT * FROM emms_lite.elite_pm_tb", nativeQuery=true)
+	@Query(value = "SELECT * FROM elite.elite_pm_tb", nativeQuery=true)
 	public List<PmEntity> getAllPm();
 
 }
