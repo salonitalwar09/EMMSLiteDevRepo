@@ -108,10 +108,13 @@ public class WorkOrderService {
 		System.out.println("AssetNum:: "+workorderentity.getAsset_num());
 		System.out.println("PM:: "+workorderentity.getPm());
 		workorderentity.setWo_status("APPR");
-		DateTimeFormatter createWoDate= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		DateTimeFormatter createCloseWoDate= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
-		System.out.println("Current Date:: "+createWoDate.format(now)	);
-		workorderentity.setCreation_date(createWoDate.format(now));
+		System.out.println("Current Date:: "+createCloseWoDate.format(now));
+		workorderentity.setCreation_date(createCloseWoDate.format(now));
+		/*Closure date also to be updated as created date during 
+		create wo as per gaurav singh chauhan req:: Shivam*/
+		workorderentity.setClosure_date(createCloseWoDate.format(now));
 		System.out.println("Serial Num:: "+workorderentity.getSerial_num());
 		System.out.println("Asset Description:: "+workorderentity.getAsset_desc());
 		//workorderentity.setCreated_by("801002");
