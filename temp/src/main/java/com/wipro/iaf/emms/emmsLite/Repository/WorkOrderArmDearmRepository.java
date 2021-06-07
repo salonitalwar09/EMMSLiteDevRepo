@@ -26,6 +26,9 @@ public interface WorkOrderArmDearmRepository extends JpaRepository<WorkOrderArmD
 	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.BUILD_ITEM=?1 and armdearm.ARM_GIGNO=?2 and armdearm.ARM_POSITION=?3 and armdearm.WORKORDER_ID=?4", nativeQuery=true)
 	public List<WorkOrderArmDearmEntity> getBuildItemGigNoRecords(@Param("BUILD_ITEM") String buildItem, @Param("ARM_GIGNO") String armGIGNo,@Param("ARM_POSITION") String armPositionNo, @Param("WORKORDER_ID") String workOrderId);
 	
+	@Query(value = "UPDATE TABLE emms_lite.elite_wo_armdearm_tb armdearm set armdearm.unload_quant=?1 ,armdearm.evaluated_quant=?2 where armdearm.armid_pk=?3", nativeQuery=true)
+	public List<WorkOrderArmDearmEntity> updateArmingDeArmingEntry(@Param("unload_quant") String unloadQuant, @Param("evaluated_quant") String evaluatedQuant,@Param("armid_pk") String armId);
+	
 	//@Query(value = "SELECT item.ARM_DESCRIPTION FROM emms_lite.elite_item_tb item where item.ARM_GIGNO=?1", nativeQuery=true)
 	//public String getArmamentDescriptionForGIG(@Param("ARM_GIGNO") String armGIGNo);
 	

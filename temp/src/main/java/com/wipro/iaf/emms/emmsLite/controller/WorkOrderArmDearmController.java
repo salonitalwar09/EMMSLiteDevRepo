@@ -44,11 +44,24 @@ public class WorkOrderArmDearmController {
 	 * @param workOrderId
 	 * @return
 	 */
-	@GetMapping("/viewWODeArmUnload/{assetNum}")
-	public List<ArmingAssetEntity> getEnteriesForUnload(@PathVariable("assetNum")String assetNum)
+	@GetMapping("/viewWODeArmUnload/{assetNum}/{workOrderId}")
+	public List<WorkOrderArmDearmEntity> getEnteriesForUnload(@PathVariable("assetNum")String assetNum, @PathVariable("workOrderId")String workOrderId)
 	{
 		System.out.println("++++++Begin viewWODearmUnload+++Controller++++FOR UNLOAD");
-		return workOrderArmDeArmService.getAllWOUnloadRecords(assetNum);
+		return workOrderArmDeArmService.getAllWOUnloadRecords(assetNum, workOrderId);
+	}
+	
+	/**
+	 * Method to view all the entries for the Arming/De-Arming for a particular Work Order of type A-FIT/A-CON 
+	 * applicable for LOAD only.
+	 * @param workOrderId
+	 * @return
+	 */
+	@GetMapping("/viewWODeArmLoad/{assetNum}/{workOrderId}")
+	public List getEnteriesForLoad(@PathVariable("assetNum")String assetNum, @PathVariable("workOrderId")String workOrderId)
+	{
+		System.out.println("++++++Begin viewWODearmLoad+++Controller++++FOR LOAD");
+		return workOrderArmDeArmService.getAllWOLoadRecords(assetNum, workOrderId);
 	}
 	
 	/**
@@ -80,7 +93,7 @@ public class WorkOrderArmDearmController {
 	 * @param arm_id
 	 * @return WorkOrderArmDearmEntity
 	 */
-	@PostMapping("/saveNewRowBuildItem/{workOrderId}")
+	/*@PostMapping("/saveNewRowBuildItem/{workOrderId}")
 	public ResponseEntity<WorkOrderArmDearmEntity> saveCurrentQuantity(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId){
 		try {
 			System.out.println("++++++++Inside saveCurrentQuantity Controller+++WORKORDERID:: "+workorderId);			
@@ -88,7 +101,7 @@ public class WorkOrderArmDearmController {
 		} catch (Exception e) {
 			return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-	}
+	}*/
 	
 	/**
 	 * Method to save the complete row of the Arming/DeArming for loading asset in the A-CON/A-FIT Work Order type.
@@ -99,7 +112,7 @@ public class WorkOrderArmDearmController {
 	 * @return WorkOrderArmDearmEntity
 	 */
 	@PostMapping("/saveNewRowForLoad/{workOrderId}/{assetNum}")
-	public ResponseEntity<WorkOrderArmDearmEntity> saveControllerForLoad(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("assetNum")String assetNum){
+	public ResponseEntity<WorkOrderArmDearmEntity> saveCurrentQuantity(@RequestBody WorkOrderArmDearmEntity woArmDearmEntity, @PathVariable("workOrderId") String workorderId, @PathVariable("assetNum")String assetNum){
 		try {
 			System.out.println("++++++++Inside saveCurrentRowForLoad Controller+++WORKORDERID:: "+workorderId);			
 			return  new ResponseEntity<>(workOrderArmDeArmService.saveLoadandUnloadRow(woArmDearmEntity, workorderId, assetNum), HttpStatus.OK);
@@ -130,9 +143,9 @@ public class WorkOrderArmDearmController {
 	 * @param arm_id
 	 * @return WorkOrderArmDearmResponseBean
 	 */ 
-	@PutMapping("/deleteBuildItemRow/{armidpk}")
-	public ResponseEntity<WorkOrderArmDearmResponseBean> deleteBuildItemRow(@PathVariable("armidpk")String arm_id){
-		return new ResponseEntity<>(workOrderArmDeArmService.deleteBuildItem(arm_id),HttpStatus.OK);
+	@PutMapping("/deleteBuildItemRow/{armidpk}/{assetNum}")
+	public ResponseEntity<WorkOrderArmDearmResponseBean> deleteBuildItemRow(@PathVariable("armidpk")String arm_id, @PathVariable("assetNum")String assetNum){
+		return new ResponseEntity<>(workOrderArmDeArmService.deleteBuildItem(arm_id,assetNum),HttpStatus.OK);
 	}
 	
 	/**
