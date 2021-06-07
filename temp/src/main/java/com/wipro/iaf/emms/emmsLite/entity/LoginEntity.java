@@ -31,8 +31,9 @@ public class LoginEntity implements Serializable{
 	private int blockCount;
 	@Column(name="change_pass_time")
 	private LocalDateTime changePassTime;
-	@Column(name="user_role")
-	private String userRole;
+	/*
+	 * @Column(name="user_role") private String userRole;
+	 */
 	@Transient
 	String updatePassword; 
 		
@@ -86,17 +87,16 @@ public class LoginEntity implements Serializable{
 	public void setChangePassTime(LocalDateTime changePassTime) {
 		this.changePassTime = changePassTime;
 	}
-	public String getUserRole() {
-		return userRole;
-	}
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
-	}
+
+	/*
+	 * public String getUserRole() { return userRole; } public void
+	 * setUserRole(String userRole) { this.userRole = userRole; }
+	 */
 	@Override
 	public String toString() {
 		return "LoginEntity [userid=" + userid + ", password=" + password + ", answerOne=" + answerOne + ", answerTwo="
 				+ answerTwo + ", answerThree=" + answerThree + ", blockCount=" + blockCount + ", changePassTime="
-				+ changePassTime + ", userRole=" + userRole + ", updatePassword=" + updatePassword + "]";
+				+ changePassTime + ", updatePassword=" + updatePassword + "]";
 	}
 	public LoginEntity() {
 	}	

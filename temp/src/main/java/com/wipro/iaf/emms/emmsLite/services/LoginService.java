@@ -81,7 +81,7 @@ public class LoginService {
 				System.out.println("User authenticated");
 				loginEntityFromDb.get().setBlockCount(0);
 				loginRepo.save(loginEntityFromDb.get());
-				loginResponse.setUserRole(loginEntityFromDb.get().getUserRole());
+//				loginResponse.setUserRole(loginEntityFromDb.get().getUserRole());
 				loginResponse.setCode(200);
 				loginResponse.setLoginStatus("User authenticated");
 			}

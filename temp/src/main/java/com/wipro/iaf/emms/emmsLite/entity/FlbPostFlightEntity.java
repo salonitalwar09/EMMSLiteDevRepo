@@ -19,7 +19,7 @@ public class FlbPostFlightEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(insertable = false, updatable = false)
 	Long postFltId;
-	@JsonFormat(pattern = "dd-MMM-yy HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	Date fltDate;
 	String fltType;
 	String flbStatus;

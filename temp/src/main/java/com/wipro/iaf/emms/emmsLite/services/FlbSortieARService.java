@@ -2,6 +2,7 @@ package com.wipro.iaf.emms.emmsLite.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -28,14 +29,15 @@ public class FlbSortieARService {
 	public List<FlbSortieAREntity> findByRecordId(String recordId) {
 		System.out.println("++++++++++++++++++++Inside flb findByRecordId++++++++++++++++++++");
 		List<FlbSortieAREntity> sorties = null;
-		
+
 		try {
 			sorties = fLBSortieARRepository.findAllByRecordId(recordId);
 			System.out.println("Sorties fetched from repo" + sorties.toString());
 		} catch (Exception e) {
 			System.out.println("Some Error occured while fetching sortie from repo");
 			System.out.println(e.getMessage());
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Some Error occured while fetching sortie from repo", e);
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"Some Error occured while fetching sortie from repo", e);
 		}
 
 		System.out.println("++++++++++++++++++++end of flb findByRecordId++++++++++++++++++++");
@@ -48,6 +50,7 @@ public class FlbSortieARService {
 		if (newRow != null) {
 			try {
 				newRow.setRecordId(recordId);
+				newRow.setSortieNum(recordId + "-" + (fLBSortieARRepository.getSortieCount() + 1));
 				System.out.println("Inserting new row in DB");
 				System.out.println(newRow.toString());
 				fLBSortieARRepository.save(newRow);
@@ -55,11 +58,12 @@ public class FlbSortieARService {
 			} catch (DataIntegrityViolationException dive) {
 				System.out.println("This sortie already exists or Some required data not received");
 				System.out.println(dive.getMessage());
-				throw new ResponseStatusException(HttpStatus.CONFLICT, "This sortie already exists or Some required data not received");				
+				throw new ResponseStatusException(HttpStatus.CONFLICT,
+						"This sortie already exists or Some required data not received");
 			} catch (Exception e) {
 				System.out.println("Some Error occured");
 				System.out.println(e.getMessage());
-				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Erro", e);
+				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Error", e);
 			}
 		} else {
 			System.out.println("Bad request");
@@ -82,9 +86,6 @@ public class FlbSortieARService {
 					FlbSortieAREntity rowData = row.get();
 					if (rowData != null) {
 						System.out.println("Sortie Exist");
-						if (sortie.getSortieNum() != null) {
-							rowData.setSortieNum(sortie.getSortieNum());
-						}
 						if (sortie.getDuration() != null) {
 							rowData.setDuration(sortie.getDuration());
 						}
@@ -112,7 +113,7 @@ public class FlbSortieARService {
 						if (sortie.getStatusDate() != null) {
 							rowData.setStatusDate(sortie.getStatusDate());
 						}
-						if(sortie.getChangedBy() != null) {
+						if (sortie.getChangedBy() != null) {
 							rowData.setChangedBy(sortie.getChangedBy());
 						}
 						System.out.println("Inserting data in table");
@@ -121,7 +122,6 @@ public class FlbSortieARService {
 					}
 				} catch (Exception e) {
 					unsavedIds.add(sortie.getSortieId());
-					System.out.println("Row with sortie id: " + sortie.getSortieId() + ", does not exist.");
 					System.out.println(e.getMessage());
 				}
 			}
@@ -131,6 +131,20 @@ public class FlbSortieARService {
 			throw new ResponseStatusException(HttpStatus.PARTIAL_CONTENT, message);
 		}
 		System.out.println("++++++++++++++++++++end of flb saveSortie Service++++++++++++++++++++");
+	}
+
+	public List<FlbSortieAREntity> getSortieNum(String status, String recordId) {
+		List<Object[]> resultSet = fLBSortieARRepository.getSortieNum(status, recordId);
+		List<FlbSortieAREntity> list = new ArrayList<>();
+		for(Object[] result: resultSet) {
+			FlbSortieAREntity row = new FlbSortieAREntity();
+			Long sortieId = Long.parseLong(String.valueOf(result[0]));
+			String sortieNum = String.valueOf(result[1]);
+			row.setSortieId(sortieId);
+			row.setSortieNum(sortieNum);
+			list.add(row);
+		}
+		return list;
 	}
 
 }
