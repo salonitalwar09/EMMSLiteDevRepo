@@ -39,16 +39,24 @@ public class WoMeterEntity implements Serializable{
 	private String assetNum;
 	@Column(name="meter_name")
 	private String meterName; 
+	@Column(name="meter_Description")
+	private String  meterDescription;
 	@Column(name="initial_value")
-	private double initialValue;
+	private Double initialValue;
 	@Column(name="final_value")
-	private double finalValue;
+	private Double finalValue;
+	@Column(name="initial_hms")
+	private String initialHms;
+	@Column(name="final_hms")
+	private String finalHms;
 	@Column(name="reading_date")
 	private LocalDateTime readingDate;
 	@Column(name="updated_by")
 	private String updatedBy;
 	@Column(name="updated_date")
 	private LocalDateTime updatedDate;
+	@Column(name="uom")
+	private String uom;
 	@Transient
 	private int statusCode;
 	public Integer getWoMeterId() {
@@ -111,17 +119,46 @@ public class WoMeterEntity implements Serializable{
 	public void setMeterName(String meterName) {
 		this.meterName = meterName;
 	}
-	public double getInitialValue() {
+	
+	public String getMeterDescription() {
+		return meterDescription;
+	}
+	public void setMeterDescription(String meterDescription) {
+		this.meterDescription = meterDescription;
+	}
+	
+	public Double getInitialValue() {
 		return initialValue;
 	}
-	public void setInitialValue(double initialValue) {
+	public void setInitialValue(Double initialValue) {
 		this.initialValue = initialValue;
 	}
-	public double getFinalValue() {
+	public Double getFinalValue() {
 		return finalValue;
 	}
-	public void setFinalValue(double finalValue) {
+	public void setFinalValue(Double finalValue) {
 		this.finalValue = finalValue;
+	}
+	public String getInitialHms() {
+		return initialHms;
+	}
+	public void setInitialHms(String initialHms) {
+		this.initialHms = initialHms;
+	}
+	public String getFinalHms() {
+		return finalHms;
+	}
+	public void setFinalHms(String finalHms) {
+		this.finalHms = finalHms;
+	}
+	public String getUom() {
+		return uom;
+	}
+	public void setUom(String uom) {
+		this.uom = uom;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	public LocalDateTime getReadingDate() {
 		return readingDate;

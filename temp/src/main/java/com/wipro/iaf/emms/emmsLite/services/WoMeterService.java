@@ -71,13 +71,17 @@ public class WoMeterService {
 		woMeterEntity.setAssetNum(woMeterInput.getAssetNum());
 		woMeterEntity.setBuildItem(woMeterInput.getBuildItem());
 		woMeterEntity.setDescription(woMeterInput.getDescription());
-		woMeterEntity.setFinalValue(woMeterInput.getFinalValue());
-		woMeterEntity.setInitialValue(woMeterInput.getInitialValue());
+		woMeterEntity.setFinalValue(getDecimalValue(woMeterInput.getFinalHms(),woMeterInput.getUom()));
+		woMeterEntity.setInitialValue(getDecimalValue(woMeterInput.getInitialHms(),woMeterInput.getUom()));
 		woMeterEntity.setReadingDate(woMeterInput.getReadingDate());
 		woMeterEntity.setMeterName(woMeterInput.getMeterName());
 		woMeterEntity.setSerialNum(woMeterInput.getSerialNum());
 		woMeterEntity.setPartNum(woMeterInput.getPartNum());
 		woMeterEntity.setUpdatedBy(woMeterInput.getUpdatedBy());
+		woMeterEntity.setUom(woMeterInput.getUom());
+		woMeterEntity.setMeterDescription(woMeterInput.getMeterDescription());
+		woMeterEntity.setInitialHms(woMeterInput.getInitialHms());
+		woMeterEntity.setFinalHms(woMeterInput.getFinalHms());
 		woMeterEntity.setUpdatedDate(LocalDateTime.now());
 		woMeterRepository.save(woMeterEntity);
 		woMeterLookupResponse.setStatusCode(200);
@@ -109,5 +113,23 @@ public class WoMeterService {
 		}
 		return woMeterLookupResponse;
 	}
+	
+	public Double getDecimalValue(String value, String uom) {
+		if(uom.equalsIgnoreCase("hh:mm:ss")) {
+		int h = Integer.parseInt(value.substring(0, 2));
+		int m = Integer.parseInt(value.substring(3, 5));
+		int s = Integer.parseInt(value.substring(6, 8));
+		Double cal = (double) (h * 3600 + m * 60 + s);
+		return cal;
+		}else if(uom.equalsIgnoreCase("hh:mm")) {
+			int h = Integer.parseInt(value.substring(0, 2));
+			int m = Integer.parseInt(value.substring(3, 5));
+			Double cal = (double) (h * 3600 + m * 60);
+			return cal;
+		}else {
+			return Double.parseDouble(value);
+		}
+	}
+	
 }
 

@@ -16,6 +16,8 @@ public interface IMeterQueryResponseBean {
 	public String getMeterType();
 
 	public String getMeterDescription();
+	
+	public String getUom();
 
 	@Value("#{200}")
 	public int getCode();
