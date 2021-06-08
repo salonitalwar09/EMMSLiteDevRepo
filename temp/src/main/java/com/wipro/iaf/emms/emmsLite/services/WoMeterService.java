@@ -115,17 +115,31 @@ public class WoMeterService {
 	}
 	
 	public Double getDecimalValue(String value, String uom) {
+		String uomValue[]=value.split(":");
 		if(uom.equalsIgnoreCase("hh:mm:ss")) {
-		int h = Integer.parseInt(value.substring(0, 2));
-		int m = Integer.parseInt(value.substring(3, 5));
-		int s = Integer.parseInt(value.substring(6, 8));
+			try {
+		int h = Integer.parseInt(uomValue[0]);
+		int m = Integer.parseInt(uomValue[1]);
+		int s = Integer.parseInt(uomValue[2]);
 		Double cal = (double) (h * 3600 + m * 60 + s);
+		
 		return cal;
-		}else if(uom.equalsIgnoreCase("hh:mm")) {
-			int h = Integer.parseInt(value.substring(0, 2));
-			int m = Integer.parseInt(value.substring(3, 5));
+			}catch(Exception e) 
+			{
+				System.out.println(e.getMessage());
+				return null;
+				}
+			}else if(uom.equalsIgnoreCase("hh:mm")) {
+				try {
+			int h = Integer.parseInt(uomValue[0]);
+			int m = Integer.parseInt(uomValue[1]);
 			Double cal = (double) (h * 3600 + m * 60);
 			return cal;
+				}catch(Exception e)
+				{
+					System.out.println(e.getMessage());
+					return null;
+				}
 		}else {
 			return Double.parseDouble(value);
 		}
