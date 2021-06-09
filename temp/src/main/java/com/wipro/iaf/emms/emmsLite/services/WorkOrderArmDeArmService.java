@@ -392,9 +392,10 @@ public class WorkOrderArmDeArmService {
 				if (woArmDearmEntity.getArmStatus() != null && !woArmDearmEntity.getArmStatus().equals(con.COMP_STATUS)) {
 					System.out.println("+++++++++++++Inside onLoadClickItem+++++++SETTING ARM STATUS++++++");
 					woArmDearmEntity.setArmStatus(con.COMP_STATUS);
+					workOrderArmDearmEntity.setArmStatus(con.COMP_STATUS);
+					woArmDearmRepo.save(woArmDearmEntity);
 					str.append("Status Update to COMPLETED Successful");
-				}
-				woArmDearmRepo.save(woArmDearmEntity);
+				}		
 				
 				if (assetNum != null ) {
 					System.out.println("+++++++++++++Inside onLoadClickItem+++++++ASSETNUM NOT NULL++++++");
@@ -438,6 +439,7 @@ public class WorkOrderArmDeArmService {
 						armAssetLoad.setPartNo(workOrderArmDearmEntity.getPartNo());
 						armAssetLoad.setSerialNo(workOrderArmDearmEntity.getSerialNo());
 						armAssetLoad.setStationNo(workOrderArmDearmEntity.getStationNo());
+						woArmDearmAssetRepo.save(armAssetLoad);
 						System.out.println("+++++++++++++Inside onLoadClickItem+++++++NEW ROW INSERTED IN ASSET TABLE++++++");
 					}
 				}
