@@ -399,7 +399,7 @@ public class WorkOrderArmDeArmService {
 				
 				if (assetNum != null ) {
 					System.out.println("+++++++++++++Inside onLoadClickItem+++++++ASSETNUM NOT NULL++++++");
-					if (workOrderArmDearmEntity.getUnloadQuant() != 0 && workOrderArmDearmEntity.getUnloadQuant() != null) {
+					if (woArmDearmEntity.getUnloadQuant() != null && woArmDearmEntity.getUnloadQuant() != 0) {
 						System.out.println("+++++++++++++Inside onLoadClickItem+++++++UNLOAD TYPE OF BUILD ITEM++++++");
 						List<ArmingAssetEntity> armingAssetEntity = woArmDearmAssetRepo.getAssetRecord(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getStationNo(), assetNum);
 						if (armingAssetEntity != null && armingAssetEntity.get(0) != null) {
@@ -427,7 +427,7 @@ public class WorkOrderArmDeArmService {
 								System.out.println("+++++++++++++Inside onLoadClickItem+++++++ROW SAVED IN HISTORY AND REMOVED FROM ASSET++++++");
 							}
 						}
-					}else if (workOrderArmDearmEntity.getLoadQuant() != null && workOrderArmDearmEntity.getLoadQuant() != 0) {
+					}else if ( woArmDearmEntity.getLoadQuant() != null && woArmDearmEntity.getLoadQuant() != 0) {
 						System.out.println("+++++++++++++Inside onLoadClickItem+++++++LOAD TYPE OF BUILD ITEM++++++");
 						ArmingAssetEntity armAssetLoad = new ArmingAssetEntity();
 						armAssetLoad.setArmGIGNo(workOrderArmDearmEntity.getArmGIGNo());
