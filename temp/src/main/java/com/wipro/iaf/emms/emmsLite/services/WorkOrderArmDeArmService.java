@@ -353,11 +353,12 @@ public class WorkOrderArmDeArmService {
 					unload = woArmDearmEntity.getUnloadQuant();
 					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UNLOAD QUANT++++++"+unload);
 				}
-				if (unload != 0 && current > unload) {
+				if (unload != 0 && current >= unload) {
 					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UNLOAD QUANT NOT 0++++ROW ALREADY EXISTS++++"+unload);
 					evaluated = current - unload;
+					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EVALUATED QUANT FOR UNLOADING++++++"+evaluated);
 					if (woArmDearmEntityFromDB != null) {
-						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++ROW ALREADY EXISTS++++EVALUATED QUANT FOR UNLOADING++++++"+evaluated);
+						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++ROW ALREADY EXISTS++++++++++");
 						woArmDearmEntity.setEvaluatedQuant(evaluated);
 						woArmDearmRepo.updateArmingDeArmingEntry(String.valueOf(unload), String.valueOf(evaluated), String.valueOf(woArmDearmEntity.getArm_id()));
 						System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++EXISTING ROW UPDATED FOR UNLOAD++++++");
