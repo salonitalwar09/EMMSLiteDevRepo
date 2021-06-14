@@ -347,16 +347,19 @@ public class WorkOrderArmDeArmService {
 					}else {
 						try {
 							woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getStationNo(),workorderId);
+							System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++++SIZE OF LIST:"+woBuildGigSelectiveList.size());
 							if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 0) {
+								System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++++SIZE OF LIST:"+woBuildGigSelectiveList.size());
 								return null;
+							}else {
+								System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++NEW ROW INSERTING+++LOADING++++++"+woArmDearmEntity.getLoadQuant());
+								woArmDearmEntity.setEvaluatedQuant(woArmDearmEntity.getLoadQuant());
+								woArmDearmRepo.save(woArmDearmEntity);
 							}
 						}catch(Exception e){
 							System.out.println("Error occured while Arming De-Arming data for specific Build Item,GIG NO.,ARM POSITION from repository");
 							System.out.println(e.getMessage());
-						}
-					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++NEW ROW INSERTING+++LOADING++++++"+woArmDearmEntity.getLoadQuant());
-					woArmDearmEntity.setEvaluatedQuant(woArmDearmEntity.getLoadQuant());
-					woArmDearmRepo.save(woArmDearmEntity);
+						}					
 				}											
 			}else if (woArmDearmEntity.getUnloadQuant() != null && woArmDearmEntity.getUnloadQuant() != 0) {
 				System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UN LOAD QUANT IS NOT NULL OR 0++++++");
