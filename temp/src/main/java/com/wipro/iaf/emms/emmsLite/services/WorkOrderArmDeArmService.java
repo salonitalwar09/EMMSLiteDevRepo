@@ -126,20 +126,30 @@ public class WorkOrderArmDeArmService {
 		List<WorkOrderArmDearmEntity> armingList = new ArrayList<>();
 		ArmingAssetEntity assetEntity;
 		WorkOrderArmDearmEntity armDearmEntity = new WorkOrderArmDearmEntity();
-		List<WorkOrderArmDearmEntity> woArmDearmEntityList = new ArrayList<>(); 
+		List<WorkOrderArmDearmEntity> woArmDearmEntityList = new ArrayList<>();
+		String gigNoDesc = null;
 		if (assetNum != null && workOrderId != null) {
 			woArmDearmEntityList = woArmDearmRepo.getAllWOArmDeArmRecords(workOrderId);
-			System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++++++++++");
-		
+			System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++++++++++assetNum="+assetNum+"++++++workOrderId="+workOrderId);
+			System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++++++++++SIZE="+woArmDearmEntityList.size());
 			try {
 				deArmAssetList = woArmDearmAssetRepo.getAllWODeArmAssetRecords(assetNum);
-				if (deArmAssetList != null) {
+				if (deArmAssetList.size() > 0) {
+					System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++++deArmAssetList IS NOT NULL++++++SIZE="+deArmAssetList.size());
 					for (int i=0; i < deArmAssetList.size(); i++) {
+						System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++++++++++I="+i);
 						assetEntity = deArmAssetList.get(i);
-						if (woArmDearmEntityList != null) {
+						if (woArmDearmEntityList.size() > 0) {
+							System.out.println("+++++++++++++Inside getAllWOUnloadRecords++++++++woArmDearmEntityList IS NOT NULL+++++I= "+i);
 							if (!assetPresentInArming(assetNum, assetEntity, woArmDearmEntityList)) {
+								gigNoDesc = armGIGRepository.getDescForGigNo(assetEntity.getArmGIGNo());
+								System.out.println("+++++++++++++Inside getAllWOUnloadRecords++++++++assetPresentInArming IS NOT PRESENT+++++");
 								armDearmEntity.setBuildItem(assetEntity.getBuildItem());
 								armDearmEntity.setArmGIGNo(assetEntity.getArmGIGNo());
+								if (gigNoDesc != null) {
+									System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++++++++++GIG NO DESC NOT NULL");
+									armDearmEntity.setArmDescription(gigNoDesc);
+								}								
 								armDearmEntity.setArmPosition(assetEntity.getArmPosition());
 								armDearmEntity.setCurrentQuant(assetEntity.getCurrentQuant());
 								armDearmEntity.setLotNo(assetEntity.getLotNo());
@@ -150,6 +160,7 @@ public class WorkOrderArmDeArmService {
 								woArmDearmEntityList.add(armDearmEntity);
 							}
 						}else {
+							System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++woArmDearmEntityList IS NULL++++++++I= "+i);
 							armDearmEntity.setBuildItem(assetEntity.getBuildItem());
 							armDearmEntity.setArmGIGNo(assetEntity.getArmGIGNo());
 							armDearmEntity.setArmPosition(assetEntity.getArmPosition());
@@ -163,13 +174,17 @@ public class WorkOrderArmDeArmService {
 						}
 					}
 					
-					if (woArmDearmEntityList != null) {
+					if (woArmDearmEntityList.size() > 0) {
+						System.out.println("+++++++++++++woArmDearmEntityList IS NOT NULL+++++++++++++");
 						return woArmDearmEntityList;
 					}else {
+						System.out.println("+++++++++++++woArmDearmEntityList IS NULL+++++++++++++");
 						return armingList;
 					}
 				}else {
-					if (woArmDearmEntityList != null) {
+					System.out.println("+++++++++++++Inside getAllWOUnloadRecords+++++++deArmAssetList IS NULL++++++");
+					if (woArmDearmEntityList.size() > 0) {
+						System.out.println("+++++++++++++Inside getAllWOUnloadRecords++++++deArmAssetList IS NULL+++++++woArmDearmEntityList IS NOT NULL");
 						return woArmDearmEntityList;
 					}
 				}
@@ -332,16 +347,19 @@ public class WorkOrderArmDeArmService {
 					}else {
 						try {
 							woBuildGigSelectiveList = woArmDearmRepo.getBuildItemGigNoRecords(woArmDearmEntity.getBuildItem(),woArmDearmEntity.getArmGIGNo(), woArmDearmEntity.getStationNo(),workorderId);
+							System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++++SIZE OF LIST:"+woBuildGigSelectiveList.size());
 							if (woBuildGigSelectiveList != null && woBuildGigSelectiveList.size() > 0) {
+								System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++++SIZE OF LIST:"+woBuildGigSelectiveList.size());
 								return null;
+							}else {
+								System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++NEW ROW INSERTING+++LOADING++++++"+woArmDearmEntity.getLoadQuant());
+								woArmDearmEntity.setEvaluatedQuant(woArmDearmEntity.getLoadQuant());
+								woArmDearmRepo.save(woArmDearmEntity);
 							}
 						}catch(Exception e){
 							System.out.println("Error occured while Arming De-Arming data for specific Build Item,GIG NO.,ARM POSITION from repository");
 							System.out.println(e.getMessage());
-						}
-					System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++NEW ROW INSERTING+++LOADING++++++"+woArmDearmEntity.getLoadQuant());
-					woArmDearmEntity.setEvaluatedQuant(woArmDearmEntity.getLoadQuant());
-					woArmDearmRepo.save(woArmDearmEntity);
+						}					
 				}											
 			}else if (woArmDearmEntity.getUnloadQuant() != null && woArmDearmEntity.getUnloadQuant() != 0) {
 				System.out.println("+++++++++++++Inside saveLoadandUnloadRow+++++++UN LOAD QUANT IS NOT NULL OR 0++++++");

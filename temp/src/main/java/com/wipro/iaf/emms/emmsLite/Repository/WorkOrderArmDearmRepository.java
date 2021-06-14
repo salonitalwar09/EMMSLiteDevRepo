@@ -23,8 +23,8 @@ public interface WorkOrderArmDearmRepository extends JpaRepository<WorkOrderArmD
 	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.workorder_id=?1", nativeQuery=true)
 	public List<WorkOrderArmDearmEntity> getAllWOArmDeArmRecords(@Param("workorder_id") String workorderid);
 	
-	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.BUILD_ITEM=?1 and armdearm.ARM_GIGNO=?2 and armdearm.ARM_POSITION=?3 and armdearm.WORKORDER_ID=?4", nativeQuery=true)
-	public List<WorkOrderArmDearmEntity> getBuildItemGigNoRecords(@Param("BUILD_ITEM") String buildItem, @Param("ARM_GIGNO") String armGIGNo,@Param("ARM_POSITION") String armPositionNo, @Param("WORKORDER_ID") String workOrderId);
+	@Query(value = "SELECT * FROM emms_lite.elite_wo_armdearm_tb armdearm where armdearm.BUILD_ITEM=?1 and armdearm.ARM_GIGNO=?2 and armdearm.STATION_NO=?3 and armdearm.WORKORDER_ID=?4", nativeQuery=true)
+	public List<WorkOrderArmDearmEntity> getBuildItemGigNoRecords(@Param("BUILD_ITEM") String buildItem, @Param("ARM_GIGNO") String armGIGNo,@Param("STATION_NO") String stationNo, @Param("WORKORDER_ID") String workOrderId);
 	
 	@Query(value = "UPDATE TABLE emms_lite.elite_wo_armdearm_tb armdearm set armdearm.unload_quant=?1 ,armdearm.evaluated_quant=?2 where armdearm.armid_pk=?3", nativeQuery=true)
 	public List<WorkOrderArmDearmEntity> updateArmingDeArmingEntry(@Param("unload_quant") String unloadQuant, @Param("evaluated_quant") String evaluatedQuant,@Param("armid_pk") String armId);
