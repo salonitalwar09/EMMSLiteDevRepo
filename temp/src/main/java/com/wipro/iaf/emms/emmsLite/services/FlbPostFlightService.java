@@ -80,6 +80,9 @@ public class FlbPostFlightService {
 					FlbPostFlightEntity rowData = row.get();
 					if (rowData != null) {
 						System.out.println("Post Flight Exist");
+						if (postFlight.getSortieNum() != null) {
+							rowData.setSortieNum(postFlight.getSortieNum());
+						}
 						if (postFlight.getArrivalTime() != null) {
 							rowData.setArrivalTime(postFlight.getArrivalTime());
 						}
