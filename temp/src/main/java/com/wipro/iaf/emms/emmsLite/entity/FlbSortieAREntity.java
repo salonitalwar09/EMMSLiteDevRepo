@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.wipro.iaf.emms.emmsLite.beans.Views;
 
 /**
  * @author Lalit Singh Bisht
@@ -23,7 +25,9 @@ public class FlbSortieAREntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(insertable = false, updatable = false)
+	@JsonView(Views.SortieNumViews.class)
 	private Long sortieId;
+	@JsonView(Views.SortieNumViews.class)
 	@Column(unique = true)
 	private String sortieNum;
 	private String recordId;

@@ -1,14 +1,16 @@
 package com.wipro.iaf.emms.emmsLite.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.wipro.iaf.emms.emmsLite.Repository.FlbPostFlightRepository;
-import com.wipro.iaf.emms.emmsLite.beans.CommonResponseBean;
 import com.wipro.iaf.emms.emmsLite.entity.FlbPostFlightEntity;
 
 @Service
@@ -29,6 +31,8 @@ public class FlbPostFlightService {
 		catch(Exception e) {
 			System.out.println("Some Error occured while fetching post flight data from repo");
 			System.out.println(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"Some Error occured while fetching sortie from repo", e);
 		}
 		
 		System.out.println("++++++++++++++++++++end of flb post flight findByRecordId++++++++++++++++++++");
@@ -36,43 +40,82 @@ public class FlbPostFlightService {
 	}
 
 	
-	public CommonResponseBean createPostFlightData(String recordId, FlbPostFlightEntity newRow) {
+	public FlbPostFlightEntity createPostFlightData(String recordId, FlbPostFlightEntity newRow) {
 		System.out.println("++++++++++++++++++++Inside flb post flight findByRecordId++++++++++++++++++++");
-		
 		//Code starts here
-		CommonResponseBean response = new CommonResponseBean();
-		String message = "";
 		if (newRow != null) {
 			try {
 				newRow.setRecordId(recordId);
 				System.out.println("Inserting new row in DB");
 				flbPostFlightRepository.save(newRow);
-				response.setStatus(HttpStatus.CREATED);
-				message = "Post Flight added successfully";
 				System.out.println("New row inserted");
 			}
 			catch(DataIntegrityViolationException dive) {
 				System.out.println("This Post flight already exist in DB");
-				response.setStatus(HttpStatus.CONFLICT);
-				message = "This sortie already exists or Some required data not received";
 				System.out.println(dive.getMessage());
+				throw new ResponseStatusException(HttpStatus.CONFLICT,
+						"This postFlight already exists or Some required data not received");
 			}
 			catch(Exception e) {
 				System.out.println("Some Error occured");
-				response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-				message = "Some error occurred";
 				System.out.println(e.getMessage());
+				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Error", e);
 			}
 		} else {
 			System.out.println("Bad request");
-			message = "Bad request";
-			response.setStatus(HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		response.setMessage(message);
-		
-		
 		System.out.println("++++++++++++++++++++end of flb post flight findByRecordId++++++++++++++++++++");
-		return response;
+		return newRow;
+	}
+	
+	public void savePostFlightData(String recordId, List<FlbPostFlightEntity> postFlightList) {
+		System.out.println("++++++++++++++++++++Inside flb savePostFlight Service++++++++++++++++++++");
+		List<Long> unsavedIds = new ArrayList<Long>();
+		if (postFlightList != null) {
+			for (FlbPostFlightEntity postFlight : postFlightList) {
+				try {
+					System.out.println("Searching postFlight with id: " + postFlight.getPostFltId());
+					Optional<FlbPostFlightEntity> row = flbPostFlightRepository.findById(postFlight.getPostFltId());
+					FlbPostFlightEntity rowData = row.get();
+					if (rowData != null) {
+						System.out.println("Post Flight Exist");
+						if (postFlight.getSortieNum() != null) {
+							rowData.setSortieNum(postFlight.getSortieNum());
+						}
+						if (postFlight.getArrivalTime() != null) {
+							rowData.setArrivalTime(postFlight.getArrivalTime());
+						}
+						if (postFlight.getDepartureTime() != null) {
+							rowData.setDepartureTime(postFlight.getDepartureTime());
+						}
+						if (postFlight.getFlbStatus() != null) {
+							rowData.setFlbStatus(postFlight.getFlbStatus());
+						}
+						if (postFlight.getFltDate() != null) {
+							rowData.setFltDate(postFlight.getFltDate());
+						}
+						if (postFlight.getFltHours() != null) {
+							rowData.setFltHours(postFlight.getFltHours());
+						}
+						if (postFlight.getFltType() != null) {
+							rowData.setFltType(postFlight.getFltType());
+						}
+						System.out.println("Inserting data in table");
+						flbPostFlightRepository.save(rowData);
+						System.out.println("Data inserted");
+					}
+				} catch (Exception e) {
+					unsavedIds.add(postFlight.getPostFltId());
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+		if (unsavedIds.size() > 0) {
+			String message = "Following ids are not saved: " + unsavedIds.toString();
+			throw new ResponseStatusException(HttpStatus.PARTIAL_CONTENT, message);
+		}
+		System.out.println("++++++++++++++++++++end of flb saveSortie Service++++++++++++++++++++");
 	}
 
 }

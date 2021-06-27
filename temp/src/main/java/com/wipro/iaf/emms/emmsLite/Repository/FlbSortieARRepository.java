@@ -1,6 +1,7 @@
 package com.wipro.iaf.emms.emmsLite.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,10 @@ public interface FlbSortieARRepository extends JpaRepository<FlbSortieAREntity, 
 
 	@Query(value = "SELECT * FROM elite_flb_sortie_accept_reject_tb WHERE record_id=?1 AND sortie_id=?2", nativeQuery=true)
 	public Optional<FlbSortieAREntity> findBySortieId(@Param("recordId") String recordId, @Param("sortieNum") Long sortieId);
+
+	@Query(value = "SELECT COUNT(*) FROM elite_flb_sortie_accept_reject_tb", nativeQuery = true)
+	public int getSortieCount();
+
+	@Query(value = "SELECT sortie_id, sortie_num FROM elite_flb_sortie_accept_reject_tb WHERE status=?1 AND record_id=?2", nativeQuery=true)
+	public List<Object[]> getSortieNum(@Param("status") String status, @Param("recordId") String recordId);
 }

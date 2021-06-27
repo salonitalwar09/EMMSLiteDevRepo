@@ -3,8 +3,6 @@ package com.wipro.iaf.emms.emmsLite.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wipro.iaf.emms.emmsLite.beans.CommonResponseBean;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.wipro.iaf.emms.emmsLite.beans.Views;
 import com.wipro.iaf.emms.emmsLite.entity.FlbSortieAREntity;
 import com.wipro.iaf.emms.emmsLite.services.FlbSortieARService;
 
@@ -36,6 +35,12 @@ public class FlbSortieARController {
 		System.out.println("Record Id provided in path: " + recordId);
 		System.out.println("++++++++++++++++++++++++++++++++++++++++end of allSorties++++++++++++++++++++++++++++++++++++++++");
 		return fLBSortieARService.findByRecordId(recordId);
+	}
+	
+	@GetMapping("/num/{status}/{recordId}") 
+	@JsonView(Views.SortieNumViews.class)
+	private List<FlbSortieAREntity> getSortieNum(@PathVariable("status") String status, @PathVariable("recordId") String recordId) {
+		return fLBSortieARService.getSortieNum(status, recordId);
 	}
 	
 	@PostMapping("/create/{recordId}")
